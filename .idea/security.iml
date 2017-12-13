@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="PHP" type="php">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../composer" />
+          <root url="file://$MODULE_DIR$/../../doctrine/annotations" />
+          <root url="file://$MODULE_DIR$/../../doctrine/cache" />
+          <root url="file://$MODULE_DIR$/../../doctrine/collections" />
+          <root url="file://$MODULE_DIR$/../../doctrine/common" />
+          <root url="file://$MODULE_DIR$/../../doctrine/dbal" />
+          <root url="file://$MODULE_DIR$/../../doctrine/doctrine-bundle" />
+          <root url="file://$MODULE_DIR$/../../doctrine/doctrine-cache-bundle" />
+          <root url="file://$MODULE_DIR$/../../doctrine/doctrine-migrations-bundle" />
+          <root url="file://$MODULE_DIR$/../../doctrine/inflector" />
+          <root url="file://$MODULE_DIR$/../../doctrine/instantiator" />
+          <root url="file://$MODULE_DIR$/../../doctrine/lexer" />
+          <root url="file://$MODULE_DIR$/../../doctrine/migrations" />
+          <root url="file://$MODULE_DIR$/../../doctrine/orm" />
+          <root url="file://$MODULE_DIR$/../../egulias/email-validator" />
+          <root url="file://$MODULE_DIR$/../../jdorn/sql-formatter" />
+          <root url="file://$MODULE_DIR$/../../monolog/monolog" />
+          <root url="file://$MODULE_DIR$/../../ocramius/package-versions" />
+          <root url="file://$MODULE_DIR$/../../ocramius/proxy-manager" />
+          <root url="file://$MODULE_DIR$/../../psr/cache" />
+          <root url="file://$MODULE_DIR$/../../psr/container" />
+          <root url="file://$MODULE_DIR$/../../psr/log" />
+          <root url="file://$MODULE_DIR$/../../psr/simple-cache" />
+          <root url="file://$MODULE_DIR$/../../swiftmailer/swiftmailer" />
+          <root url="file://$MODULE_DIR$/../../symfony/asset" />
+          <root url="file://$MODULE_DIR$/../../symfony/cache" />
+          <root url="file://$MODULE_DIR$/../../symfony/config" />
+          <root url="file://$MODULE_DIR$/../../symfony/console" />
+          <root url="file://$MODULE_DIR$/../../symfony/debug" />
+          <root url="file://$MODULE_DIR$/../../symfony/debug-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/dependency-injection" />
+          <root url="file://$MODULE_DIR$/../../symfony/doctrine-bridge" />
+          <root url="file://$MODULE_DIR$/../../symfony/dotenv" />
+          <root url="file://$MODULE_DIR$/../../symfony/event-dispatcher" />
+          <root url="file://$MODULE_DIR$/../../symfony/filesystem" />
+          <root url="file://$MODULE_DIR$/../../symfony/finder" />
+          <root url="file://$MODULE_DIR$/../../symfony/flex" />
+          <root url="file://$MODULE_DIR$/../../symfony/form" />
+          <root url="file://$MODULE_DIR$/../../symfony/framework-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/http-foundation" />
+          <root url="file://$MODULE_DIR$/../../symfony/http-kernel" />
+          <root url="file://$MODULE_DIR$/../../symfony/inflector" />
+          <root url="file://$MODULE_DIR$/../../symfony/intl" />
+          <root url="file://$MODULE_DIR$/../../symfony/maker-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/monolog-bridge" />
+          <root url="file://$MODULE_DIR$/../../symfony/monolog-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/options-resolver" />
+          <root url="file://$MODULE_DIR$/../../symfony/polyfill-intl-icu" />
+          <root url="file://$MODULE_DIR$/../../symfony/polyfill-mbstring" />
+          <root url="file://$MODULE_DIR$/../../symfony/polyfill-php72" />
+          <root url="file://$MODULE_DIR$/../../symfony/property-access" />
+          <root url="file://$MODULE_DIR$/../../symfony/requirements-checker" />
+          <root url="file://$MODULE_DIR$/../../symfony/routing" />
+          <root url="file://$MODULE_DIR$/../../symfony/security" />
+          <root url="file://$MODULE_DIR$/../../symfony/security-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/stopwatch" />
+          <root url="file://$MODULE_DIR$/../../symfony/swiftmailer-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/templating" />
+          <root url="file://$MODULE_DIR$/../../symfony/translation" />
+          <root url="file://$MODULE_DIR$/../../symfony/twig-bridge" />
+          <root url="file://$MODULE_DIR$/../../symfony/twig-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/validator" />
+          <root url="file://$MODULE_DIR$/../../symfony/var-dumper" />
+          <root url="file://$MODULE_DIR$/../../symfony/web-profiler-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/yaml" />
+          <root url="file://$MODULE_DIR$/../../twig/twig" />
+          <root url="file://$MODULE_DIR$/../../zendframework/zend-code" />
+          <root url="file://$MODULE_DIR$/../../zendframework/zend-eventmanager" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../composer" />
+          <root url="file://$MODULE_DIR$/../../doctrine/annotations" />
+          <root url="file://$MODULE_DIR$/../../doctrine/cache" />
+          <root url="file://$MODULE_DIR$/../../doctrine/collections" />
+          <root url="file://$MODULE_DIR$/../../doctrine/common" />
+          <root url="file://$MODULE_DIR$/../../doctrine/dbal" />
+          <root url="file://$MODULE_DIR$/../../doctrine/doctrine-bundle" />
+          <root url="file://$MODULE_DIR$/../../doctrine/doctrine-cache-bundle" />
+          <root url="file://$MODULE_DIR$/../../doctrine/doctrine-migrations-bundle" />
+          <root url="file://$MODULE_DIR$/../../doctrine/inflector" />
+          <root url="file://$MODULE_DIR$/../../doctrine/instantiator" />
+          <root url="file://$MODULE_DIR$/../../doctrine/lexer" />
+          <root url="file://$MODULE_DIR$/../../doctrine/migrations" />
+          <root url="file://$MODULE_DIR$/../../doctrine/orm" />
+          <root url="file://$MODULE_DIR$/../../egulias/email-validator" />
+          <root url="file://$MODULE_DIR$/../../jdorn/sql-formatter" />
+          <root url="file://$MODULE_DIR$/../../monolog/monolog" />
+          <root url="file://$MODULE_DIR$/../../ocramius/package-versions" />
+          <root url="file://$MODULE_DIR$/../../ocramius/proxy-manager" />
+          <root url="file://$MODULE_DIR$/../../psr/cache" />
+          <root url="file://$MODULE_DIR$/../../psr/container" />
+          <root url="file://$MODULE_DIR$/../../psr/log" />
+          <root url="file://$MODULE_DIR$/../../psr/simple-cache" />
+          <root url="file://$MODULE_DIR$/../../swiftmailer/swiftmailer" />
+          <root url="file://$MODULE_DIR$/../../symfony/asset" />
+          <root url="file://$MODULE_DIR$/../../symfony/cache" />
+          <root url="file://$MODULE_DIR$/../../symfony/config" />
+          <root url="file://$MODULE_DIR$/../../symfony/console" />
+          <root url="file://$MODULE_DIR$/../../symfony/debug" />
+          <root url="file://$MODULE_DIR$/../../symfony/debug-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/dependency-injection" />
+          <root url="file://$MODULE_DIR$/../../symfony/doctrine-bridge" />
+          <root url="file://$MODULE_DIR$/../../symfony/dotenv" />
+          <root url="file://$MODULE_DIR$/../../symfony/event-dispatcher" />
+          <root url="file://$MODULE_DIR$/../../symfony/filesystem" />
+          <root url="file://$MODULE_DIR$/../../symfony/finder" />
+          <root url="file://$MODULE_DIR$/../../symfony/flex" />
+          <root url="file://$MODULE_DIR$/../../symfony/form" />
+          <root url="file://$MODULE_DIR$/../../symfony/framework-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/http-foundation" />
+          <root url="file://$MODULE_DIR$/../../symfony/http-kernel" />
+          <root url="file://$MODULE_DIR$/../../symfony/inflector" />
+          <root url="file://$MODULE_DIR$/../../symfony/intl" />
+          <root url="file://$MODULE_DIR$/../../symfony/maker-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/monolog-bridge" />
+          <root url="file://$MODULE_DIR$/../../symfony/monolog-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/options-resolver" />
+          <root url="file://$MODULE_DIR$/../../symfony/polyfill-intl-icu" />
+          <root url="file://$MODULE_DIR$/../../symfony/polyfill-mbstring" />
+          <root url="file://$MODULE_DIR$/../../symfony/polyfill-php72" />
+          <root url="file://$MODULE_DIR$/../../symfony/property-access" />
+          <root url="file://$MODULE_DIR$/../../symfony/requirements-checker" />
+          <root url="file://$MODULE_DIR$/../../symfony/routing" />
+          <root url="file://$MODULE_DIR$/../../symfony/security" />
+          <root url="file://$MODULE_DIR$/../../symfony/security-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/stopwatch" />
+          <root url="file://$MODULE_DIR$/../../symfony/swiftmailer-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/templating" />
+          <root url="file://$MODULE_DIR$/../../symfony/translation" />
+          <root url="file://$MODULE_DIR$/../../symfony/twig-bridge" />
+          <root url="file://$MODULE_DIR$/../../symfony/twig-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/validator" />
+          <root url="file://$MODULE_DIR$/../../symfony/var-dumper" />
+          <root url="file://$MODULE_DIR$/../../symfony/web-profiler-bundle" />
+          <root url="file://$MODULE_DIR$/../../symfony/yaml" />
+          <root url="file://$MODULE_DIR$/../../twig/twig" />
+          <root url="file://$MODULE_DIR$/../../zendframework/zend-code" />
+          <root url="file://$MODULE_DIR$/../../zendframework/zend-eventmanager" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="PHARS">
+        <CLASSES>
+          <root url="phar://$MODULE_DIR$/../../twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$MODULE_DIR$/../../symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar/" />
+        </CLASSES>
+        <SOURCES>
+          <root url="phar://$MODULE_DIR$/../../twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$MODULE_DIR$/../../symfony/dependency-injection/Tests/Fixtures/includes/ProjectWithXsdExtensionInPhar.phar/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>

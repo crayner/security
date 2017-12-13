@@ -1,0 +1,32 @@
+{
+    "name": "hill-range/security",
+    "type": "symfony-bundle",
+    "description": "Security Bundle for Symfony 4.x",
+    "keywords": ["security"],
+    "homepage": "http://www.craigrayner.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Craig Rayner",
+            "email": "hillrange@craigrayner.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "symfony/security-bundle": "^4.0",
+        "symfony/security-csrf": "^4.0",
+        "symfony/flex": "^1.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "HillRange\\Security\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HillRange\\Security\\Tests\\": "tests/"
+        }
+    }
+}
