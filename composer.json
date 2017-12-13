@@ -1,5 +1,5 @@
 {
-    "name": "hill-range/security",
+    "name": "hillrange/security",
     "type": "symfony-bundle",
     "description": "Security Bundle for Symfony 4.x",
     "keywords": ["security"],
@@ -20,9 +20,10 @@
     "require-dev": {
     },
     "autoload": {
-        "psr-4": {
-            "HillRange\\Security\\": "src/"
-        }
+        "psr-4": { "HillRange\\Security\\HillRangeSecurityBundle": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
