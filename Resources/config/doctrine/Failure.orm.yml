@@ -1,0 +1,33 @@
+HillRange\Security\Entity\Failure:
+    type: entity
+    table: failure
+    repositoryClass: HillRange\Security\Repository\FailureRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        address:
+            type: string
+            length: 16
+            unique: true
+        failures:
+            type: integer
+        lastModified:
+            type: datetime
+            column: last_modified
+        createdOn:
+            type: datetime
+            column: created_on
+    manyToOne:
+        createdBy:
+            targetEntity: HillRange\Security\Entity\User
+            joinColumn:
+                name: created_by
+                referencedColumnName: id
+        modifiedBy:
+            targetEntity: HillRange\Security\Entity\User
+            joinColumn:
+                name: modified_by
+                referencedColumnName: id

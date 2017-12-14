@@ -15,7 +15,13 @@
         "php": ">=7.0.0",
         "symfony/security-bundle": "^4.0",
         "symfony/security-csrf": "^4.0",
-        "symfony/flex": "^1.0"
+        "symfony/flex": "^1.0",
+        "symfony/framework-bundle": "^4.0",
+        "symfony/orm-pack": "^1.0",
+        "symfony/templating": "^4.0",
+        "symfony/translation": "^4.0",
+        "symfony/twig-bridge": "^4.0",
+        "symfony/twig-bundle": "^4.0"
     },
     "require-dev": {
     },
