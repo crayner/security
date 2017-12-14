@@ -1,7 +1,7 @@
 <?php
 namespace HillRange\Security\EntityExtension;
 
-use App\Entity\User;
+use HillRange\Security\Entity\User;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Yaml\Yaml;
 

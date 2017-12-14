@@ -1,7 +1,7 @@
 <?php
 namespace HillRange\Security\Repository;
 
-use App\Entity\Page;
+use HillRange\Security\Entity\Page;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

@@ -1,7 +1,7 @@
 <?php
 namespace HillRange\Security\Manager;
 
-use App\Entity\Failure;
+use HillRange\Security\Entity\Failure;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -32,7 +32,7 @@ class Authorisation extends AuthorizationChecker implements ContainerAwareInterf
 	private $available = false;
 
 
-	public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager, AccessDecisionManagerInterface $accessDecisionManager, myContainer $container, RequestContext $requestContext)
+	public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager, AccessDecisionManagerInterface $accessDecisionManager, ContainerInterface $container, RequestContext $requestContext)
 	{
 		$this->available = $this->tablesCreated($container->get('doctrine')->getManager());
 
