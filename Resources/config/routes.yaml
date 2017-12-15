@@ -1,3 +1,0 @@
-hillrange_security_login:
-    path:   /security/login/
-    defaults: { _controller: 'HillRangeSecurityBundle:Security:login' }
