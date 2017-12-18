@@ -1,5 +1,5 @@
 <?php
-namespace HillRange\Security\Controller;
+namespace Hillrange\Security\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class SecurityController
- * @package HillRange\Security\Controller
+ * @package Hillrange\Security\Controller
  */
 class SecurityController extends AbstractController
 {

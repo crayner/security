@@ -1,7 +1,7 @@
 <?php
-namespace HillRange\Security\EntityExtension;
+namespace Hillrange\Security\EntityExtension;
 
-use HillRange\Security\Entity\User;
+use Hillrange\Security\Entity\User;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -243,7 +243,7 @@ abstract class UserModel implements AdvancedUserInterface, \Serializable
 			$groups = Yaml::parse(file_get_contents('../src/Busybee/Core/SecurityBundle/Resources/config/services.yml'));
 			$groups = $groups['parameters']['groups'];
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return array();
 		}

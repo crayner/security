@@ -1,7 +1,7 @@
 <?php
-namespace HillRange\Security\Entity;
+namespace Hillrange\Security\Entity;
 
-use HillRange\Security\EntityExtension\PageModel;
+use Hillrange\Security\EntityExtension\PageModel;
 
 
 /**
@@ -30,12 +30,12 @@ class Page extends PageModel
 	private $createdOn;
 
 	/**
-	 * @var \HillRange\Security\Entity\User
+	 * @var \Hillrange\Security\Entity\User
 	 */
 	private $createdBy;
 
 	/**
-	 * @var \HillRange\Security\Entity\User
+	 * @var \Hillrange\Security\Entity\User
 	 */
 	private $modifiedBy;
 
@@ -147,7 +147,7 @@ class Page extends PageModel
 	/**
 	 * Get createdBy
 	 *
-	 * @return \HillRange\Security\Entity\User
+	 * @return \Hillrange\Security\Entity\User
 	 */
 	public function getCreatedBy()
 	{
@@ -157,11 +157,11 @@ class Page extends PageModel
 	/**
 	 * Set createdBy
 	 *
-	 * @param \HillRange\Security\Entity\User $createdBy
+	 * @param \Hillrange\Security\Entity\User $createdBy
 	 *
 	 * @return Page
 	 */
-	public function setCreatedBy(\HillRange\Security\Entity\User $createdBy = null)
+	public function setCreatedBy(\Hillrange\Security\Entity\User $createdBy = null)
 	{
 		$this->createdBy = $createdBy;
 
@@ -171,7 +171,7 @@ class Page extends PageModel
 	/**
 	 * Get modifiedBy
 	 *
-	 * @return \HillRange\Security\Entity\User
+	 * @return \Hillrange\Security\Entity\User
 	 */
 	public function getModifiedBy()
 	{
@@ -181,11 +181,11 @@ class Page extends PageModel
 	/**
 	 * Set modifiedBy
 	 *
-	 * @param \HillRange\Security\Entity\User $modifiedBy
+	 * @param \Hillrange\Security\Entity\User $modifiedBy
 	 *
 	 * @return Page
 	 */
-	public function setModifiedBy(\HillRange\Security\Entity\User $modifiedBy = null)
+	public function setModifiedBy(\Hillrange\Security\Entity\User $modifiedBy = null)
 	{
 		$this->modifiedBy = $modifiedBy;
 

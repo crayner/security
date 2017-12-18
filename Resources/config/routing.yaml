@@ -1,3 +1,6 @@
 hillrange_security_login:
     path:   /security/login/
-    defaults: { _controller: 'HillRangeSecurityBundle:Security:login' }
+    defaults: { _controller: 'HillrangeSecurityBundle:Security:login' }
+hillrange_security_timeout:
+    path:   /security/timeout/
+    defaults: { _controller: 'HillrangeSecurityBundle:Authentication:timeout' }

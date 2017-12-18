@@ -1,7 +1,7 @@
 <?php
-namespace HillRange\Security\Entity;
+namespace Hillrange\Security\Entity;
 
-use HillRange\Security\EntityExtension\UserModel;
+use Hillrange\Security\EntityExtension\UserModel;
 
 /**
  * User
@@ -99,12 +99,12 @@ class User extends UserModel
 	private $createdOn;
 
 	/**
-	 * @var \HillRange\Security\Entity\User
+	 * @var \Hillrange\Security\Entity\User
 	 */
 	private $createdBy;
 
 	/**
-	 * @var \HillRange\Security\Entity\User
+	 * @var \Hillrange\Security\Entity\User
 	 */
 	private $modifiedBy;
 
@@ -565,7 +565,7 @@ class User extends UserModel
 	/**
 	 * Get createdBy
 	 *
-	 * @return \HillRange\Security\Entity\User
+	 * @return \Hillrange\Security\Entity\User
 	 */
 	public function getCreatedBy()
 	{
@@ -575,11 +575,11 @@ class User extends UserModel
 	/**
 	 * Set createdBy
 	 *
-	 * @param \HillRange\Security\Entity\User $createdBy
+	 * @param \Hillrange\Security\Entity\User $createdBy
 	 *
 	 * @return User
 	 */
-	public function setCreatedBy(\HillRange\Security\Entity\User $createdBy = null)
+	public function setCreatedBy(\Hillrange\Security\Entity\User $createdBy = null)
 	{
 		$this->createdBy = $createdBy;
 
@@ -589,7 +589,7 @@ class User extends UserModel
 	/**
 	 * Get modifiedBy
 	 *
-	 * @return \HillRange\Security\Entity\User
+	 * @return \Hillrange\Security\Entity\User
 	 */
 	public function getModifiedBy()
 	{
@@ -599,11 +599,11 @@ class User extends UserModel
 	/**
 	 * Set modifiedBy
 	 *
-	 * @param \HillRange\Security\Entity\User $modifiedBy
+	 * @param \Hillrange\Security\Entity\User $modifiedBy
 	 *
 	 * @return User
 	 */
-	public function setModifiedBy(\HillRange\Security\Entity\User $modifiedBy = null)
+	public function setModifiedBy(\Hillrange\Security\Entity\User $modifiedBy = null)
 	{
 		$this->modifiedBy = $modifiedBy;
 

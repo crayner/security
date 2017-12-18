@@ -1,7 +1,7 @@
-HillRange\Security\Entity\User:
+Hillrange\Security\Entity\User:
     type: entity
-    table: user
-    repositoryClass: HillRange\Security\Repository\UserRepository
+    table: hrs_user
+    repositoryClass: Hillrange\Security\Repository\UserRepository
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
             fields: [username]
@@ -92,12 +92,12 @@ HillRange\Security\Entity\User:
 #            nullable: true
     manyToOne:
         createdBy:
-            targetEntity: HillRange\Security\Entity\User
+            targetEntity: Hillrange\Security\Entity\User
             joinColumn:
                 name: created_by
                 referencedColumnName: id
         modifiedBy:
-            targetEntity: HillRange\Security\Entity\User
+            targetEntity: Hillrange\Security\Entity\User
             joinColumn:
                 name: modified_by
                 referencedColumnName: id

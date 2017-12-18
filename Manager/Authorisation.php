@@ -1,7 +1,7 @@
 <?php
-namespace HillRange\Security\Manager;
+namespace Hillrange\Security\Manager;
 
-use HillRange\Security\Entity\Failure;
+use Hillrange\Security\Entity\Failure;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
