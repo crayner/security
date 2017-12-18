@@ -1,6 +1,6 @@
 <?php
 
-namespace Hillrange\Security\EntityExtension;
+namespace HillRange\Security\EntityExtension;
 
 abstract class PageModel
 {

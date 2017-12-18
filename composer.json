@@ -38,11 +38,11 @@
         "psr-4": {
             "HillRange\\Security\\Tests\\": "tests/"
         }
-    }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.0.x-dev"
         }
-    },
+    }
 
 }

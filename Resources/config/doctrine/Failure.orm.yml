@@ -1,7 +1,7 @@
-Hillrange\Security\Entity\Failure:
+HillRange\Security\Entity\Failure:
     type: entity
     table: hrs_failure
-    repositoryClass: Hillrange\Security\Repository\FailureRepository
+    repositoryClass: HillRange\Security\Repository\FailureRepository
     id:
         id:
             type: integer
@@ -22,12 +22,12 @@ Hillrange\Security\Entity\Failure:
             column: created_on
     manyToOne:
         createdBy:
-            targetEntity: Hillrange\Security\Entity\User
+            targetEntity: HillRange\Security\Entity\User
             joinColumn:
                 name: created_by
                 referencedColumnName: id
         modifiedBy:
-            targetEntity: Hillrange\Security\Entity\User
+            targetEntity: HillRange\Security\Entity\User
             joinColumn:
                 name: modified_by
                 referencedColumnName: id

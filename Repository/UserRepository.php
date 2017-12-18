@@ -1,7 +1,7 @@
 <?php
-namespace Hillrange\Security\Repository;
+namespace HillRange\Security\Repository;
 
-use Hillrange\Security\Entity\User;
+use HillRange\Security\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

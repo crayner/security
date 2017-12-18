@@ -1,6 +1,6 @@
 <?php
 
-namespace Hillrange\Security\Entity;
+namespace HillRange\Security\Entity;
 
 /**
  * Failure

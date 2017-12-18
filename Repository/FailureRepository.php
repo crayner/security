@@ -1,7 +1,7 @@
 <?php
-namespace Hillrange\Security\Repository;
+namespace HillRange\Security\Repository;
 
-use Hillrange\Security\Entity\Failure;
+use HillRange\Security\Entity\Failure;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;

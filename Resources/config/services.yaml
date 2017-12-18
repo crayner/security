@@ -1,23 +1,23 @@
 services:
-    Hillrange\Security\Manager\Authorisation:
+    HillRange\Security\Manager\Authorisation:
         autowire: true
-    Hillrange\Security\Manager\PageManager:
+    HillRange\Security\Manager\PageManager:
         autowire: true
-    Hillrange\Security\Manager\UserManager:
+    HillRange\Security\Manager\UserManager:
         autowire: true
-    Hillrange\Security\Manager\Canonicaliser:
+    HillRange\Security\Manager\Canonicaliser:
         autowire: true
-    Hillrange\Security\Manager\UserProvider:
+    HillRange\Security\Manager\UserProvider:
         autowire: true
-    Hillrange\Security\Controller\SecurityController:
+    HillRange\Security\Controller\SecurityController:
         autowire: true
-    Hillrange\Security\Repository\PageRepository:
-        autowire: true
-        tags: ["doctrine.repository_service"]
-    Hillrange\Security\Repository\UserRepository:
+    HillRange\Security\Repository\PageRepository:
         autowire: true
         tags: ["doctrine.repository_service"]
-    Hillrange\Security\Repository\FailureRepository:
+    HillRange\Security\Repository\UserRepository:
+        autowire: true
+        tags: ["doctrine.repository_service"]
+    HillRange\Security\Repository\FailureRepository:
         autowire: true
         tags: ["doctrine.repository_service"]
 

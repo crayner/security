@@ -1,5 +1,5 @@
 <?php
-namespace Hillrange\Security\Manager;
+namespace HillRange\Security\Manager;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;

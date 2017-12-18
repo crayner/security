@@ -1,5 +1,5 @@
 <?php
-namespace Hillrange\Security\Controller;
+namespace HillRange\Security\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 

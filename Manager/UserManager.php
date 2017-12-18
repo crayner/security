@@ -1,7 +1,7 @@
 <?php
-namespace Hillrange\Security\Manager;
+namespace HillRange\Security\Manager;
 
-use Hillrange\Security\Entity\User;
+use HillRange\Security\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;

@@ -1,10 +1,10 @@
 <?php
-namespace Hillrange\Security;
+namespace HillRange\Security;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class HillrangeSecurityBundle extends Bundle
+class HillRangeSecurityBundle extends Bundle
 {
 	public function build(ContainerBuilder $container)
 	{

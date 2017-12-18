@@ -1,7 +1,7 @@
-Hillrange\Security\Entity\Page:
+HillRange\Security\Entity\Page:
     type: entity
     table: hrs_page
-    repositoryClass: Hillrange\Security\Repository\PageRepository
+    repositoryClass: HillRange\Security\Repository\PageRepository
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
             fields: [route]
@@ -33,12 +33,12 @@ Hillrange\Security\Entity\Page:
             column: created_on
     manyToOne:
         createdBy:
-            targetEntity: Hillrange\Security\Entity\User
+            targetEntity: HillRange\Security\Entity\User
             joinColumn:
                 name: created_by
                 referencedColumnName: id
         modifiedBy:
-            targetEntity: Hillrange\Security\Entity\User
+            targetEntity: HillRange\Security\Entity\User
             joinColumn:
                 name: modified_by
                 referencedColumnName: id

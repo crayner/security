@@ -1,5 +1,5 @@
 <?php
-namespace Hillrange\Security\Manager;
+namespace HillRange\Security\Manager;
 
 class Canonicaliser implements CanonicaliserInterface
 {
