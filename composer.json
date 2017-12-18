@@ -28,7 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Hillrange\\Security\\": "/"
+            "HillRange\\Security\\": "/"
         },
         "exclude-from-classmap": [
             "/Tests/"
@@ -36,7 +36,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Hillrange\\Security\\Tests\\": "tests/"
+            "HillRange\\Security\\Tests\\": "tests/"
         }
     }
     "extra": {
