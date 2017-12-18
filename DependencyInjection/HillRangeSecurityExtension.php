@@ -1,5 +1,5 @@
 <?php
-namespace Hillrange\Security\DependencyInjection;
+namespace HillRange\Security\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
