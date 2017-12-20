@@ -22,7 +22,8 @@
         "symfony/templating": "^4.0",
         "symfony/translation": "^4.0",
         "symfony/twig-bridge": "^4.0",
-        "symfony/twig-bundle": "^4.0"
+        "symfony/twig-bundle": "^4.0",
+        "twig/twig": "^2.4"
     },
     "require-dev": {
     },
