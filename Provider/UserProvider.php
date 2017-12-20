@@ -1,6 +1,7 @@
 <?php
-namespace Hillrange\Security\Manager;
+namespace Hillrange\Security\Provider;
 
+use Hillrange\Security\Manager\UserManager;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -9,16 +10,16 @@ use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 class UserProvider implements UserProviderInterface
 {
 	/**
-	 * @var UserManagerInterface
+	 * @var UserManager
 	 */
 	protected $userManager;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param UserManagerInterface $userManager
+	 * @param UserManager $userManager
 	 */
-	public function __construct(UserManagerInterface $userManager)
+	public function __construct(UserManager $userManager)
 	{
 		$this->userManager = $userManager;
 	}

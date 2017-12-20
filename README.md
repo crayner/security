@@ -46,7 +46,7 @@ in the `config/Bundles.php` file of your project:
 return [
     //...
     //
-    HillRange\Security\HillRangeSecurityBundle::class => ['all' => true],
+    Hillrange\Security\HillrangeSecurityBundle::class => ['all' => true],
 ];
 
 ```

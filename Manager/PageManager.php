@@ -1,7 +1,7 @@
 <?php
-namespace HillRange\Security\Manager;
+namespace Hillrange\Security\Manager;
 
-use HillRange\Security\Entity\Page;
+use Hillrange\Security\Entity\Page;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;

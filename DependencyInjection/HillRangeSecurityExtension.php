@@ -1,17 +1,19 @@
 <?php
-namespace HillRange\Security\DependencyInjection;
+namespace Hillrange\Security\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class HillRangeSecurityExtension extends Extension
+class HillrangeSecurityExtension extends Extension
 {
 	public function load(array $configs, ContainerBuilder $container)
 	{
 		$configuration = new Configuration();
 		$config        = $this->processConfiguration($configuration, $configs);
+
+dump($this);
 
 		$locator = new FileLocator(__DIR__ . '/../Resources/config');
 		$loader = new YamlFileLoader(
@@ -20,7 +22,12 @@ class HillRangeSecurityExtension extends Extension
 		);
 		$loader->load('services.yaml');
 
-		dump($container->getParameter('hillrange_security_groups'));
-		dump($config);
+		$container->loadFromExtension('twig',
+			[
+				'paths' => [
+					'%kernel.project_dir%/vendor/hillrange/security/Resources/views' => 'Hillrange\Security',
+				]
+			]
+		);
 	}
 }

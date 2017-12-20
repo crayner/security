@@ -1,18 +1,34 @@
 <?php
-namespace HillRange\Security\Controller;
+namespace Hillrange\Security\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Class SecurityController
- * @package HillRange\Security\Controller
+ * @package Hillrange\Security\Controller
  */
-class SecurityController extends AbstractController
+class SecurityController extends Controller
 {
-	public function loginAction(Request $request)
+	/**
+	 * @Route("/security/login/", name="hillrange_security_login")
+	 */
+	public function login(Request $request, AuthenticationUtils $authUtils = null)
 	{
-		return new Response('Security stuff here!');
+		// get the login error if there is one
+		$error = is_null($authUtils) ? null : $authUtils->getLastAuthenticationError();
+
+		// last username entered by the user
+		$lastUsername = is_null($authUtils) ? null : $authUtils->getLastUsername();
+
+		return $this->render('@HillrangeSecurity/login_content.html.twig',
+			[
+				'last_username' => $lastUsername,
+				'error'         => $error,
+			]
+		);
 	}
+
 }

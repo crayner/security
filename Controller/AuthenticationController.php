@@ -1,11 +1,14 @@
 <?php
-namespace HillRange\Security\Controller;
+namespace Hillrange\Security\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AuthenticationController extends AbstractController
 {
 	/**
+	 * @Route("/security/timeout/", name="hillrange_security_timeout")
+	 *
 	 * @return RedirectResponse
 	 */
 	public function timeoutAction(Request $request)
