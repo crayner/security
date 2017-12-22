@@ -8,8 +8,6 @@ class HillrangeSecurityBundle extends Bundle
 {
 	public function build(ContainerBuilder $container)
 	{
-		dump($this->getName());
-		dump($this->getNamespace());
 		parent::build($container);
 	}
 }
