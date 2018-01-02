@@ -1,1 +1,9 @@
 services:
+    Hillrange\Security\Manager\PageManager:
+        autowire: true
+    Hillrange\Security\Repository\PageRepository:
+        autowire: true
+        tags: ["doctrine.repository_service"]
+    Hillrange\Security\Repository\UserRepository:
+        autowire: true
+        tags: ["doctrine.repository_service"]

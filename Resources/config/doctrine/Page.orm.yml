@@ -1,0 +1,37 @@
+Hillrange\Security\Entity\Page:
+    type: entity
+    table: hrs_page
+    repositoryClass: Hillrange\Security\Repository\PageRepository
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
+            fields: [route]
+            errorPath: route
+            message: 'page.route.unique'
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        route:
+            type: string
+            length: '100'
+            unique: true
+        path:
+            type: string
+            length: '200'
+        roles:
+            type: array
+        cacheTime:
+            type: datetime
+            nullable: true
+            column: cache_time
+        accessCount:
+            type: integer
+            column: access_count
+        lastAccessed:
+            type: datetime
+            column: last_accessed
+        firstAccessed:
+            type: datetime
+            column: first_accessed
