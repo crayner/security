@@ -9,9 +9,7 @@ class Configuration implements ConfigurationInterface
 	public function getConfigTreeBuilder()
 	{
 		$treeBuilder = new TreeBuilder();
-		$rootNode = $treeBuilder->root('hill_range_security');
-
-		$rootNode = $treeBuilder->root('twig');
+		$rootNode = $treeBuilder->root('hillrange_security');
 
 		return $treeBuilder;
 	}

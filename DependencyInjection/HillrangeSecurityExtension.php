@@ -5,6 +5,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Yaml\Yaml;
 
 class HillrangeSecurityExtension extends Extension
 {
@@ -20,10 +21,11 @@ class HillrangeSecurityExtension extends Extension
 		);
 		$loader->load('services.yaml');
 
-		$projectDir = $container->getParameterBag()->get('kernel.project_dir');
 
-		$twigLoader = new \Twig_Loader_Filesystem( realpath($projectDir . '/vendor/hillrange/security/Resources/views/'));
+		$securityConfigFile = $container->getParameterBag()->get('kernel.project_dir').'/config/packages/security.yaml';
 
-		$twigLoader->addPath(realpath($projectDir . '/vendor/hillrange/security/Resources/views/'), 'HillrangeSecurity');
+		$config = Yaml::parse(file_get_contents($securityConfigFile));
+
+		$container->setParameter('security.config', $config['security']);
 	}
 }

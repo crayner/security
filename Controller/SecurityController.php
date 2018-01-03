@@ -10,9 +10,7 @@ use Hillrange\Security\Form\NewPasswordType;
 use Hillrange\Security\Repository\UserRepository;
 use Hillrange\Security\Util\PasswordManager;
 use Hillrange\Security\Util\TokenGenerator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,7 +117,7 @@ class SecurityController extends Controller
 		if (! $error)
 			$error = new UserException('security.password.reset.email.sent', ['%{email}' => $user->obfuscateEmail()]);
 
-		return $this->render('security/login.html.twig',
+		return $this->render('@hillrange_security/security/login.html.twig',
 			[
 				'error'         => $error,
 				'form'          => $form->createView(),
@@ -171,7 +169,7 @@ class SecurityController extends Controller
 			$form = $this->createForm(NewPasswordType::class, $user, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security')]);
 		}
 
-		return $this->render('security/newpasswordbytoken.html.twig',
+		return $this->render('@hillrange_security/security/newpasswordbytoken.html.twig',
 			[
 				'error'         => $error,
 				'form'          => $form->createView(),
@@ -192,10 +190,8 @@ class SecurityController extends Controller
 	/**
 	 * @Route("/timeout/", name="hillrange_security_timeout")
 	 */
-	public function timeoutAction(TokenStorageInterface $token)
+	public function timeoutAction(TokenStorageInterface $token, Session $session)
 	{
-		$session = new Session();
-
 		$session->set('_timeout', false);
 
 		$token->setToken(null);
@@ -208,7 +204,9 @@ class SecurityController extends Controller
 			$this->get('translator')->trans('security.user.timeout', array('%hours%' => '00', '%minutes%' => $lapse), 'security')
 		);
 
-		return $this->redirect('/');
+		$route = $this->getParameter('security_routes')['logout'];
+
+		return $this->redirectToRoute($route);
 	}
 
 	/**
