@@ -70,16 +70,10 @@ class PageManager
 		if (!is_array($this->pageSecurity))
 			$this->pageSecurity = [];
 
-		$this->page = empty($this->pageSecurity[$routeName]) ? null : $this->pageSecurity[$routeName];
+		$this->page = empty($this->pageSecurity[$routeName]) ? $this->pageRepository->loadOneByRoute($routeName) : $this->pageSecurity[$routeName];
 
 		if (!is_array($attributes))
 			$attributes = [$attributes];
-
-		if (empty($this->page))
-		{
-			$this->page                     = $this->pageRepository->findOneByRoute($routeName);
-			$this->pageSecurity[$routeName] = $this->page;
-		}
 
 		foreach ($attributes as $attribute)
 			$this->page->addRole($attribute);

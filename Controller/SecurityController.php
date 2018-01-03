@@ -14,9 +14,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -47,13 +50,19 @@ class SecurityController extends Controller
 		);
 	}
 
+
+	public function checkAction()
+	{
+		throw new \RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
+	}
+
 	/**
 	 * @Route("/logout/", name="logout")
 	 */
-	public function logout()
+	public function logoutAction()
 	{
+		throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
 	}
-
 	/**
 	 * @Route("/password/request/reset/", name="password_request_reset")
 	 * @Method({"POST"})
@@ -183,26 +192,43 @@ class SecurityController extends Controller
 	/**
 	 * @Route("/timeout/", name="hillrange_security_timeout")
 	 */
-	public function timeoutAction()
+	public function timeoutAction(TokenStorageInterface $token)
 	{
-		$session = $this->get('session');
+		$session = new Session();
 
 		$session->set('_timeout', false);
 
-		$token = $this->get('security.token_storage');
 		$token->setToken(null);
 		$session->set('_timeout', true);
 
-		$lapse = $this->get('busybee_core_system.setting.setting_manager')->get('idleTimeout', 15);
+		$lapse = $this->getParameter('idleTimeout', 15);
 
 		$session->getFlashBag()->add(
 			'info',
-			$this->get('translator')->trans('security.session.timeout', array('%hours%' => '00', '%minutes%' => $lapse), 'BusybeeSecurityBundle')
+			$this->get('translator')->trans('security.user.timeout', array('%hours%' => '00', '%minutes%' => $lapse), 'security')
 		);
 
-		$url = $this->generateUrl('home_page');
-
-		return new RedirectResponse($url);
+		return $this->redirect('/');
 	}
 
+	/**
+	 * @param string $name
+	 * @param null   $default
+	 *
+	 * @return mixed
+	 */
+	protected function getParameter(string $name, $default = null)
+	{
+		if (is_null($default))
+			return $this->container->getParameter($name);
+
+		$x = null;
+		try {
+			$x = $this->container->getParameter($name);
+		} catch (InvalidArgumentException $e) {
+			return $default;
+		}
+
+		return $x;
+	}
 }

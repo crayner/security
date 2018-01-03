@@ -16,6 +16,7 @@ security:
         not_found: 'The user %{username} was not found.'
         token:
             not_found: 'The token given is not valid.'
+        timeout: 'You have been logged out due to inactivity. You have not used the site for %hours% hours : %minutes% minutes.'
     password:
         reset:
             email:
