@@ -1,0 +1,44 @@
+security:
+    login:
+        username:
+            label: User Name or Email Address
+        password:
+            label: Password
+        password_confirmation:
+            label: Confirm Password
+        remember_me:
+            label: Keep me logged in
+        login:
+            label: Login
+        reset_password:
+            label: Forgotten Password
+    user:
+        not_found: 'The user %{username} was not found.'
+        token:
+            not_found: 'The token given is not valid.'
+    password:
+        reset:
+            email:
+                subject: 'Password Reset Request'
+                message: |
+                    <p>Hello %{username}!</p>
+                    <p>No changes have been made to your password, but a request to change your password has been processed by the system. To reset your password - please visit <a href="%{confirmationUrl}" title="Confirmation Address">%{confirmationUrl}</a>.  The link will be available until %{datetime}.  After this time, the link will be ignored by the system.</p>
+                    <p>If you did not request this password reset, that you can safely ignore this request.</p>
+                    %{comment}
+                    <p>Regards,</p>
+                    <p>%{siteName}</p>
+                copy: This is a copy of the original request.
+                sent: An password reset link has been emailed to %{email}.
+            exists: The user has an active password reset request.  A copy of the original email has been sent.
+        generate:
+            label: Generate Password
+        copy:
+            label: Please ensure that you copy this password for future reference.
+        save:
+            label: Save
+        match:
+            error: The passwords do not match.
+        error_message: "The password does not meet requirements: Minimum Length: %minLength% characters, Numbers Required: %numbers%, Mixed Case: %mixedCase%, Special Characters: %specials%."
+        change:
+            success: Your new password has been stored. Now login.
+

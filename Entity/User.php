@@ -1,7 +1,9 @@
 <?php
 namespace Hillrange\Security\Entity;
 
+use App\Core\Exception\Exception;
 use Hillrange\Security\EntityExtension\UserModel;
+use Hillrange\Security\Exception\UserException;
 
 /**
  * User
@@ -99,9 +101,9 @@ class User extends UserModel
 	private $directroles;
 
 	/**
-	 * @var \Busybee\Core\CalendarBundle\Entity\Year
+	 * @var array
 	 */
-	private $year;
+	private $userSettings;
 
 	/**
 	 * Constructor
@@ -551,27 +553,66 @@ class User extends UserModel
 		return $this;
 	}
 
-    /**
-     * Set year
-     *
-     * @param \Busybee\Core\CalendarBundle\Entity\Year $year
-     *
-     * @return User
-     */
-    public function setYear( $year = null)
-    {
-        $this->year = $year;
+	/**
+	 * @return mixed
+	 */
+	public function getUserSettings(string $name = null)
+	{
+		if (is_null($name))
+		{
+			if (empty($this->userSettings))
+				$this->userSettings = [];
+			return $this->userSettings;
+		}
+		$name = ucfirst($name);
+		if (isset($this->userSettings[$name]))
+			return $this->userSettings[$name];
 
-        return $this;
-    }
+		return null;
+	}
 
-    /**
-     * Get year
-     *
-     * @return \Busybee\Core\CalendarBundle\Entity\Year
-     */
-    public function getYear()
-    {
-        return $this->year;
-    }
+	/**
+	 * @param array $userSettings
+	 *
+	 * @return User
+	 */
+	public function setUserSettings(array $userSettings): User
+	{
+		$this->userSettings = $userSettings;
+
+		return $this;
+	}
+
+	/**
+	 * @param $name
+	 * @param $value
+	 * @param $type
+	 *
+	 * @return User
+	 */
+	public function setUserSetting($name, $value, $type): User
+	{
+		$this->userSettings = $this->getUserSettings();
+
+		$type = strtolower($type);
+		$name = ucfirst($name);
+
+		switch ($type)
+		{
+			case 'object':
+				if (! method_exists($value, 'getId'))
+					throw new Exception('The object given needs to provide a getId method.');
+				$this->userSettings[$name] = intval($value->getId());
+				break;
+			case 'integer':
+			case 'int':
+				if (! is_int($value))
+					throw new Exception(sprintf('The user setting %s was expecting an integer', $name));
+				$this->userSettings[$name] = $value ;
+				break;
+			default:
+				throw new Exception('User Settings must define a type.');
+		}
+		return $this;
+	}
 }

@@ -38,6 +38,7 @@ abstract class UserModel implements UserInterface, UserTrackInterface
 		$this->setCredentialsExpired(false);
 		$this->setLocale('en_GB');
 		$this->setPassword('This password will never work.');
+		$this->setUserSettings([]);
 	}
 
 	public function getPlainPassword()

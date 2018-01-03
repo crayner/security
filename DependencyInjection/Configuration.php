@@ -11,6 +11,8 @@ class Configuration implements ConfigurationInterface
 		$treeBuilder = new TreeBuilder();
 		$rootNode = $treeBuilder->root('hill_range_security');
 
+		$rootNode = $treeBuilder->root('twig');
+
 		return $treeBuilder;
 	}
 }

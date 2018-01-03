@@ -3,9 +3,11 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Login - {{ parent() }}{% endblock %}
+{% trans_default_domain 'security' %}
+
+{% block title %}{{ 'security.login.login.label'|trans }} - {{ parent() }}{% endblock %}
 {% block body %}
-    <h1>Login</h1>
+    <h1>{{ 'security.login.login.label'|trans }}</h1>
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}

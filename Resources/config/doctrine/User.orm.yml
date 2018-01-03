@@ -80,3 +80,6 @@ Hillrange\Security\Entity\User:
             type: array
             nullable: true
             column: direct_roles
+        userSettings:
+            type: array
+            column: user_settings

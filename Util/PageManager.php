@@ -1,5 +1,5 @@
 <?php
-namespace Hillrange\Security\Manager;
+namespace Hillrange\Security\Util;
 
 use Hillrange\Security\Entity\Page;
 use Doctrine\Common\Persistence\ObjectManager;

@@ -23,34 +23,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class SecurityController extends Controller
 {
 	/**
-	 * @Route("/", name="home")
-	 */
-	public function home()
-	{
-		return $this->render('Pages/home.html.twig');
-	}
-
-	/**
-	 * @Route("/test/secured/", name="secured")
-	 * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
-	 */
-	public function secured()
-	{
-		return $this->render('Pages/secured.html.twig');
-	}
-
-	/**
-	 * @Route("/test/remember/", name="remember")
-	 * @IsGranted("ROLE_ADMIN")
-	 */
-	public function remember()
-	{
-		return $this->render('Pages/remember.html.twig');
-	}
-
-	/**
-	 * @Route("/login", name="login")
-	 * @Method({"GET", "POST"})
+	 * @Route("/login/", name="login")
 	 */
 	public function login(Request $request, AuthenticationUtils $authUtils)
 	{
@@ -65,7 +38,7 @@ class SecurityController extends Controller
 
 		$form = $this->createForm(LoginType::class, $login, ['password_reset_url' => $this->generateUrl('password_request_reset'), 'login_url' => $this->generateUrl('login')]);
 
-		return $this->render('security/login.html.twig',
+		return $this->render('@hillrange_security/security/login.html.twig',
 			[
 				'last_username' => $lastUsername,
 				'error'         => $error,
@@ -75,7 +48,7 @@ class SecurityController extends Controller
 	}
 
 	/**
-	 * @Route("/logout", name="logout")
+	 * @Route("/logout/", name="logout")
 	 */
 	public function logout()
 	{
@@ -148,7 +121,6 @@ class SecurityController extends Controller
 
 	/**
 	 * @Route("/password/new/{token}/", name="password_new" )
-	 * @Method({"GET", "POST"})
 	 */
 	public function newPassword(Request $request, $token = null, UserRepository $userRepository, TranslatorInterface $translator, PasswordManager $passwordManager, EntityManagerInterface $entityManager)
 	{
@@ -198,7 +170,39 @@ class SecurityController extends Controller
 				'success'       => $success,
 			]
 		);
+	}
 
+	/**
+	 * @Route("/user/{id}/edit/", name="hillrange_security_user_edit")
+	 */
+	public function editUser($id)
+	{
 
 	}
+
+	/**
+	 * @Route("/timeout/", name="hillrange_security_timeout")
+	 */
+	public function timeoutAction()
+	{
+		$session = $this->get('session');
+
+		$session->set('_timeout', false);
+
+		$token = $this->get('security.token_storage');
+		$token->setToken(null);
+		$session->set('_timeout', true);
+
+		$lapse = $this->get('busybee_core_system.setting.setting_manager')->get('idleTimeout', 15);
+
+		$session->getFlashBag()->add(
+			'info',
+			$this->get('translator')->trans('security.session.timeout', array('%hours%' => '00', '%minutes%' => $lapse), 'BusybeeSecurityBundle')
+		);
+
+		$url = $this->generateUrl('home_page');
+
+		return new RedirectResponse($url);
+	}
+
 }
