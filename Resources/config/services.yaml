@@ -1,9 +1,39 @@
 services:
-    Hillrange\Security\Manager\PageManager:
-        autowire: true
-    Hillrange\Security\Repository\PageRepository:
-        autowire: true
-        tags: ["doctrine.repository_service"]
-    Hillrange\Security\Repository\UserRepository:
-        autowire: true
-        tags: ["doctrine.repository_service"]
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+    Hillrange\Security\:
+        resource: "../../"
+        exclude: "../../{Entity,Tests,Listener,Form}"
+
+    Hillrange\Security\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+
+    Hillrange\Security\Listener\PageListener:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@service_container'
+        tags: { name: 'kernel.event_subscriber', priority: '16' }
+
+    Hillrange\Security\Listener\UserFieldsListener:
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    Hillrange\Security\Listener\UserTrackListener:
+        arguments:
+            - '@security.token_storage'
+            - '@request_stack'
+        tags:
+            - { name: doctrine.event_subscriber, event: prePersist }
+            - { name: doctrine.event_subscriber, event: preUpdate }
+    hillrange.security.form.login_type:
+        class: Hillrange\Security\Form\LoginType
+        arguments:
+            - '@security.firewall.map.config.main'
+        tags:
+            - { name: form.type }

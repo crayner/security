@@ -17,43 +17,43 @@ trait UserTrackTrait
 	protected $createdOn;
 
 	/**
-	 * @var \Hillrange\Security\Entity\User
+	 * @var UserInterface
 	 */
 	protected $createdBy;
 
 	/**
-	 * @var \Hillrange\Security\Entity\User
+	 * @var UserInterface
 	 */
 	protected $modifiedBy;
 
 	/**
-	 * @return \DateTime
+	 * @return \DateTime|null
 	 */
-	public function getLastModified(): \DateTime
+	public function getLastModified(): ?\DateTime
 	{
 		return $this->lastModified;
 	}
 
 	/**
-	 * @return \DateTime
+	 * @return \DateTime|null
 	 */
-	public function getCreatedOn(): \DateTime
+	public function getCreatedOn(): ?\DateTime
 	{
 		return $this->createdOn;
 	}
 
 	/**
-	 * @return \Hillrange\Security\Entity\User
+	 * @return null|UserInterface
 	 */
-	public function getCreatedBy(): UserInterface
+	public function getCreatedBy(): ?UserInterface
 	{
 		return $this->createdBy;
 	}
 
 	/**
-	 * @return \Hillrange\Security\Entity\User
+	 * @return null|UserInterface
 	 */
-	public function getModifiedBy(): UserInterface
+	public function getModifiedBy(): ?UserInterface
 	{
 		return $this->modifiedBy;
 	}

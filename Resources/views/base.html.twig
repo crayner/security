@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        <ul>
+            <li><a href="{{ path('home') }}" title="Home">Home</a></li>
+            <li><a href="{{ path('secured') }}" title="Secured">Secured</a></li>
+            <li><a href="{{ path('remember') }}" title="Remember">Remember</a></li>
+            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                <li><a href="{{ path('home', {'_switch_user': '_exit'}) }}">Exit impersonation of {{ app.user.formatName }}</a></li>
+            {% elseif is_granted('ROLE_ALLOWED_TO_SWITCH') and is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li><a href="{{ path('home', {'_switch_user': 'george'}) }}">Impersonate George</a></li>
+            {% endif %}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <li><a href="{{ path('logout') }}" title="Log Out">Log Out</a></li>
+            {% endif %}
+        </ul>
+        <hr/>
+        <ul>
+            <li>Remember Me Authenticated {{ is_granted('IS_AUTHENTICATED_REMEMBERED') }}</li>
+            <li>Fully Authenticated {{ is_granted('IS_AUTHENTICATED_FULLY') }}</li>
+            <li>Organiser {{ is_granted('ROLE_ORGANISER') }}</li>
+        </ul>
+        {{ dump() }}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
