@@ -39,6 +39,21 @@ class UserTrackListener implements EventSubscriber
 	}
 
 	/**
+	 * @param TokenStorageInterface $tokenStorage
+	 * @param Request               $request
+	 */
+	public function injectTokenStorage(TokenStorageInterface $tokenStorage, Request $request)
+	{
+		$token = $tokenStorage->getToken();
+
+		$user = $token ? $token->getUser() : null ;
+
+		$this->currentUser = $user;
+
+		$this->request = $request;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getSubscribedEvents()

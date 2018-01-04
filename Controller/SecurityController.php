@@ -48,16 +48,10 @@ class SecurityController extends Controller
 		);
 	}
 
-
-	public function checkAction()
-	{
-		throw new \RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
-	}
-
 	/**
 	 * @Route("/logout/", name="logout")
 	 */
-	public function logoutAction()
+	public function logout()
 	{
 		throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
 	}
@@ -138,7 +132,7 @@ class SecurityController extends Controller
 		if (! $user)
 		{
 			$error = new UserException($translator->trans('security.user.token.not_found', ['%{token}' => $token], 'security'));
-			return $this->render('security/error.html.twig',
+			return $this->render('@hillrange_security/security/error.html.twig',
 				[
 					'error'         => $error,
 				]
