@@ -204,7 +204,10 @@ class SecurityController extends Controller
 			$this->get('translator')->trans('security.user.timeout', array('%hours%' => '00', '%minutes%' => $lapse), 'security')
 		);
 
-		$route = $this->getParameter('security_routes')['logout'];
+		$config = $this->getParameter('security.config');
+		$firewalls = $config['firewalls'];
+		$name = $this->getParameter('firewall_name');
+		$route = empty($firewalls[$name]['logout']['target']) ? $firewalls[$name]['logout']['target'] : 'logout' ;
 
 		return $this->redirectToRoute($route);
 	}
