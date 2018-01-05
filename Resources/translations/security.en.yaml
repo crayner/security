@@ -12,6 +12,8 @@ security:
             label: Login
         reset_password:
             label: Forgotten Password
+        ip:
+            blocked: 'The IP (%{ip}) is currently blocked for user login.  This is caused by too many invalid login attempts.'
     user:
         not_found: 'The user %{username} was not found.'
         token:

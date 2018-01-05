@@ -43,3 +43,11 @@ services:
             - '%security_routes%'
         tags:
             - { name: twig.extension }
+    Hillrange\Security\Listener\SecuritySubscriber:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authentication_utils'
+            - '@request_stack'
+            - '@monolog.logger.security'
+        tags: { name: 'kernel.event_subscriber', priority: '-16' }

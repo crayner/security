@@ -1,0 +1,18 @@
+Hillrange\Security\Entity\Failure:
+    type: entity
+    table: hrs_failure
+    repositoryClass: Hillrange\Security\Repository\FailureRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        address:
+            type: string
+            length: 16
+            unique: true
+        failures:
+            type: integer
+        failureTime:
+            type: datetime
