@@ -101,7 +101,7 @@ class UserTrackListener implements EventSubscriber
 			if (empty($entity->getCreatedBy()))
 				$entity->setCreatedBy($this->currentUser);
 			$entity->setModifiedBy($this->currentUser);
-		} elseif ($this->request->get('_security') || $this->request->get('_is_granted'))
+		} elseif (! empty($this->request->get('_security')) || ! empty($this->request->get('_is_granted')))
 			throw new \LogicException('No User Authenticated.');
 
 

@@ -1,0 +1,9 @@
+{% trans_default_domain 'security' %}
+
+{%  extends '@hillrange_security/base.html.twig' %}
+
+{% block title %}{{ 'user.manage.title'|trans }}{% endblock title %}
+
+{% block body %}
+    {% include "@hillrange_security/User/userContent.html.twig" %}
+{% endblock body %}

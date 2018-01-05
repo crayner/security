@@ -7,9 +7,11 @@ use Hillrange\Security\Entity\User;
 use Hillrange\Security\Exception\UserException;
 use Hillrange\Security\Form\LoginType;
 use Hillrange\Security\Form\NewPasswordType;
+use Hillrange\Security\Form\UserType;
 use Hillrange\Security\Repository\UserRepository;
 use Hillrange\Security\Util\PasswordManager;
 use Hillrange\Security\Util\TokenGenerator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -174,11 +176,35 @@ class SecurityController extends Controller
 	}
 
 	/**
-	 * @Route("/user/{id}/edit/", name="hillrange_security_user_edit")
+	 * @Route("/user/{id}/edit/", name="security_user_edit")
+	 * @IsGranted("ROLE_SYSTEM_ADMIN")
 	 */
-	public function editUser($id)
+	public function editUser($id, EntityManagerInterface $entityManager, Request $request)
 	{
+		if ($id === 'Add')
+			$entity = new User();
+		elseif ($id === 'Current')
+		{
+			$entity = $this->getUser();
+			$id     = $entity->getId();
+		}
+		else
+			$entity = $entityManager->getRepository(User::class)->find($id);
 
+		$form = $this->createForm(UserType::class, $entity, ['isSystemAdmin' => $this->isGranted('ROLE_SYSTEM_ADMIN'), 'session' => $request->getSession()]);
+
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid())
+		{
+
+			$entityManager->persist($entity);
+			$entityManager->flush();
+			if ($id === 'Add')
+				$this->redirectToRoute($request->get('_route'), ['id' => $entity->getId()]);
+		}
+
+		return $this->render('@hillrange_security/User/user.html.twig', ['form' => $form->createView()]);
 	}
 
 	/**

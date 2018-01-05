@@ -14,6 +14,8 @@ security:
             label: Forgotten Password
         ip:
             blocked: 'The IP (%{ip}) is currently blocked for user login.  This is caused by too many invalid login attempts.'
+        user:
+            expired: 'The user is locked or expired. Contact site support for help.'
     user:
         not_found: 'The user %{username} was not found.'
         token:
@@ -44,4 +46,27 @@ security:
         error_message: "The password does not meet requirements: Minimum Length: %minLength% characters, Numbers Required: %numbers%, Mixed Case: %mixedCase%, Special Characters: %specials%."
         change:
             success: Your new password has been stored. Now login.
-
+user:
+    username:
+        label: User name
+    email:
+        label: Email
+    enabled:
+        label: Enabled
+    locale:
+        label: Locale
+    locked:
+        label: Locked
+    expired:
+        label: Expired
+    expires_at:
+        label: User Expires On
+    credentials_expired:
+        label: Credentials Expired
+    credentials_expire_at:
+        label: Credentials Expires On
+    manage:
+        title: Manage User
+button:
+    save:
+        label: Save

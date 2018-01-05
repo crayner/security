@@ -110,6 +110,7 @@ class SecuritySubscriber implements EventSubscriberInterface
 		$ip = $this->request->server->get('REMOTE_ADDR');
 		$failure = $this->entityManager->getRepository(Failure::class)->loadOneByIP($ip);
 		$now = new \DateTime('now');
+		$session = $this->request->getSession();
 		if ($failure->getId() > 0 && $failure->getFailures() >= 3 && $now->getTimestamp() - $failure->getFailureTime()->getTimeStamp() >= 1200)
 		{
 			$this->entityManager->remove($failure);
@@ -121,12 +122,32 @@ class SecuritySubscriber implements EventSubscriberInterface
 			$this->tokenStorage->setToken(null);
 			$this->logger->notice("Log In Denied: The IP: ".$ip." has been blocked for 20 minutes since " . $failure->getFailureTime()->format('d M/Y H:i:s'));
 
-			$session = $this->request->getSession();
 			$session->set(Security::AUTHENTICATION_ERROR, new AuthenticationException("Log In Denied: The IP: ".$ip." has been blocked for 20 minutes since " . $failure->getFailureTime()->format('d M/Y H:i:s'), 773));
 			return;
 		}
 
+		// Check for locked or expired
+		if ($user->getExpiresAt() <= new \DateTime('now'))
+		{
+			$user->setExpired(true);
+			$user->setExpiresAt(null);
+			$this->entityManager->persist($user);
+			$this->entityManager->flush();
+		}
+		if ($user->getLocked() || $user->getExpired())
+		{
+			$session->set(Security::AUTHENTICATION_ERROR, new AuthenticationException("Log In Denied: The user is locked or expired. Contact site support for help.", 774));
+			$this->logger->notice("Log In Denied: The user is locked or expired. Contact site support for help.");
+			$this->tokenStorage->getToken()->setUser('Anon.');
+			$this->tokenStorage->setToken(null);
+			return;
 
+		}
+
+		$user->setLastLogin(new \DateTime('now'));
+		$this->entityManager->persist($user);
+		$this->entityManager->flush();
+		
 		$this->logger->notice("Log In: User #" . $user->getId()  . " (" . $user->getEmail() . ")");
 	}
 }

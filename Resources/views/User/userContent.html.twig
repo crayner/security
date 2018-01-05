@@ -1,0 +1,10 @@
+{% trans_default_domain "security" %}
+
+
+<h1>{{ 'user.manage.title'|trans }}</h1>
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+{{ form_start(form) }}
+{{ form_end(form) }}
