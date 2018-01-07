@@ -61,7 +61,7 @@ class LoginType extends AbstractType
 				[
 					'label' => 'security.login.reset_password.label',
 					'attr'  => [
-						'onclick' => "this.form.action='".$options['password_reset_url']."'",
+						'onclick' => "return this.form.action='".$options['password_reset_url']."'",
 					],
 				]
 			)

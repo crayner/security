@@ -4,13 +4,14 @@ namespace Hillrange\Security\EntityExtension;
 use Hillrange\Security\Entity\User;
 use Hillrange\Security\Util\UserTrackInterface;
 use Hillrange\Security\Util\UserTrackTrait;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  *
  */
-abstract class UserModel implements UserInterface, UserTrackInterface
+abstract class UserModel implements AdvancedUserInterface, UserTrackInterface, \Serializable
 {
 	use UserTrackTrait;
 
@@ -18,6 +19,11 @@ abstract class UserModel implements UserInterface, UserTrackInterface
 	 * @var string
 	 */
 	protected $plainPassword;
+
+	/**
+	 * @var string
+	 */
+	protected $currentPassword;
 
 	/**
 	 * @var array
@@ -48,7 +54,6 @@ abstract class UserModel implements UserInterface, UserTrackInterface
 
 	public function setPlainPassword($password)
 	{
-
 		$this->plainPassword = $password;
 
 		return $this;
@@ -77,7 +82,6 @@ abstract class UserModel implements UserInterface, UserTrackInterface
 
 	public function isPasswordRequestNonExpired($ttl)
 	{
-
 		return $this->getPasswordRequestedAt() instanceof \DateTime && $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
 	}
 
@@ -131,9 +135,6 @@ abstract class UserModel implements UserInterface, UserTrackInterface
 		return serialize(array(
 			$this->password,
 			$this->usernameCanonical,
-			$this->username,
-			$this->expired,
-			$this->locked,
 			$this->credentialsExpired,
 			$this->enabled,
 			$this->id,
@@ -155,9 +156,6 @@ abstract class UserModel implements UserInterface, UserTrackInterface
 		list(
 			$this->password,
 			$this->usernameCanonical,
-			$this->username,
-			$this->expired,
-			$this->locked,
 			$this->credentialsExpired,
 			$this->enabled,
 			$this->id
@@ -318,4 +316,24 @@ abstract class UserModel implements UserInterface, UserTrackInterface
 
 		return '';
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getCurrentPassword(): ?string
+	{
+		return $this->currentPassword;
+	}
+
+	/**
+	 * @param string $currentPassword
+	 *
+	 * @return UserModel
+	 */
+	public function setCurrentPassword(string $currentPassword = null): UserModel
+	{
+		$this->currentPassword = $currentPassword;
+
+		return $this;
+}
 }

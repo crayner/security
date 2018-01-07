@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Hillrange\Security\Entity\Login;
 use Hillrange\Security\Entity\User;
 use Hillrange\Security\Exception\UserException;
+use Hillrange\Security\Form\ChangePasswordType;
 use Hillrange\Security\Form\LoginType;
 use Hillrange\Security\Form\NewPasswordType;
 use Hillrange\Security\Form\UserType;
@@ -13,6 +14,7 @@ use Hillrange\Security\Util\PasswordManager;
 use Hillrange\Security\Util\TokenGenerator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +43,7 @@ class SecurityController extends Controller
 
 		$form = $this->createForm(LoginType::class, $login, ['password_reset_url' => $this->generateUrl('password_request_reset'), 'login_url' => $this->generateUrl('login')]);
 
-		return $this->render('@hillrange_security/security/login.html.twig',
+		return $this->render('@HillrangeSecurity/security/login.html.twig',
 			[
 				'last_username' => $lastUsername,
 				'error'         => $error,
@@ -59,11 +61,9 @@ class SecurityController extends Controller
 	}
 	/**
 	 * @Route("/password/request/reset/", name="password_request_reset")
-	 * @Method({"POST"})
 	 */
 	public function requestPasswordReset(Request $request, \Swift_Mailer $mailer, TokenGenerator $tokenGenerator, TranslatorInterface $translator, EntityManagerInterface $entityManager)
 	{
-
 		$lastUsername = $request->get('login')['_username'];
 
 		$error = null;
@@ -71,6 +71,8 @@ class SecurityController extends Controller
 
 		$user = $entityManager->getRepository(User::class)->loadUserByUsername($lastUsername);
 
+		dump($lastUsername);
+		dump($user);
 		if (! $user)
 			$error = new UserException('security.user.not_found', ['%{username}' => $lastUsername]);
 		else {
@@ -113,7 +115,7 @@ class SecurityController extends Controller
 		if (! $error)
 			$error = new UserException('security.password.reset.email.sent', ['%{email}' => $user->obfuscateEmail()]);
 
-		return $this->render('@hillrange_security/security/login.html.twig',
+		return $this->render('@HillrangeSecurity/security/login.html.twig',
 			[
 				'error'         => $error,
 				'form'          => $form->createView(),
@@ -134,7 +136,7 @@ class SecurityController extends Controller
 		if (! $user)
 		{
 			$error = new UserException($translator->trans('security.user.token.not_found', ['%{token}' => $token], 'security'));
-			return $this->render('@hillrange_security/security/error.html.twig',
+			return $this->render('@HillrangeSecurity/security/error.html.twig',
 				[
 					'error'         => $error,
 				]
@@ -149,11 +151,7 @@ class SecurityController extends Controller
 
 		if ($form->isSubmitted() && $form->isValid())
 		{
-			$password = $form->get('plainPassword')->get('first')->getData();
-			$user->setPassword($passwordManager->encodePassword($user, $password));
-			$user->setConfirmationToken(null);
-			$entityManager->persist($user);
-			$entityManager->flush();
+			$passwordManager->saveNewPassword($user);
 			$error = new UserException($translator->trans('security.password.change.success', ['%{token}' => $token], 'security'));
 			$success = true;
 		}
@@ -165,7 +163,7 @@ class SecurityController extends Controller
 			$form = $this->createForm(NewPasswordType::class, $user, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security')]);
 		}
 
-		return $this->render('@hillrange_security/security/newpasswordbytoken.html.twig',
+		return $this->render('@HillrangeSecurity/security/newpasswordbytoken.html.twig',
 			[
 				'error'         => $error,
 				'form'          => $form->createView(),
@@ -204,7 +202,7 @@ class SecurityController extends Controller
 				$this->redirectToRoute($request->get('_route'), ['id' => $entity->getId()]);
 		}
 
-		return $this->render('@hillrange_security/User/user.html.twig', ['form' => $form->createView()]);
+		return $this->render('@HillrangeSecurity/User/user.html.twig', ['form' => $form->createView()]);
 	}
 
 	/**
@@ -251,5 +249,39 @@ class SecurityController extends Controller
 		}
 
 		return $x;
+	}
+
+	/**
+	 * @Route("/user/{id}/change/password/", name="forced_password_change")
+	 * @IsGranted("IS_AUTHENTICATED_FULLY")
+	 */
+	public function changePassword($id, Request $request, EntityManagerInterface $entityManager, AuthenticationUtils $authUtils, PasswordManager $passwordManager, TranslatorInterface $translator)
+	{
+		$user = $entityManager->getRepository(User::class)->find($id);
+
+		$success = false;
+
+		$error = $authUtils->getLastAuthenticationError();
+
+		if (empty($user))
+			throw new \Symfony\Component\Security\Core\Exception\InvalidArgumentException('The user was not found.');
+
+		$form = $this->createForm(ChangePasswordType::class, $user);
+
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid())
+		{
+			$passwordManager->saveNewPassword($user);
+			$error = new UserException($translator->trans('security.password.forced.success', [], 'security'));
+			$success = true;
+
+		}
+		return $this->render('@HillrangeSecurity/security/forcedChangePassword.html.twig',
+			[
+				'form'  => $form->createView(),
+				'error' => $error,
+			]
+		);
 	}
 }

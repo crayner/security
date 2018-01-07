@@ -43,10 +43,18 @@ services:
             - '%security_routes%'
         tags:
             - { name: twig.extension }
+    Hillrange\Security\Listener\SuccessHandler:
+        arguments:
+            - '@security.http_utils'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authentication_utils'
+            - '@monolog.logger.security'
+            - '@router'
+            - '%security_routes%'
     Hillrange\Security\Listener\SecuritySubscriber:
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@security.token_storage'
             - '@security.authentication_utils'
             - '@request_stack'
             - '@monolog.logger.security'

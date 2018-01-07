@@ -92,9 +92,11 @@ class UserTrackListener implements EventSubscriber
 			return ;
 
 		$entity        = $args->getEntity();
-//		$entityManager = $args->getEntityManager();
 
 		$entity->setLastModified(new \Datetime('now'));
+
+		if ($entity instanceof UserInterface && ! $this->currentUser instanceof UserInterface)
+			$this->currentUser = $entity;
 
 		if ($this->currentUser instanceof UserInterface)
 		{

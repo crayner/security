@@ -37,7 +37,7 @@ class SecurityExtension extends AbstractExtension
 	 */
 	public function getSecurityRoute(string $route)
 	{
-		return $this->routes[$route];
+		return trim($this->routes[$route]);
 	}
 
 	/**

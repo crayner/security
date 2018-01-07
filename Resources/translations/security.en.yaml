@@ -10,6 +10,8 @@ security:
             label: Keep me logged in
         login:
             label: Login
+        current_password:
+            label: Current Password
         reset_password:
             label: Forgotten Password
         ip:
@@ -43,9 +45,13 @@ security:
             label: Save
         match:
             error: The passwords do not match.
-        error_message: "The password does not meet requirements: Minimum Length: %minLength% characters, Numbers Required: %numbers%, Mixed Case: %mixedCase%, Special Characters: %specials%."
+        error:
+            message: "The password does not meet requirements: Minimum Length: %minLength% characters, Numbers Required: %numbers%, Mixed Case: %mixedCase%, Special Characters: %specials%."
+            used_before: "The password %{password} has been used before.  Try another password."
         change:
             success: Your new password has been stored. Now login.
+        existing:
+            invalid: Your existing password is invalid.
 user:
     username:
         label: User name
@@ -70,3 +76,6 @@ user:
 button:
     save:
         label: Save
+    change:
+        label: Change
+Forced Password Reset: Forced Password Reset

@@ -28,7 +28,7 @@ class Login
 	/**
 	 * @return string
 	 */
-	public function getUsername(): string
+	public function getUsername(): ?string
 	{
 		return $this->_username;
 	}
@@ -38,7 +38,7 @@ class Login
 	 *
 	 * @return Login
 	 */
-	public function setUsername(string $username): Login
+	public function setUsername(string $username = null): Login
 	{
 		$this->_username = $username;
 
