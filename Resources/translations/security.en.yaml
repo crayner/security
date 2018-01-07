@@ -79,3 +79,9 @@ button:
     change:
         label: Change
 Forced Password Reset: Forced Password Reset
+idletimeout:
+    title: 'Timed Sign Out'
+    signout: 'Sign Out Now'
+    stay: 'Stay Connected'
+    dialogue: 'No activity has been detected for %time% minutes.  You are about to be signed out of the system for security reasons.'
+    timeRemaining: 'Time Remaining'

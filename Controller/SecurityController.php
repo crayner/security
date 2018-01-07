@@ -208,7 +208,7 @@ class SecurityController extends Controller
 	/**
 	 * @Route("/timeout/", name="hillrange_security_timeout")
 	 */
-	public function timeoutAction(TokenStorageInterface $token, Session $session)
+	public function timeoutAction(TokenStorageInterface $token, Session $session, Request $request)
 	{
 		$session->set('_timeout', false);
 
@@ -224,7 +224,11 @@ class SecurityController extends Controller
 
 		$config = $this->getParameter('security.config');
 		$firewalls = $config['firewalls'];
-		$name = $this->getParameter('firewall_name');
+
+		$name = $request->get('_firewall_context');
+
+		$name = str_replace('security.firewall.map.context.', '', $name);
+
 		$route = empty($firewalls[$name]['logout']['target']) ? $firewalls[$name]['logout']['target'] : 'logout' ;
 
 		return $this->redirectToRoute($route);
