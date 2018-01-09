@@ -2,13 +2,12 @@
 namespace Hillrange\Security\Entity;
 
 use App\Core\Exception\Exception;
-use Hillrange\Security\EntityExtension\UserModel;
-use Hillrange\Security\Exception\UserException;
+use Hillrange\Security\EntityExtension\UserExtension;
 
 /**
  * User
  */
-class User extends UserModel
+class User extends UserExtension
 {
 	/**
 	 * @var integer
@@ -106,11 +105,17 @@ class User extends UserModel
 	private $userSettings;
 
 	/**
-	 * Constructor
+	 * User constructor.
+	 *
+	 * @param array $roles
+	 * @param array $groups
 	 */
-	public function __construct()
+	public function __construct(array $roles, array $groups)
 	{
 		parent::__construct();
+
+		$this->groupList = $groups;
+		$this->roleList = $roles;
 	}
 
 	/**

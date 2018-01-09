@@ -73,6 +73,10 @@ user:
         label: Credentials Expires On
     manage:
         title: Manage User
+    direct_roles:
+        label: Allocated Roles
+    groups:
+        label: Allocated Groups
 button:
     save:
         label: Save

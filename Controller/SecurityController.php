@@ -12,11 +12,10 @@ use Hillrange\Security\Form\UserType;
 use Hillrange\Security\Repository\UserRepository;
 use Hillrange\Security\Util\PasswordManager;
 use Hillrange\Security\Util\TokenGenerator;
+use Hillrange\Security\Util\UserManager;
+use Hillrange\Security\Util\UserProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,7 +75,7 @@ class SecurityController extends Controller
 		if (! $user)
 			$error = new UserException('security.user.not_found', ['%{username}' => $lastUsername]);
 		else {
-			if ($user->getConfirmationToken() && $user->isPasswordRequestNonExpired($this->getParameter('security_password_reset_token_ttl')))
+			if ($user->getConfirmationToken() && $user->isPasswordRequestNonExpired($this->getParameter('security.password.reset.token.ttl')))
 			{
 				$error = new UserException('security.password.reset.exists', ['%{username}' => $lastUsername]);
 				$comment = "<p>".$translator->trans('security.password.reset.email.copy', [], 'security')."</p>";
@@ -177,17 +176,17 @@ class SecurityController extends Controller
 	 * @Route("/user/{id}/edit/", name="security_user_edit")
 	 * @IsGranted("ROLE_SYSTEM_ADMIN")
 	 */
-	public function editUser($id, EntityManagerInterface $entityManager, Request $request)
+	public function editUser($id, EntityManagerInterface $entityManager, Request $request, UserProvider $userProvider)
 	{
 		if ($id === 'Add')
-			$entity = new User();
+			$entity = $userProvider->newUser();
 		elseif ($id === 'Current')
 		{
 			$entity = $this->getUser();
 			$id     = $entity->getId();
 		}
 		else
-			$entity = $entityManager->getRepository(User::class)->find($id);
+			$entity = $userProvider->find($id);
 
 		$form = $this->createForm(UserType::class, $entity, ['isSystemAdmin' => $this->isGranted('ROLE_SYSTEM_ADMIN'), 'session' => $request->getSession()]);
 
@@ -202,7 +201,12 @@ class SecurityController extends Controller
 				$this->redirectToRoute($request->get('_route'), ['id' => $entity->getId()]);
 		}
 
-		return $this->render('@HillrangeSecurity/User/user.html.twig', ['form' => $form->createView()]);
+		return $this->render('@HillrangeSecurity/User/user.html.twig',
+			[
+				'form' => $form->createView(),
+				'error' => null,
+			]
+		);
 	}
 
 	/**
@@ -232,27 +236,6 @@ class SecurityController extends Controller
 		$route = empty($firewalls[$name]['logout']['target']) ? $firewalls[$name]['logout']['target'] : 'logout' ;
 
 		return $this->redirectToRoute($route);
-	}
-
-	/**
-	 * @param string $name
-	 * @param null   $default
-	 *
-	 * @return mixed
-	 */
-	protected function getParameter(string $name, $default = null)
-	{
-		if (is_null($default))
-			return $this->container->getParameter($name);
-
-		$x = null;
-		try {
-			$x = $this->container->getParameter($name);
-		} catch (InvalidArgumentException $e) {
-			return $default;
-		}
-
-		return $x;
 	}
 
 	/**

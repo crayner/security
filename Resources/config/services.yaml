@@ -8,7 +8,7 @@ services:
                             # The best practice is to be explicit about your dependencies anyway.
     Hillrange\Security\:
         resource: "../../"
-        exclude: "../../{Entity,Tests,Listener,Form,Extension}"
+        exclude: "../../{Entity,Tests,Listener,Form,Extension,Voter}"
 
     Hillrange\Security\Controller\:
         resource: '../../Controller'
@@ -40,7 +40,7 @@ services:
             - { name: form.type }
     Hillrange\Security\Extension\SecurityExtension:
         arguments:
-            - '%security_routes%'
+            - '%security.routes%'
         tags:
             - { name: twig.extension }
     Hillrange\Security\Listener\SuccessHandler:
@@ -51,7 +51,7 @@ services:
             - '@security.authentication_utils'
             - '@monolog.logger.security'
             - '@router'
-            - '%security_routes%'
+            - '%security.routes%'
     Hillrange\Security\Listener\SecuritySubscriber:
         arguments:
             - '@doctrine.orm.default_entity_manager'
@@ -59,3 +59,19 @@ services:
             - '@request_stack'
             - '@monolog.logger.security'
         tags: { name: 'kernel.event_subscriber', priority: '-16' }
+    hillrange.security.util.user_provider:
+        class: Hillrange\Security\Util\UserProvider
+        arguments:
+            - '@Hillrange\Security\Repository\UserRepository'
+            - '%security.hierarchy.roles%'
+            - '%security.groups%'
+    Hillrange\Security\Entity\User:
+        arguments:
+            - '%security.hierarchy.roles%'
+            - '%security.groups%'
+    Hillrange\Security\Voter\GroupVoter:
+        arguments:
+            - '%security.groups%'
+            - 'ROLE_'
+        tags:
+            - { name: security.voter, priority: 512 }

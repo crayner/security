@@ -1,12 +1,12 @@
 <?php
 namespace Hillrange\Security\Entity;
 
-use Hillrange\Security\EntityExtension\PageModel;
+use Hillrange\Security\EntityExtension\PageExtension;
 
 /**
  * Page
  */
-class Page extends PageModel
+class Page extends PageExtension
 {
 	/**
 	 * @var integer

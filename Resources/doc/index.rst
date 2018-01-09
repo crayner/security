@@ -19,3 +19,8 @@ with data.  Once the created fields have valid data they are ignored.  The modif
 fields are altered on each change of data to the table row.
 
 
+Idle Timeout
+------------
+Idle timeout is available does not work unless your app uses jquery.  The bundle will
+detect that jquery is active and load all of the appropriate scripts to engage
+idletimeout.

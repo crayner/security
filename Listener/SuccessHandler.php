@@ -158,7 +158,6 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface
 		$this->logger->notice("Log In: User #" . $user->getId() . " (" . $user->getEmail() . ")");
 
 		return $this->httpUtils->createRedirectResponse($request, $this->determineTargetUrl($request));
-
 	}
 
 	/**

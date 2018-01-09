@@ -1,8 +1,9 @@
 <?php
 namespace Hillrange\Security\Form\Subscriber;
 
-use Busybee\Core\SecurityBundle\Form\DirectRoleType;
-use Busybee\Core\SecurityBundle\Form\GroupType;
+use Hillrange\Security\Form\DirectRoleType;
+use Hillrange\Security\Form\GroupType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -62,12 +63,18 @@ class UserSubscriber implements EventSubscriberInterface
 	public function preSetData(FormEvent $event)
 	{
 
+		$form = $event->getForm();
 		if ($this->isSystemAdmin)
 		{
-			$form = $event->getForm();
 			$form
 				->add('directroles', DirectRoleType::class)
 				->add('groups', GroupType::class);
 		}
+		$form
+			->add('save', SubmitType::class,
+			[
+				'label' => 'button.save.label',
+			]
+		);
 	}
 }

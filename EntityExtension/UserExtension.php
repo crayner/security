@@ -5,13 +5,14 @@ use Hillrange\Security\Entity\User;
 use Hillrange\Security\Util\UserTrackInterface;
 use Hillrange\Security\Util\UserTrackTrait;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  *
  */
-abstract class UserModel implements AdvancedUserInterface, UserTrackInterface, \Serializable
+abstract class UserExtension implements AdvancedUserInterface, UserTrackInterface, \Serializable, EquatableInterface
 {
 	use UserTrackTrait;
 
@@ -31,10 +32,26 @@ abstract class UserModel implements AdvancedUserInterface, UserTrackInterface, \
 	protected $roles;
 
 	/**
+	 * @var array
+	 */
+	protected $groupList;
+
+	/**
+	 * @var array
+	 */
+	protected $roleList;
+
+	/**
 	 * @var bool
 	 */
 	protected $installer = false;
 
+	/**
+	 * UserExtension constructor.
+	 *
+	 * @param array $roles
+	 * @param array $groups
+	 */
 	public function __construct()
 	{
 		$this->roles = [];
@@ -213,13 +230,14 @@ abstract class UserModel implements AdvancedUserInterface, UserTrackInterface, \
 	 * and populated in any number of different ways when the user object
 	 * is created.
 	 *
+	 * @param  bool $refresh
 	 * @return Role[] The user roles
 	 */
-	public function getRoles()
+	public function getRoles($refresh = false)
 	{
-		if (!empty($this->roles))
+		if (!empty($this->roles) && !$refresh)
 			return $this->roles;
-		$this->roles = array();
+		$this->roles = [];
 
 		$groups = $this->getGroups();
 
@@ -227,32 +245,49 @@ abstract class UserModel implements AdvancedUserInterface, UserTrackInterface, \
 
 		foreach ($groups as $group)
 		{
-			$roles = $groupData[$group];
+			$roles = empty($groupData[$group]) ? [] : $groupData[$group];
+
 			foreach ($roles as $role)
-			{
 				$this->roles[] = $role;
-			}
 		}
+
+
 		foreach ($this->getDirectroles() as $role)
 			$this->roles = array_merge($this->roles, array($role));
 
 		return $this->roles;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getGroupList()
 	{
-		try
-		{
-			$groups = Yaml::parse(file_get_contents('../src/Busybee/Core/SecurityBundle/Resources/config/services.yml'));
-			$groups = $groups['parameters']['groups'];
-		}
-		catch (\Exception $e)
-		{
-			return array();
-		}
+		return $this->groupList;
+	}
 
-		return $groups;
+	/**
+	 * @param array $groupList
+	 *
+	 * @return $this
+	 */
+	public function setGroupList(array $groupList)
+	{
+		$this->groupList = $groupList;
 
+		return $this;
+	}
+
+	/**
+	 * @param array $groupList
+	 *
+	 * @return $this
+	 */
+	public function setRoleList(array $roleList)
+	{
+		$this->roleList = $roleList;
+
+		return $this;
 	}
 
 	/**
@@ -289,7 +324,7 @@ abstract class UserModel implements AdvancedUserInterface, UserTrackInterface, \
 	 *
 	 * @return bool
 	 */
-	public function isEqualTo(\Symfony\Component\Security\Core\User\UserInterface $user)
+	public function isEqualTo(UserInterface $user)
 	{
 		if ($this->getPassword() !== $user->getPassword()) {
 			return false;
@@ -330,7 +365,7 @@ abstract class UserModel implements AdvancedUserInterface, UserTrackInterface, \
 	 *
 	 * @return UserModel
 	 */
-	public function setCurrentPassword(string $currentPassword = null): UserModel
+	public function setCurrentPassword(string $currentPassword = null): User
 	{
 		$this->currentPassword = $currentPassword;
 

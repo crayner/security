@@ -38,7 +38,7 @@ class PasswordManager
 	 */
 	public function __construct(ContainerInterface $container, EncoderFactoryInterface $encoderFactory, EntityManagerInterface $entityManager)
 	{
-		$this->password = $container->getParameter('password');
+		$this->password = $container->getParameter('security.password.settings');
 		$this->encoder =  $encoderFactory->getEncoder(User::class);
 		$this->entityManager = $entityManager;
 	}

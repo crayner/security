@@ -12,8 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Intl\DateFormatter\IntlDateFormatter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
@@ -149,11 +147,6 @@ class UserType extends AbstractType
 					'required'    => false,
 					'format'      =>  'dMy',
 				)
-			)
-			->add('save', SubmitType::class,
-				[
-					'label' => 'button.save.label',
-				]
 			)
 		;
 

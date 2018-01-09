@@ -5,7 +5,7 @@ namespace Hillrange\Security\EntityExtension;
 use App\Util\UserTrackInterface;
 use App\Util\UserTrackTrait;
 
-abstract class PageModel
+abstract class PageExtension
 {
 	/**
 	 * add Role
