@@ -1,6 +1,7 @@
 <?php
 namespace Hillrange\Security\Voter;
 
+use Hillrange\Security\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Role\Role;
@@ -58,9 +59,12 @@ class GroupVoter implements VoterInterface
 	{
 		$user = $token->getUser();
 
-		$user->setGroupList($this->groupList);
-
 		$roles = [];
+
+		if (! $user instanceof User)
+			return $roles;
+
+		$user->setGroupList($this->groupList);
 
 		foreach($user->getRoles(true) as $role)
 			$roles[] = new Role($role);
