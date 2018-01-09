@@ -2,6 +2,7 @@
 namespace Hillrange\Security\Form;
 
 use Hillrange\Security\Entity\User;
+use Hillrange\Security\Validator\ForcedPassword;
 use Hillrange\Security\Validator\Password;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -45,6 +46,10 @@ class NewPasswordType extends AbstractType
 			'translation_domain' => 'security',
 			'invalid_match_message' => 'security.password.match.error',
 			'error_bubbling'    => true,
+			'constraints'       =>
+			[
+				new ForcedPassword(),
+			]
 		));
 	}
 

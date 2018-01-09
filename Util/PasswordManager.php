@@ -166,6 +166,15 @@ class PasswordManager
 					'plainPassword[first]',
 				];
 
+		if (password_verify($data->getPlainPassword(), $data->getPassword()))
+			return [
+				'security.password.error.current',
+				[
+					'%{password}' => $data->getPlainPassword(),
+				],
+				'plainPassword[first]',
+			];
+
 		return true;
 	}
 

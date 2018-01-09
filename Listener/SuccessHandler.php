@@ -155,6 +155,15 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface
 
 			return $response;
 		}
+
+		if (! empty($user->getConfirmationToken()))
+		{
+			$user->setConfirmationToken(null);
+			$user->setPasswordRequestedAt(null);
+			$this->entityManager->persist($user);
+			$this->entityManager->flush();
+		}
+
 		$this->logger->notice("Log In: User #" . $user->getId() . " (" . $user->getEmail() . ")");
 
 		return $this->httpUtils->createRedirectResponse($request, $this->determineTargetUrl($request));

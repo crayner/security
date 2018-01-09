@@ -37,6 +37,7 @@ security:
                 copy: This is a copy of the original request.
                 sent: An password reset link has been emailed to %{email}.
             exists: The user has an active password reset request.  A copy of the original email has been sent.
+            description: A token allowing you to reset your password has been found.
         generate:
             label: Generate Password
         copy:
@@ -48,6 +49,7 @@ security:
         error:
             message: "The password does not meet requirements: Minimum Length: %minLength% characters, Numbers Required: %numbers%, Mixed Case: %mixedCase%, Special Characters: %specials%."
             used_before: "The password %{password} has been used before.  Try another password."
+            current:  "The password %{password} is your current password.  You can login without changing your password."
         change:
             success: Your new password has been stored. Now login.
         existing:

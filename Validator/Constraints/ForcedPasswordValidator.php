@@ -32,14 +32,6 @@ class ForcedPasswordValidator extends ConstraintValidator
 		if (empty($value))
 			return;
 
-		if (! $this->passwordManager->confirmPassword($value))
-		{
-			$this->context->buildViolation('security.password.existing.invalid')
-				->atPath('currentPassword')
-				->setTranslationDomain($constraint->transDomain)
-				->addViolation();
-			return;
-		}
 		$y = $this->passwordManager->isForcedPasswordValid($value);
 
 		if (is_array($y))
