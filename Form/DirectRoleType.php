@@ -1,8 +1,6 @@
 <?php
 namespace Hillrange\Security\Form;
 
-use Hillrange\Security\Entity\User;
-use Hillrange\Security\Util\UserManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,18 +8,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class DirectRoleType extends AbstractType
 {
 	/**
-	 * @var UserManager
+	 * @var array
 	 */
-	private $userManager;
+	private $roleHierarchy;
 
 	/**
 	 * DirectRoleType constructor.
 	 *
-	 * @param $roles
 	 */
-	public function __construct(UserManager $userManager)
+	public function __construct(array $roleHierarchy)
 	{
-		$this->userManager = $userManager;
+		$this->roleHierarchy = $roleHierarchy;
 	}
 
 	/**
@@ -60,7 +57,7 @@ class DirectRoleType extends AbstractType
 				'expanded'           => true,
 				'required'           => false,
 				'attr'               => array(
-					'class' => 'user',
+					'class' => 'user small',
 				),
 				'translation_domain' => 'security',
 				'choices'            => $this->getRoleChoices(),
@@ -77,7 +74,7 @@ class DirectRoleType extends AbstractType
 	private function getRoleChoices()
 	{
 		$roles = [];
-		foreach ($this->userManager->getRoles() as $role => $subRoles)
+		foreach ($this->roleHierarchy as $role => $subRoles)
 			$roles[$role] = $role;
 
 		return $roles;

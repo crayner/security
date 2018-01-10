@@ -57,11 +57,6 @@ class User extends UserExtension
 	/**
 	 * @var boolean
 	 */
-	protected $locked;
-
-	/**
-	 * @var boolean
-	 */
 	protected $expired;
 
 	/**
@@ -135,6 +130,8 @@ class User extends UserExtension
 	 */
 	public function getEnabled()
 	{
+		if ($this->getExpired())
+			$this->enabled = false;
 		return $this->enabled;
 	}
 
@@ -145,8 +142,11 @@ class User extends UserExtension
 	 *
 	 * @return User
 	 */
-	public function setEnabled($enabled)
+	public function setEnabled(bool $enabled)
 	{
+		if ($enabled && $this->expired)
+			$this->setExpired(false);
+
 		$this->enabled = $enabled;
 
 		return $this;
@@ -231,21 +231,9 @@ class User extends UserExtension
 	 */
 	public function getLocked()
 	{
-		return $this->locked;
-	}
-
-	/**
-	 * Set locked
-	 *
-	 * @param boolean $locked
-	 *
-	 * @return User
-	 */
-	public function setLocked($locked)
-	{
-		$this->locked = $locked;
-
-		return $this;
+		if ($this->getExpired())
+			return true;
+		return ! $this->getEnabled();
 	}
 
 	/**
@@ -255,6 +243,11 @@ class User extends UserExtension
 	 */
 	public function getExpired()
 	{
+		if (! is_null($this->getExpiresAt()))
+		{
+			if ($this->getExpiresAt() <= new \DateTime('now'))
+				$this->expired = true;
+		}
 		return $this->expired;
 	}
 
@@ -265,8 +258,17 @@ class User extends UserExtension
 	 *
 	 * @return User
 	 */
-	public function setExpired($expired)
+	public function setExpired(bool $expired)
 	{
+dump($expired);
+		if (!$expired)
+		{
+			if ($this->getExpiresAt() < new \DateTime('now'))
+				$this->setExpiresAt(null);
+		}
+		else
+			$this->setEnabled(false);
+
 		$this->expired = $expired;
 
 		return $this;

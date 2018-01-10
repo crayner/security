@@ -75,3 +75,18 @@ services:
             - 'ROLE_'
         tags:
             - { name: security.voter, priority: 512 }
+    hillrange.security.form.direct_role_type:
+        class: Hillrange\Security\Form\DirectRoleType
+        arguments:
+            - '%security.role_hierarchy.roles%'
+        tags:
+            - { name: form.type }
+    hillrange.security.form.group_type:
+        class: Hillrange\Security\Form\GroupType
+        arguments:
+            - '%security.groups%'
+        tags:
+            - { name: form.type }
+    Hillrange\Security\Voter\CurrentUserVoter:
+        tags:
+            - { name: security.voter, priority: -32 }

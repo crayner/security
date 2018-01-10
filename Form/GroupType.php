@@ -1,7 +1,6 @@
 <?php
 namespace Hillrange\Security\Form;
 
-use Hillrange\Security\Util\UserManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -9,18 +8,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class GroupType extends AbstractType
 {
 	/**
-	 * @var UserManager
+	 * @var array
 	 */
-	private $userManager;
+	private $groups;
 
 	/**
 	 * GroupType constructor.
 	 *
 	 * @param array $groups
 	 */
-	public function __construct(UserManager $userManager)
+	public function __construct(array $groups)
 	{
-		$this->userManager = $userManager;
+		$this->groups = $groups;
 	}
 
 	/**
@@ -59,7 +58,7 @@ class GroupType extends AbstractType
 				'label'              => 'user.groups.label',
 				'required'           => false,
 				'attr'               => array(
-					'class' => 'user',
+					'class' => 'user small',
 				),
 				'translation_domain' => 'security',
 				'choices'            => $this->getGroupChoices(),
@@ -76,7 +75,7 @@ class GroupType extends AbstractType
 	private function getGroupChoices()
 	{
 		$groups = [];
-		foreach ($this->userManager->getGroups() as $group => $roles)
+		foreach ($this->groups as $group => $roles)
 			$groups[$group] = $group;
 
 		return $groups;

@@ -1,9 +1,13 @@
 {% trans_default_domain 'security' %}
 
-{%  extends '@HillrangeSecurity/base.html.twig' %}
+{% extends '@HillrangeSecurity/base.html.twig' %}
 
 {% block title %}{{ 'user.manage.title'|trans }}{% endblock title %}
 
 {% block body %}
-    {% include "@HillrangeSecurity/User/userContent.html.twig" %}
+    {% if fullEdit %}
+        {% include "@HillrangeSecurity/User/userContent.html.twig" %}
+    {% else  %}
+        {% include "@HillrangeSecurity/User/selfContent.html.twig" %}
+    {% endif %}
 {% endblock body %}

@@ -119,7 +119,7 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 
 	public function isAccountNonLocked()
 	{
-		return !$this->locked;
+		return $this->isEnabled();
 	}
 
 	public function isCredentialsNonExpired()

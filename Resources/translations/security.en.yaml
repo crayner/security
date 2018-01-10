@@ -75,10 +75,14 @@ user:
         label: Credentials Expires On
     manage:
         title: Manage User
+        description: Allows changes to a user.  Security allows limited changes by the current user.
     direct_roles:
         label: Allocated Roles
     groups:
         label: Allocated Groups
+    self:
+        change:
+            warning: 'Changing your details may result in your current session being forcefully ended.  Any changes may not be reflected until you next login.'
 button:
     save:
         label: Save

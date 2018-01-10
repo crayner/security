@@ -50,8 +50,6 @@ Hillrange\Security\Entity\User:
             column: last_login
             type: datetime
             nullable: true
-        locked:
-            type: boolean
         expired:
             type: boolean
         expiresAt:

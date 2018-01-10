@@ -103,4 +103,20 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 
 		return $user;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getRoles(): array
+	{
+		return $this->roles;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getGroups(): array
+	{
+		return $this->groups;
+	}
 }

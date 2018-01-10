@@ -12,35 +12,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class UserSubscriber implements EventSubscriberInterface
 {
 	/**
-	 * @var SessionInterface
-	 */
-	private $session;
-
-	/**
-	 * @var bool
-	 */
-	private $isSystemAdmin;
-
-	/**
-	 * UserSubscriber constructor.
-	 *
-	 * @param SessionInterface $session
-	 * @param bool    $isSystemAdmin
-	 */
-	public function __construct(SessionInterface $session, $isSystemAdmin = false)
-	{
-		$this->session       = $session;
-		$this->isSystemAdmin = $isSystemAdmin;
-	}
-
-	/**
 	 * @return array
 	 */
 	public static function getSubscribedEvents()
 	{
 		return array(
 			FormEvents::PRE_SUBMIT   => 'preSubmit',
-			FormEvents::PRE_SET_DATA => 'preSetData',
 		);
 	}
 
@@ -57,24 +34,10 @@ class UserSubscriber implements EventSubscriberInterface
 		$data['usernameCanonical'] = $data['username'];
 		$data['emailCanonical']    = $data['email'];
 
+		$data['enabled'] = $data['enabled'] === '1' ? true : false;
+		$data['expired'] = $data['expired'] === '1' ? true : false;
+		$data['credentials_expired'] = $data['credentials_expired'] === '1' ? true : false;
+dump($data);
 		$event->setData($data);
-	}
-
-	public function preSetData(FormEvent $event)
-	{
-
-		$form = $event->getForm();
-		if ($this->isSystemAdmin)
-		{
-			$form
-				->add('directroles', DirectRoleType::class)
-				->add('groups', GroupType::class);
-		}
-		$form
-			->add('save', SubmitType::class,
-			[
-				'label' => 'button.save.label',
-			]
-		);
 	}
 }

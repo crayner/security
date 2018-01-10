@@ -6,6 +6,7 @@ use Hillrange\Security\Entity\Login;
 use Hillrange\Security\Entity\User;
 use Hillrange\Security\Exception\UserException;
 use Hillrange\Security\Form\ChangePasswordType;
+use Hillrange\Security\Form\FullUserType;
 use Hillrange\Security\Form\LoginType;
 use Hillrange\Security\Form\NewPasswordType;
 use Hillrange\Security\Form\UserType;
@@ -15,12 +16,14 @@ use Hillrange\Security\Util\TokenGenerator;
 use Hillrange\Security\Util\UserManager;
 use Hillrange\Security\Util\UserProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -58,6 +61,7 @@ class SecurityController extends Controller
 	{
 		throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
 	}
+
 	/**
 	 * @Route("/password/request/reset/", name="password_request_reset")
 	 */
@@ -65,20 +69,21 @@ class SecurityController extends Controller
 	{
 		$lastUsername = $request->get('login')['_username'];
 
-		$error = null;
+		$error   = null;
 		$comment = '';
 
 		$user = $entityManager->getRepository(User::class)->loadUserByUsername($lastUsername);
 
 		dump($lastUsername);
 		dump($user);
-		if (! $user)
+		if (!$user)
 			$error = new UserException('security.user.not_found', ['%{username}' => $lastUsername]);
-		else {
+		else
+		{
 			if ($user->getConfirmationToken() && $user->isPasswordRequestNonExpired($this->getParameter('security.password.reset.token.ttl')))
 			{
-				$error = new UserException('security.password.reset.exists', ['%{username}' => $lastUsername]);
-				$comment = "<p>".$translator->trans('security.password.reset.email.copy', [], 'security')."</p>";
+				$error   = new UserException('security.password.reset.exists', ['%{username}' => $lastUsername]);
+				$comment = "<p>" . $translator->trans('security.password.reset.email.copy', [], 'security') . "</p>";
 			}
 			else
 			{
@@ -95,14 +100,13 @@ class SecurityController extends Controller
 					$translator->trans('security.password.reset.email.message',
 						[
 							'%{confirmationUrl}' => $confirmationUrl,
-							'%{username}' => $user->formatName(),
-							'%{siteName}' => 'Site Security System',
-							'%{comment}' => $comment,
-							'%{datetime}' => date('d M/Y H:i', $user->getPasswordRequestedAt()->getTimestamp() + 86400)
+							'%{username}'        => $user->formatName(),
+							'%{siteName}'        => 'Site Security System',
+							'%{comment}'         => $comment,
+							'%{datetime}'        => date('d M/Y H:i', $user->getPasswordRequestedAt()->getTimestamp() + 86400)
 						], 'security'),
 					'text/html'
-				)
-			;
+				);
 
 			$mailer->send($message);
 		}
@@ -111,7 +115,7 @@ class SecurityController extends Controller
 		$login->setUsername($lastUsername);
 
 		$form = $this->createForm(LoginType::class, $login, ['password_reset_url' => $this->generateUrl('password_request_reset'), 'login_url' => $this->generateUrl('login')]);
-		if (! $error)
+		if (!$error)
 			$error = new UserException('security.password.reset.email.sent', ['%{email}' => $user->obfuscateEmail()]);
 
 		return $this->render('@HillrangeSecurity/security/login.html.twig',
@@ -132,12 +136,13 @@ class SecurityController extends Controller
 
 		$error = null;
 
-		if (! $user)
+		if (!$user)
 		{
 			$error = new UserException($translator->trans('security.user.token.not_found', ['%{token}' => $token], 'security'));
+
 			return $this->render('@HillrangeSecurity/security/error.html.twig',
 				[
-					'error'         => $error,
+					'error' => $error,
 				]
 			);
 
@@ -151,30 +156,30 @@ class SecurityController extends Controller
 		if ($form->isSubmitted() && $form->isValid())
 		{
 			$passwordManager->saveNewPassword($user);
-			$error = new UserException($translator->trans('security.password.change.success', ['%{token}' => $token], 'security'));
+			$error   = new UserException($translator->trans('security.password.change.success', ['%{token}' => $token], 'security'));
 			$success = true;
 		}
-		if ($form->isSubmitted() && ! $form->isValid())
+		if ($form->isSubmitted() && !$form->isValid())
 		{
 			$error = $form->get('plainPassword')->get('first')->getErrors();
 			$error = $error->getChildren();
 			$error = new UserException($error->getMessage());
-			$form = $this->createForm(NewPasswordType::class, $user, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security')]);
+			$form  = $this->createForm(NewPasswordType::class, $user, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security')]);
 		}
 
 		return $this->render('@HillrangeSecurity/security/newpasswordbytoken.html.twig',
 			[
-				'error'         => $error,
-				'form'          => $form->createView(),
-				'manager'       => $passwordManager,
-				'success'       => $success,
+				'error'   => $error,
+				'form'    => $form->createView(),
+				'manager' => $passwordManager,
+				'success' => $success,
 			]
 		);
 	}
 
 	/**
 	 * @Route("/user/{id}/edit/", name="security_user_edit")
-	 * @IsGranted("ROLE_SYSTEM_ADMIN")
+	 * @Security("is_granted('IS_CURRENT_USER', id) or is_granted('ROLE_REGISTRAR')")
 	 */
 	public function editUser($id, EntityManagerInterface $entityManager, Request $request, UserProvider $userProvider)
 	{
@@ -188,7 +193,12 @@ class SecurityController extends Controller
 		else
 			$entity = $userProvider->find($id);
 
-		$form = $this->createForm(UserType::class, $entity, ['isSystemAdmin' => $this->isGranted('ROLE_SYSTEM_ADMIN'), 'session' => $request->getSession()]);
+		$fullEdit = $this->isGranted(['ROLE_REGISTRAR']);
+
+		if ($fullEdit)
+			$form = $this->createForm(FullUserType::class, $entity);
+		else
+			$form = $this->createForm(UserType::class, $entity);
 
 		$form->handleRequest($request);
 
@@ -201,13 +211,19 @@ class SecurityController extends Controller
 				$this->redirectToRoute($request->get('_route'), ['id' => $entity->getId()]);
 		}
 
+		if ($fullEdit)
+			$form = $this->createForm(FullUserType::class, $entity);
+		else
+			$form = $this->createForm(UserType::class, $entity);
+
 		return $this->render('@HillrangeSecurity/User/user.html.twig',
 			[
-				'form' => $form->createView(),
+				'form'  => $form->createView(),
 				'error' => null,
+				'fullEdit' => $fullEdit,
 			]
 		);
-	}
+}
 
 	/**
 	 * @Route("/timeout/", name="hillrange_security_timeout")

@@ -1,16 +1,17 @@
 {% trans_default_domain 'security' %}
-{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-<script type="javascript" language="JavaScript">
-    if (typeof jQuery !== 'undefined') {
+
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') and idleTimeout > 0 %}
+    <script src="{{ asset('bundles/hillrangesecurity/js/store/store.everything.min.js') }}"></script>
+    <script src="{{ asset('bundles/hillrangesecurity/js/jquery-idleTimeout.min.js') }}"></script>
+    <!-- idleTimeout -->
+    <script>
         // idleTimeout
-        $.getScript('{{ asset('bundles/hillrangesecurity/js/store/store.everything.min.js') }}');
-        $.getScript('{{ asset('bundles/hillrangesecurity/js/jquery-idleTimeout.min.js') }}');
         $(document).ready(function () {
             $(document).idleTimeout({
                 dialogTimeRemaining: '{{ 'idletimeout.timeRemaining'|trans }}',
                 dialogStayLoggedInButton: '{{ 'idletimeout.stay'|trans }}',
                 dialogLogOutNowButton: '{{ 'idletimeout.signout'|trans }}',
-                idleTimeLimit: {{ get_parameter('idleTimeout', 15) * 60 - 30 }},
+                idleTimeLimit: {{ idleTimeout * 60 - 30 }},
                 dialogDisplayLimit: 30,
                 activityEvents: 'click keypress scroll wheel mousewheel',
                 sessionKeepAliveTimer: false,
@@ -24,6 +25,5 @@
                 }
             });
         });
-    }
-</script>
+    </script>
 {% endif %}
