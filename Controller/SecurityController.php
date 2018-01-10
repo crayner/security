@@ -194,6 +194,7 @@ class SecurityController extends Controller
 			$entity = $userProvider->find($id);
 
 		$fullEdit = $this->isGranted(['ROLE_REGISTRAR']);
+		$fullEdit = false;
 
 		if ($fullEdit)
 			$form = $this->createForm(FullUserType::class, $entity);

@@ -51,11 +51,11 @@ class UserType extends AbstractType
 					),
 				)
 			)
-			->add('enabled', HiddenType::class, array(
+			->add('enabled', HiddenType::class, [
 					'attr' => array(
 						'class' => 'user',
 					),
-				)
+				]
 			)
 			->add('locale', LocaleType::class,
 				array(
@@ -73,14 +73,11 @@ class UserType extends AbstractType
 					)
 				)
 			)
-			->add('expired', HiddenType::class,
-				array(
-					'label' => 'user.expired.label',
-					'attr'  => array(
-						'class'     => 'user',
-						'data-size' => 'mini',
+			->add('expired', HiddenType::class, [
+					'attr' => array(
+						'class' => 'user',
 					),
-				)
+				]
 			)
 			->add('expiresAt', DateType::class,
 				[
@@ -95,12 +92,11 @@ class UserType extends AbstractType
 					'format' => 'yyyy-MM-dd',
 				]
 			)
-			->add('credentials_expired', HiddenType::class,
-				array(
-					'attr'  => array(
-						'class'     => 'user',
+			->add('credentials_expired', HiddenType::class, [
+					'attr' => array(
+						'class' => 'user',
 					),
-				)
+				]
 			)
 			->add('credentialsExpireAt', DateType::class,
 				array(

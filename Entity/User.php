@@ -138,12 +138,14 @@ class User extends UserExtension
 	/**
 	 * Set enabled
 	 *
-	 * @param boolean $enabled
+	 * @param null|boolean $enabled
 	 *
 	 * @return User
 	 */
-	public function setEnabled(bool $enabled)
+	public function setEnabled(bool $enabled = null)
 	{
+		if (is_null($enabled))
+			$enabled = false;
 		if ($enabled && $this->expired)
 			$this->setExpired(false);
 
@@ -258,9 +260,10 @@ class User extends UserExtension
 	 *
 	 * @return User
 	 */
-	public function setExpired(bool $expired)
+	public function setExpired(bool $expired = null)
 	{
-dump($expired);
+		if (is_null($expired))
+			$expired = false;
 		if (!$expired)
 		{
 			if ($this->getExpiresAt() < new \DateTime('now'))
@@ -366,8 +369,10 @@ dump($expired);
 	 *
 	 * @return User
 	 */
-	public function setCredentialsExpired($credentialsExpired)
+	public function setCredentialsExpired(bool $credentialsExpired = null)
 	{
+		if (is_null($credentialsExpired))
+			$credentialsExpired = false;
 		$this->credentialsExpired = $credentialsExpired;
 
 		return $this;

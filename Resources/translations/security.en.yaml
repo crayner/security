@@ -76,6 +76,7 @@ user:
     manage:
         title: Manage User
         description: Allows changes to a user.  Security allows limited changes by the current user.
+        self: 'User Manage: Your Details'
     direct_roles:
         label: Allocated Roles
     groups:

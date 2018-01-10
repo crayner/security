@@ -37,7 +37,7 @@ class UserSubscriber implements EventSubscriberInterface
 		$data['enabled'] = $data['enabled'] === '1' ? true : false;
 		$data['expired'] = $data['expired'] === '1' ? true : false;
 		$data['credentials_expired'] = $data['credentials_expired'] === '1' ? true : false;
-dump($data);
+
 		$event->setData($data);
 	}
 }
