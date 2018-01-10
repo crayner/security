@@ -1,0 +1,35 @@
+{
+    "bundles":
+        "Hillrange\\Security\\HillrangeSecurityBundle": ["all"]
+    },
+    "container": {
+        "encoder.cost": "15",
+        "idleTimeout": "0   #set to zero to ignore",
+        "security.password.reset.token.ttl": "86400",
+        "security.password.settings": {
+            "min_length": "8",
+            "specials": 0,
+            "numbers": 1,
+            "mixed_case": 1
+        },
+        "security.routes": {
+            "security_user_edit": "security_user_edit",
+            "security_user_login": "login",
+            "security_user_check": "login",
+            "security_user_logout": "logout",
+            "security_password_forgot": "password_request_reset",
+            "securty_forced_password_change": "forced_password_change"
+        },
+        "security.groups": {
+            "Do It All": ['ROLE_SYSTEM_ADMIN']
+        },
+        "security.hierarchy.roles": {
+            "ROLE_USER": [],
+            "ROLE_ALLOWED_TO_SWITCH": [],
+            "ROLE_SYSTEM_ADMIN": [
+                "ROLE_USER",
+                "ROLE_ALLOWED_TO_SWITCH"
+            ]
+        }
+    }
+}
