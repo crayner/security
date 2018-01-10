@@ -1,0 +1,4 @@
+user:
+    error:
+        email.unique: The email must be unique
+        username.unique: The username must be unique

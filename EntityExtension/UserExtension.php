@@ -55,11 +55,10 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 	public function __construct()
 	{
 		$this->roles = [];
-		$this->setLocked(false);
 		$this->setEnabled(false);
 		$this->setExpired(false);
 		$this->setCredentialsExpired(false);
-		$this->setLocale('en_GB');
+		$this->setLocale('en');
 		$this->setPassword('This password will never work.');
 		$this->setUserSettings([]);
 	}

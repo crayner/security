@@ -1,0 +1,18 @@
+Hillrange\Security\Entity\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
+            fields: [username]
+            errorPath: username
+            message: user.error.username.unique
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [email]
+            errorPath: email
+            message: user.error.email.unique
+    properties:
+        email:
+            - Email: 
+                message: user.error.email.email
+                checkMX: true
+            - NotBlank:
+        locale:
+            - Locale: ~

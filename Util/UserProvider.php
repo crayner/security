@@ -119,4 +119,12 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 	{
 		return $this->groups;
 	}
+
+	public function newUser(): UserInterface
+	{
+		$user = new User($this->roles, $this->groups);
+
+		return $user;
+
+	}
 }

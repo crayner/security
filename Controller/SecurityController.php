@@ -24,6 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -194,7 +195,9 @@ class SecurityController extends Controller
 			$entity = $userProvider->find($id);
 
 		$fullEdit = $this->isGranted(['ROLE_REGISTRAR']);
-		$fullEdit = false;
+
+		if ($id === 'Add' && ! $fullEdit)
+			throw new AccessDeniedException('You do not have the authorisation to create a user.');
 
 		if ($fullEdit)
 			$form = $this->createForm(FullUserType::class, $entity);
@@ -208,14 +211,15 @@ class SecurityController extends Controller
 
 			$entityManager->persist($entity);
 			$entityManager->flush();
+
 			if ($id === 'Add')
 				$this->redirectToRoute($request->get('_route'), ['id' => $entity->getId()]);
-		}
 
-		if ($fullEdit)
-			$form = $this->createForm(FullUserType::class, $entity);
-		else
-			$form = $this->createForm(UserType::class, $entity);
+			if ($fullEdit)
+				$form = $this->createForm(FullUserType::class, $entity);
+			else
+				$form = $this->createForm(UserType::class, $entity);
+		}
 
 		return $this->render('@HillrangeSecurity/User/user.html.twig',
 			[
