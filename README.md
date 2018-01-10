@@ -50,3 +50,24 @@ return [
 ];
 
 ```
+Features
+--------
+### User Tracking
+Allows you to use the bundle add creation and modification details on every table row by adding
+an interface and a trait to your entity file(s).
+### Idle Timeout
+You need to add a script file to the master template of your app.  The script looks for the idleTimeout parameter to have a value > zero (0).  This value is in munites.
+### Group and Role Management
+Group and Role management is defined as parameters, allowing huge flexibility.
+### Mailer and Security Logger integration
+Uses forgotten password email system to manage password management.
+### Security Route Flexibility
+Routes used in the system are defined as parameters, made available to the system to allow your app to use a different route for any function within the system.
+### Basic Forms
+Forms are supplied but do not contain any css.  They are not pretty, as it is expected that you will overwrite the twig temples to match your app's look and feel. 
+
+ToDo
+----
+### Google OAuth
+
+
