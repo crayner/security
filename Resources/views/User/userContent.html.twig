@@ -8,3 +8,5 @@
 
 {{ form_start(form) }}
 {{ form_end(form) }}
+
+<a href="{{ path(app.request.get('_route'), {id: app.request.get('id')}) }}?_switch_user={{ form.username.vars.value }}">{{ 'Impersonate User'|trans }}</a>

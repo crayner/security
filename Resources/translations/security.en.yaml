@@ -90,6 +90,7 @@ button:
     change:
         label: Change
 Forced Password Reset: Forced Password Reset
+Impersonate User: Impersonate User
 idletimeout:
     title: 'Timed Sign Out'
     signout: 'Sign Out Now'
