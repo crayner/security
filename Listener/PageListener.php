@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PageListener implements EventSubscriberInterface
 {
@@ -131,5 +131,7 @@ class PageListener implements EventSubscriberInterface
 	public function beforeController($event)
 	{
 		$this->userTrackListener->injectTokenStorage($this->tokenStorage, $this->requestStack->getCurrentRequest());
+
+		return;
 	}
 }

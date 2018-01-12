@@ -14,16 +14,18 @@ services:
         resource: '../../Controller'
         tags: ['controller.service_arguments']
 
+
     Hillrange\Security\Listener\PageListener:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@service_container'
+            - '@security.token_storage'
+            - '@request_stack'
+            - '@Hillrange\Security\Listener\UserTrackListener'
         tags: { name: 'kernel.event_subscriber', priority: '16' }
-
     Hillrange\Security\Listener\UserFieldsListener:
         tags:
             - { name: doctrine.event_subscriber }
-
     Hillrange\Security\Listener\UserTrackListener:
         arguments:
             - '@security.token_storage'
