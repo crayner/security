@@ -6,7 +6,6 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -23,34 +22,21 @@ class UserTrackListener implements EventSubscriber
 	private $request;
 
 	/**
-	 * UserTrackSubscriber constructor.
-	 *
-	 * @param TokenStorageInterface $tokenStorage
+	 * @var TokenStorageInterface
 	 */
-	public function __construct(TokenStorageInterface $tokenStorage, RequestStack $request)
-	{
-		$token = $tokenStorage->getToken();
-
-		$user = $token ? $token->getUser() : null ;
-
-		$this->currentUser = $user;
-
-		$this->request = $request->getCurrentRequest();
-	}
+	private $tokenStorage;
 
 	/**
 	 * @param TokenStorageInterface $tokenStorage
-	 * @param Request               $request
+	 * @param Request              $request
 	 */
-	public function injectTokenStorage(TokenStorageInterface $tokenStorage, Request $request)
+	public function injectTokenStorage(TokenStorageInterface $tokenStorage = null, Request $request = null)
 	{
-		$token = $tokenStorage->getToken();
-
-		$user = $token ? $token->getUser() : null ;
-
-		$this->currentUser = $user;
+		$this->tokenStorage = $tokenStorage;
 
 		$this->request = $request;
+
+		$this->getCurrentUser();
 	}
 
 	/**
@@ -91,9 +77,10 @@ class UserTrackListener implements EventSubscriber
 		if (! $args->getObject() instanceof UserTrackInterface)
 			return ;
 
-		$entity        = $args->getEntity();
+		$entity        = $args->getObject();
 
 		$entity->setLastModified(new \Datetime('now'));
+		$this->getCurrentUser();
 
 		if ($entity instanceof UserInterface && ! $this->currentUser instanceof UserInterface)
 			$this->currentUser = $entity;
@@ -109,5 +96,18 @@ class UserTrackListener implements EventSubscriber
 
 		if (empty($entity->getCreatedOn()))
 			$entity->setCreatedOn(new \DateTime('now'));
+	}
+
+	/**
+	 * @return null|UserInterface
+	 */
+	private function getCurrentUser(): ?UserInterface
+	{
+		if (is_null($this->tokenStorage->getToken()))
+			return null;
+
+		$this->currentUser = $this->tokenStorage->getToken()->getUser();
+
+		return $this->currentUser;
 	}
 }

@@ -29,8 +29,8 @@ services:
             - '@security.token_storage'
             - '@request_stack'
         tags:
-            - { name: doctrine.event_subscriber, event: prePersist }
-            - { name: doctrine.event_subscriber, event: preUpdate }
+            - { name: doctrine.event_subscriber, event: prePersist, priority: -512 }
+            - { name: doctrine.event_subscriber, event: preUpdate, priority: -512 }
         public: true
     hillrange.security.form.login_type:
         class: Hillrange\Security\Form\LoginType

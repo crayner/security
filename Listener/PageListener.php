@@ -5,9 +5,11 @@ use Hillrange\Security\Entity\Page;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 class PageListener implements EventSubscriberInterface
 {
@@ -28,6 +30,7 @@ class PageListener implements EventSubscriberInterface
 	{
 		return [
 			KernelEvents::TERMINATE => ['onTerminate', 16],
+			KernelEvents::CONTROLLER => ['beforeController', 16]
 		];
 	}
 
@@ -67,15 +70,33 @@ class PageListener implements EventSubscriberInterface
 	}
 
 	/**
+	 * @var TokenStorageInterface
+	 */
+	private $tokenStorage;
+
+	/**
+	 * @var RequestStack
+	 */
+	private $requestStack;
+
+	/**
+	 * @var UserTrackListener
+	 */
+	private $userTrackListener;
+
+	/**
 	 * InstallListener constructor.
 	 *
 	 * @param EntityManagerInterface $entityManager
 	 * @param ContainerInterface     $container
 	 */
-	public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
+	public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container, TokenStorageInterface $tokenStorage, RequestStack $requestStack, UserTrackListener $userTrackListener)
 	{
 		$this->entityManager   = $entityManager;
 		$this->roleHierarchy   = $container->getParameter('security.role_hierarchy.roles');
+		$this->tokenStorage = $tokenStorage;
+		$this->requestStack = $requestStack;
+		$this->userTrackListener = $userTrackListener;
 	}
 
 	/**
@@ -100,5 +121,15 @@ class PageListener implements EventSubscriberInterface
 			foreach($this->roleHierarchy as $role=>$ccc)
 				if (false !== strpos($grant->getExpression(), $role))
 					$page->addRole($role);
+	}
+
+	/**
+	 * @param PostResponseEvent|GetResponseEvent $event
+	 *
+	 * @return void
+	 */
+	public function beforeController($event)
+	{
+		$this->userTrackListener->injectTokenStorage($this->tokenStorage, $this->requestStack->getCurrentRequest());
 	}
 }
