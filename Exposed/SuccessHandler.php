@@ -1,6 +1,7 @@
 <?php
-namespace Hillrange\Security\Listener;
+namespace Hillrange\Security\Exposed;
 
+use Hillrange\Security\Util\ParameterInjector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
@@ -76,7 +77,7 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface
 	 * @param RouterInterface        $router
 	 * @param array                  $securityRoutes
 	 */
-	public function __construct(HttpUtils $httpUtils, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, AuthenticationUtils $authenticationUtils, LoggerInterface $logger, RouterInterface $router, array $securityRoutes)
+	public function __construct(HttpUtils $httpUtils, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, AuthenticationUtils $authenticationUtils, LoggerInterface $logger, RouterInterface $router, ParameterInjector $parameterInjector)
 	{
 		$this->httpUtils           = $httpUtils;
 		$this->entityManager       = $entityManager;
@@ -84,7 +85,7 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface
 		$this->authenticationUtils = $authenticationUtils;
 		$this->logger              = $logger;
 		$this->router              = $router;
-		$this->securityRoutes      = $securityRoutes;
+		$this->securityRoutes      = $parameterInjector->getParameter('security.routes');
 	}
 
 	public function onAuthenticationSuccess(Request $request, TokenInterface $token)

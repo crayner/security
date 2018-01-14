@@ -2,6 +2,7 @@
 namespace Hillrange\Security\Voter;
 
 use Hillrange\Security\Entity\User;
+use Hillrange\Security\Util\ParameterInjector;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Role\Role;
@@ -16,10 +17,10 @@ class GroupVoter implements VoterInterface
 	private $prefix;
 	private $groupList;
 
-	public function __construct(array $groupList, string $prefix = 'ROLE_')
+	public function __construct(ParameterInjector $parameterInjector, string $prefix = 'ROLE_')
 	{
 		$this->prefix = $prefix;
-		$this->groupList = $groupList;
+		$this->groupList = $parameterInjector->getParameter('security.groups');
 	}
 
 	/**

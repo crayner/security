@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
@@ -18,11 +19,6 @@ class UserTrackListener implements EventSubscriber
 	private $currentUser;
 
 	/**
-	 * @var Request
-	 */
-	private $request;
-
-	/**
 	 * @var TokenStorageInterface
 	 */
 	private $tokenStorage;
@@ -31,13 +27,9 @@ class UserTrackListener implements EventSubscriber
 	 * @param TokenStorageInterface  $tokenStorage
 	 * @param Request              $request
 	 */
-	public function injectTokenStorage(TokenStorageInterface $tokenStorage = null, Request $request = null)
+	public function __construct(TokenStorageInterface $tokenStorage)
 	{
 		$this->tokenStorage = $tokenStorage;
-
-		$this->request = $request;
-
-		$this->getCurrentUser();
 	}
 
 	/**

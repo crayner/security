@@ -15,18 +15,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LoginType extends AbstractType
 {
 	/**
-	 * @var FirewallConfig
+	 * @var LoginSubscriber
 	 */
-	private $firewallMap;
+	private $loginSubscriber;
 
 	/**
 	 * LoginType constructor.
 	 *
-	 * @param FirewallConfig $firewallMap
+	 * @param LoginSubscriber $loginSubscriber
 	 */
-	public function __construct(FirewallConfig $firewallMap)
+	public function __construct(LoginSubscriber $loginSubscriber)
 	{
-		$this->firewallMap = $firewallMap;
+		$this->loginSubscriber = $loginSubscriber;
 	}
 
 	/**
@@ -67,7 +67,7 @@ class LoginType extends AbstractType
 			)
 			->setAction($options['login_url'])
 		;
-		$builder->addEventSubscriber(new LoginSubscriber($this->firewallMap));
+		$builder->addEventSubscriber($this->loginSubscriber);
 	}
 
 	/**

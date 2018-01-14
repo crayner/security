@@ -29,15 +29,14 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 	/**
 	 * UserProvider constructor.
 	 *
-	 * @param UserRepository $userRepository
-	 * @param array          $roles
-	 * @param array          $groups
+	 * @param UserRepository    $userRepository
+	 * @param ParameterInjector $parameterInjector
 	 */
-	public function __construct(UserRepository $userRepository, array $roles = [], array $groups = [])
+	public function __construct(UserRepository $userRepository, ParameterInjector $parameterInjector)
 	{
 		$this->userRepository = $userRepository;
-		$this->roles = $roles;
-		$this->groups = $groups;
+		$this->roles =  $parameterInjector->getParameter('security.hierarchy.roles');
+		$this->groups = $parameterInjector->getParameter('security.groups');
 	}
 
 	/**

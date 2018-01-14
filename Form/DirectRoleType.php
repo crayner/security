@@ -1,6 +1,7 @@
 <?php
 namespace Hillrange\Security\Form;
 
+use Hillrange\Security\Util\ParameterInjector;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,9 +17,10 @@ class DirectRoleType extends AbstractType
 	 * DirectRoleType constructor.
 	 *
 	 */
-	public function __construct(array $roleHierarchy)
+	public function __construct(ParameterInjector $parameterInjector)
 	{
-		$this->roleHierarchy = $roleHierarchy;
+		$this->roleHierarchy = $parameterInjector->getParameter('security.role_hierarchy.roles');
+
 	}
 
 	/**

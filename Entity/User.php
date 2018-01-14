@@ -3,6 +3,7 @@ namespace Hillrange\Security\Entity;
 
 use App\Core\Exception\Exception;
 use Hillrange\Security\EntityExtension\UserExtension;
+use Hillrange\Security\Util\ParameterInjector;
 
 /**
  * User
@@ -102,15 +103,13 @@ class User extends UserExtension
 	/**
 	 * User constructor.
 	 *
-	 * @param array $roles
-	 * @param array $groups
+	 * @param ParameterInjector $parameterInjector
 	 */
-	public function __construct(array $roles, array $groups)
+	public function __construct(ParameterInjector $parameterInjector)
 	{
 		parent::__construct();
-
-		$this->groupList = $groups;
-		$this->roleList = $roles;
+		$this->roleList =  $parameterInjector->getParameter('security.hierarchy.roles');
+		$this->groupList = $parameterInjector->getParameter('security.groups');
 	}
 
 	/**

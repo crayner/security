@@ -1,6 +1,7 @@
 <?php
 namespace Hillrange\Security\Extension;
 
+use Hillrange\Security\Util\ParameterInjector;
 use Twig\Extension\AbstractExtension;
 
 class SecurityExtension extends AbstractExtension
@@ -13,11 +14,11 @@ class SecurityExtension extends AbstractExtension
 	/**
 	 * SecurityExtension constructor.
 	 *
-	 * @param array $routes
+	 * @param ParameterInjector $parameterInjector
 	 */
-	public function __construct(array $routes)
+	public function __construct(ParameterInjector $parameterInjector)
 	{
-		$this->routes = $routes;
+		$this->routes = $parameterInjector->getParameter('security.routes');
 	}
 
 	/**

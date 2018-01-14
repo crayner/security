@@ -30,7 +30,6 @@ class PageListener implements EventSubscriberInterface
 	{
 		return [
 			KernelEvents::TERMINATE => ['onTerminate', 16],
-			KernelEvents::CONTROLLER => ['beforeController', 16]
 		];
 	}
 
@@ -90,7 +89,7 @@ class PageListener implements EventSubscriberInterface
 	 * @param EntityManagerInterface $entityManager
 	 * @param ContainerInterface     $container
 	 */
-	public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container, TokenStorageInterface $tokenStorage, RequestStack $requestStack, UserTrackListener $userTrackListener)
+	public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
 	{
 		$this->entityManager   = $entityManager;
 		$this->roleHierarchy   = $container->getParameter('security.role_hierarchy.roles');
@@ -121,17 +120,5 @@ class PageListener implements EventSubscriberInterface
 			foreach($this->roleHierarchy as $role=>$ccc)
 				if (false !== strpos($grant->getExpression(), $role))
 					$page->addRole($role);
-	}
-
-	/**
-	 * @param PostResponseEvent|GetResponseEvent $event
-	 *
-	 * @return void
-	 */
-	public function beforeController($event)
-	{
-		$this->userTrackListener->injectTokenStorage($this->tokenStorage, $this->requestStack->getCurrentRequest());
-
-		return;
 	}
 }
