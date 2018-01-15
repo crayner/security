@@ -69,21 +69,6 @@ class PageListener implements EventSubscriberInterface
 	}
 
 	/**
-	 * @var TokenStorageInterface
-	 */
-	private $tokenStorage;
-
-	/**
-	 * @var RequestStack
-	 */
-	private $requestStack;
-
-	/**
-	 * @var UserTrackListener
-	 */
-	private $userTrackListener;
-
-	/**
 	 * InstallListener constructor.
 	 *
 	 * @param EntityManagerInterface $entityManager
@@ -93,9 +78,6 @@ class PageListener implements EventSubscriberInterface
 	{
 		$this->entityManager   = $entityManager;
 		$this->roleHierarchy   = $container->getParameter('security.role_hierarchy.roles');
-		$this->tokenStorage = $tokenStorage;
-		$this->requestStack = $requestStack;
-		$this->userTrackListener = $userTrackListener;
 	}
 
 	/**
