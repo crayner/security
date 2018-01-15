@@ -1,5 +1,5 @@
 <?php
-namespace Hillrange\Security\Listener;
+namespace Hillrange\Security\Exposed;
 
 use Hillrange\Security\Util\UserTrackInterface;
 use Doctrine\Common\EventSubscriber;

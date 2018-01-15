@@ -1,5 +1,5 @@
 <?php
-namespace Hillrange\Security\Form\Subscriber;
+namespace Hillrange\Security\Exposed;
 
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -2,8 +2,7 @@
 namespace Hillrange\Security\Form;
 
 use Hillrange\Security\Entity\Login;
-use Hillrange\Security\Form\Subscriber\LoginSubscriber;
-use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
+use Hillrange\Security\Exposed\LoginSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

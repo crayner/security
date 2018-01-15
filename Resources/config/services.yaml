@@ -26,15 +26,15 @@ services:
             - '@monolog.logger.security'
             - '@router'
             - '@Hillrange\Security\Util\ParameterInjector'
-    Hillrange\Security\Form\Subscriber\LoginSubscriber:
+    Hillrange\Security\Exposed\LoginSubscriber:
         arguments:
             - '@security.firewall.map.config.main'
-    Hillrange\Security\Listener\UserFieldsListener:
+    Hillrange\Security\Exposed\UserFieldsListener:
         tags:
             - { name: doctrine.event_subscriber }
-    Hillrange\Security\Listener\UserTrackListener:
+    Hillrange\Security\Exposed\UserTrackListener:
         arguments:
             - '@security.token_storage'
         tags:
-            - { name: doctrine.event_subscriber, event: prePersist, priority: -512 }
-            - { name: doctrine.event_subscriber, event: preUpdate, priority: -512 }
+            - { name: doctrine.event_listener, event: prePersist, priority: -512 }
+            - { name: doctrine.event_listener, event: preUpdate, priority: -512 }
