@@ -31,8 +31,3 @@ Group Management
 Groups are a course management of of security roles that your system may or may not use.
 The Groups are a layer above the Roles, allowing you to group roles into a single type
 of user.
-
-Single Table Inheritance
-------------------------
-The system allows for single table inheritance.  You will need to implement the UserTrackInterface
-to the parent class, and the SingleTableChildInterface to all children class.

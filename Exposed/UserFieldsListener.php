@@ -29,7 +29,7 @@ class UserFieldsListener implements EventSubscriber
 	{
 		$metadata = $eventArgs->getClassMetadata();
 
-		if ($metadata->getReflectionClass()->implementsInterface(UserTrackInterface::class) && ! $metadata->getReflectionClass()->implementsInterface(SingleTableChildInterface::class))
+		if ($metadata->getReflectionClass()->implementsInterface(UserTrackInterface::class) && empty($metadata->parentClasses))
 		{
 			$metadata->mapField(
 				[
