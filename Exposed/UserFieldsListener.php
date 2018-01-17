@@ -2,6 +2,7 @@
 namespace Hillrange\Security\Exposed;
 
 use Hillrange\Security\Entity\User;
+use Hillrange\Security\Util\SingleTableChildInterface;
 use Hillrange\Security\Util\UserTrackInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
@@ -28,7 +29,7 @@ class UserFieldsListener implements EventSubscriber
 	{
 		$metadata = $eventArgs->getClassMetadata();
 
-		if ($metadata->getReflectionClass()->implementsInterface(UserTrackInterface::class))
+		if ($metadata->getReflectionClass()->implementsInterface(UserTrackInterface::class) && ! $metadata->getReflectionClass()->implementsInterface(SingleTableChildInterface::class))
 		{
 			$metadata->mapField(
 				[
