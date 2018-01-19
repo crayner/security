@@ -11,15 +11,19 @@ services:
         exclude: "../../{Entity,Tests,Exposed}"
 
     Hillrange\Security\Controller\:
-        resource: '../../Controller'
+        resource: '../../Controller/'
         tags: ['controller.service_arguments']
+
+    Hillrange\Security\Exposed\:
+        resource: '../../Exposed/'
+        public: true
 
     Hillrange\Security\Entity\User:
         arguments:
             - '@Hillrange\Security\Util\ParameterInjector'
-    Hillrange\Security\Exposed\SuccessHandler:
+    Hillrange\Security\Exposed\LoginSuccessHandler:
         arguments:
-            - '@security.http_utils'
+            - '@security.http_utils'          # http_utils cannot be auto-wired.
             - '@doctrine.orm.default_entity_manager'
             - '@security.token_storage'
             - '@security.authentication_utils'

@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\ParameterBagUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class SuccessHandler implements AuthenticationSuccessHandlerInterface
+class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
 	use TargetPathTrait;
 	/**
@@ -67,7 +67,7 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface
 	private $providerKey = 'main';
 
 	/**
-	 * SuccessHandler constructor.
+	 * LoginSuccessHandler constructor.
 	 *
 	 * @param HttpUtils              $httpUtils
 	 * @param EntityManagerInterface $entityManager
