@@ -1,13 +1,9 @@
 <?php
 namespace Hillrange\Security\Form\Subscriber;
 
-use Hillrange\Security\Form\DirectRoleType;
-use Hillrange\Security\Form\GroupType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserSubscriber implements EventSubscriberInterface
 {
@@ -31,8 +27,8 @@ class UserSubscriber implements EventSubscriberInterface
 		if (empty($data['username']) && !empty($data['email']))
 			$data['username'] = $data['email'];
 
-		$data['usernameCanonical'] = $data['username'];
-		$data['emailCanonical']    = $data['email'];
+		$data['usernameCanonical'] = trim($data['username']);
+		$data['emailCanonical']    = trim(strtolower($data['email']));
 
 		$data['enabled'] = $data['enabled'] === '1' ? true : false;
 		$data['expired'] = $data['expired'] === '1' ? true : false;
