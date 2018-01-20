@@ -100,3 +100,4 @@ idletimeout:
     stay: 'Stay Connected'
     dialogue: 'No activity has been detected for %time% minutes.  You are about to be signed out of the system for security reasons.'
     timeRemaining: 'Time Remaining'
+Login Blocked: Login Blocked by IP Restrictions.  Wait 20 minutes and try again.

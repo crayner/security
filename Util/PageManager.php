@@ -1,8 +1,8 @@
 <?php
 namespace Hillrange\Security\Util;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Hillrange\Security\Entity\Page;
-use Doctrine\Common\Persistence\ObjectManager;
 use Hillrange\Security\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -21,7 +21,7 @@ class PageManager
 	private $pageRepository;
 
 	/**
-	 * @var ObjectManager
+	 * @var EntityManagerInterface
 	 */
 	private $om;
 
@@ -47,7 +47,7 @@ class PageManager
 	 * @param ObjectManager $om
 	 * @param RequestStack  $request
 	 */
-	public function __construct(ObjectManager $om, RouterInterface $router)
+	public function __construct(EntityManagerInterface $om, RouterInterface $router)
 	{
 		$this->session        = new Session();
 		$this->pageRepository = $om->getRepository(Page::class);
