@@ -127,9 +127,9 @@ class User extends UserExtension
 	 *
 	 * @return boolean
 	 */
-	public function getEnabled()
+	public function isEnabled()
 	{
-		if ($this->getExpired())
+		if ($this->isExpired())
 			$this->enabled = false;
 		return $this->enabled;
 	}
@@ -230,11 +230,11 @@ class User extends UserExtension
 	 *
 	 * @return boolean
 	 */
-	public function getLocked()
+	public function isLocked()
 	{
-		if ($this->getExpired())
+		if ($this->isExpired())
 			return true;
-		return ! $this->getEnabled();
+		return ! $this->isEnabled();
 	}
 
 	/**
@@ -242,7 +242,7 @@ class User extends UserExtension
 	 *
 	 * @return boolean
 	 */
-	public function getExpired()
+	public function isExpired()
 	{
 		if (! is_null($this->getExpiresAt()))
 		{
@@ -356,7 +356,7 @@ class User extends UserExtension
 	 *
 	 * @return boolean
 	 */
-	public function getCredentialsExpired()
+	public function isCredentialsExpired()
 	{
 		return $this->credentialsExpired;
 	}
