@@ -103,7 +103,6 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 			$this->entityManager->remove($failure);
 			$this->entityManager->flush();
 			$this->logger->notice("IP Address " . $ip . " was released for login.");
-
 		}
 		elseif ($failure->getId() > 0 && $failure->getFailures() >= 3)
 		{
@@ -116,6 +115,11 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 			$response = new RedirectResponse($this->router->generate($this->securityRoutes['security_user_logout']));
 
 			return $response;
+		} elseif ($failure->getId() > 0)
+		{
+			$this->entityManager->remove($failure);
+			$this->entityManager->flush();
+			$this->logger->notice("IP Address " . $ip . " was removed form the failure registrar.");
 		}
 
 		// Check for locked or expired
