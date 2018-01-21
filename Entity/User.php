@@ -356,8 +356,17 @@ class User extends UserExtension
 	 *
 	 * @return boolean
 	 */
-	public function isCredentialsExpired()
+	public function isCredentialsExpired(): bool
 	{
+		if ($this->credentialsExpired)
+			return $this->credentialsExpired;
+
+		if (is_null($this->getCredentialsExpireAt()))
+			return $this->credentialsExpired;
+
+		if ($this->getCredentialsExpireAt() <= new \DateTime('now'))
+			$this->setCredentialsExpired(true);
+
 		return $this->credentialsExpired;
 	}
 
@@ -368,11 +377,14 @@ class User extends UserExtension
 	 *
 	 * @return User
 	 */
-	public function setCredentialsExpired(bool $credentialsExpired = null)
+	public function setCredentialsExpired(bool $credentialsExpired = null): User
 	{
 		if (is_null($credentialsExpired))
 			$credentialsExpired = false;
 		$this->credentialsExpired = $credentialsExpired;
+
+		if ($credentialsExpired)
+			$this->setcredentialsExpireAt(null);
 
 		return $this;
 	}
@@ -380,9 +392,9 @@ class User extends UserExtension
 	/**
 	 * Get credentialsExpireAt
 	 *
-	 * @return \DateTime
+	 * @return null|\DateTime
 	 */
-	public function getCredentialsExpireAt()
+	public function getCredentialsExpireAt(): ?\DateTime
 	{
 		return $this->credentialsExpireAt;
 	}
@@ -390,11 +402,11 @@ class User extends UserExtension
 	/**
 	 * Set credentialsExpireAt
 	 *
-	 * @param \DateTime $credentialsExpireAt
+	 * @param null|\DateTime $credentialsExpireAt
 	 *
 	 * @return User
 	 */
-	public function setCredentialsExpireAt($credentialsExpireAt)
+	public function setCredentialsExpireAt($credentialsExpireAt): User
 	{
 		$this->credentialsExpireAt = $credentialsExpireAt;
 
@@ -431,9 +443,11 @@ class User extends UserExtension
 	 *
 	 * @return User
 	 */
-	public function setUsername($username)
+	public function setUsername($username = null)
 	{
 		$this->username = $username;
+
+		$this->checkUsername();
 
 		return $this;
 	}

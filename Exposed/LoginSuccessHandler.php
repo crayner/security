@@ -127,7 +127,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 			$this->entityManager->flush();
 		}
 
-		if ($user->getLocked() || $user->getExpired() || !$user->getEnabled())
+		if ($user->isLocked())
 		{
 			$session->set(Security::AUTHENTICATION_ERROR, new AuthenticationException("Log In Denied: The user is locked or expired or not enabled. Contact site support for help.", 774));
 			$this->logger->notice("Log In Denied: The user is locked or expired or not enabled. Contact site support for help.");
@@ -143,7 +143,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 		$this->entityManager->persist($user);
 		$this->entityManager->flush();
 
-		if ($user->getCredentialsExpired() || (!empty($user->getCredentialsExpireAt()) && $user->getCredentialsExpireAt() <= new \DateTime('now')))
+		if ($user->isCredentialsExpired())
 		{
 			$user->setCredentialsExpired(true);
 			$user->setCredentialsExpireAt(null);
