@@ -1,6 +1,7 @@
 <?php
 namespace Hillrange\Security\Exposed;
 
+use Hillrange\Security\Entity\User;
 use Hillrange\Security\Util\ParameterInjector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -91,8 +92,8 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 	public function onAuthenticationSuccess(Request $request, TokenInterface $token)
 	{
 		$user = $this->tokenStorage->getToken()->getUser();
-
-		$this->entityManager->refresh($user);
+dump($user);
+		$user = $this->entityManager->getRepository(User::class)->find($user->getId());
 
 		$ip      = $request->server->get('REMOTE_ADDR');
 		$failure = $this->entityManager->getRepository(Failure::class)->loadOneByIP($ip);
