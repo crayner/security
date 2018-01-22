@@ -16,3 +16,5 @@ Hillrange\Security\Entity\User:
             - NotBlank:
         locale:
             - Locale: ~
+        password:
+            - NotBlank: ~
