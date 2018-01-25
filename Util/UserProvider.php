@@ -60,6 +60,16 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 	}
 
 	/**
+	 * @param $username
+	 *
+	 * @return null|\Symfony\Component\Security\Core\User\UserInterface
+	 */
+	public function loadUserByEmail($email)
+	{
+		return $this->loadUserByUsername($email);
+	}
+
+	/**
 	 * @param UserInterface $user
 	 *
 	 * @return null|\Symfony\Component\Security\Core\User\UserInterface
