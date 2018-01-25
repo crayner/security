@@ -63,13 +63,6 @@ class UserType extends AbstractType
 					'required' => false,
 				)
 			)
-			->add('password', HiddenType::class,
-				array(
-					'attr' => array(
-						'class' => 'user',
-					)
-				)
-			)
 			->add('expired', HiddenType::class, [
 					'attr' => array(
 						'class' => 'user',

@@ -170,6 +170,9 @@ dump($user);
 			$this->entityManager->flush();
 		}
 
+		if (null !== $user->getLocale())
+			$request->setLocale($user->getLocale());
+
 		$this->logger->notice("Log In: User #" . $user->getId() . " (" . $user->getEmail() . ")");
 
 		return $this->httpUtils->createRedirectResponse($request, $this->determineTargetUrl($request));

@@ -581,21 +581,32 @@ class User extends UserExtension
 	}
 
 	/**
+	 * @param string|null $name
+	 * @param mixed       $default
+	 *
 	 * @return mixed
 	 */
-	public function getUserSettings(string $name = null)
+	public function getUserSettings(string $name = null, $default = null)
 	{
 		if (is_null($name))
-		{
-			if (empty($this->userSettings))
-				$this->userSettings = [];
-			return $this->userSettings;
-		}
-		$name = ucfirst($name);
-		if (isset($this->userSettings[$name]))
-			return $this->userSettings[$name];
+			return $this->userSettings ?: [];
+		else
+			return $this->getUserSetting($name, $default);
 
-		return null;
+	}
+
+	/**
+	 * @param string $name
+	 * @param mixed  $default
+	 *
+	 * @return mixed
+	 */
+	public function getUserSetting(string $name, $default = null)
+	{
+		if (isset($this->userSettings[ucfirst(strtolower($name))]))
+			return $this->userSettings[ucfirst(strtolower($name))];
+
+		return $default;
 	}
 
 	/**
@@ -622,7 +633,7 @@ class User extends UserExtension
 		$this->userSettings = $this->getUserSettings();
 
 		$type = strtolower($type);
-		$name = ucfirst($name);
+		$name = ucfirst(strtolower($name));
 
 		switch ($type)
 		{
@@ -631,14 +642,22 @@ class User extends UserExtension
 					throw new Exception('The object given needs to provide a getId method.');
 				$this->userSettings[$name] = intval($value->getId());
 				break;
+			case 'string':
+				$this->userSettings[$name] = $value ;
+				break;
 			case 'integer':
 			case 'int':
 				if (! is_int($value))
 					throw new Exception(sprintf('The user setting %s was expecting an integer', $name));
 				$this->userSettings[$name] = $value ;
 				break;
+			case 'array':
+				if (! is_array($value))
+					throw new Exception(sprintf('The user setting %s was expecting an array', $name));
+				$this->userSettings[$name] = $value ;
+				break;
 			default:
-				throw new Exception('User Settings must define a type.');
+				throw new Exception('User Settings must define a type. '.$type);
 		}
 		return $this;
 	}

@@ -50,7 +50,7 @@ security:
         match:
             error: The passwords do not match.
         error:
-            message: "The password does not meet requirements: Minimum Length: %minLength% characters, Numbers Required: %numbers%, Mixed Case: %mixedCase%, Special Characters: %specials%."
+            message: "The password '%{password}' does not meet requirements: Minimum Length: %minLength% characters, Numbers Required: %numbers%, Mixed Case: %mixedCase%, Special Characters: %specials%."
             used_before: "The password %{password} has been used before.  Try another password."
             current:  "The password %{password} is your current password.  You can login without changing your password."
         change:

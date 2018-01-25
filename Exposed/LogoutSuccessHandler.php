@@ -44,6 +44,8 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 
 		$session->getFlashBag()->setAll($flash);
 
+		$request->setLocale($this->parameterInjector->getParameter('locale'));
+
 		return new RedirectResponse($this->router->generate($this->parameterInjector->getParameter('security.routes.security_home')));
 	}
 }

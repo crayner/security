@@ -83,13 +83,6 @@ class FullUserType extends AbstractType
 					'required' => false,
 				)
 			)
-			->add('password', HiddenType::class,
-				array(
-					'attr' => array(
-						'class' => 'user',
-					)
-				)
-			)
 			->add('expired', CheckboxType::class,
 				array(
 					'label' => 'user.expired.label',

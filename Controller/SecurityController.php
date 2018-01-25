@@ -3,6 +3,7 @@ namespace Hillrange\Security\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Hillrange\Security\Entity\Login;
+use Hillrange\Security\Entity\Password;
 use Hillrange\Security\Entity\User;
 use Hillrange\Security\Exception\UserException;
 use Hillrange\Security\Form\ChangePasswordType;
@@ -15,6 +16,7 @@ use Hillrange\Security\Util\PasswordManager;
 use Hillrange\Security\Util\TokenGenerator;
 use Hillrange\Security\Util\UserManager;
 use Hillrange\Security\Util\UserProvider;
+use Hillrange\Security\Validator\ForcedPassword;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -131,8 +133,12 @@ class SecurityController extends Controller
 	/**
 	 * @Route("/password/new/{token}/", name="password_new" )
 	 */
-	public function newPassword(Request $request, $token = null, UserRepository $userRepository, TranslatorInterface $translator, PasswordManager $passwordManager, EntityManagerInterface $entityManager)
+	public function newPassword(Request $request, $token = null, TranslatorInterface $translator, PasswordManager $passwordManager)
 	{
+		$entityManager =$this->getDoctrine()->getManager();
+
+		$userRepository = $entityManager->getRepository(User::class);
+
 		$user = $userRepository->loadUserByToken($token);
 
 		$error = null;
@@ -148,7 +154,10 @@ class SecurityController extends Controller
 			);
 
 		}
-		$form = $this->createForm(NewPasswordType::class, $user, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security')]);
+
+		$password = new Password();
+
+		$form = $this->createForm(NewPasswordType::class, $password, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security'), 'constraints' => [new ForcedPassword(['user' => $user])]]);
 
 		$form->handleRequest($request);
 
@@ -156,16 +165,17 @@ class SecurityController extends Controller
 
 		if ($form->isSubmitted() && $form->isValid())
 		{
-			$passwordManager->saveNewPassword($user);
+			$passwordManager->saveNewPassword($user, $password);
 			$error   = new UserException($translator->trans('security.password.change.success', ['%{token}' => $token], 'security'));
 			$success = true;
 		}
 		if ($form->isSubmitted() && !$form->isValid())
 		{
 			$error = $form->get('plainPassword')->get('first')->getErrors();
+
 			$error = $error->getChildren();
+
 			$error = new UserException($error->getMessage());
-			$form  = $this->createForm(NewPasswordType::class, $user, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security')]);
 		}
 
 		return $this->render('@HillrangeSecurity/security/newpasswordbytoken.html.twig',

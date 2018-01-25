@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class Password extends Constraint
 {
-	public $message = 'security.password.error_message';
+	public $message = 'security.password.error.message';
 
 	public $transDomain = 'security';
 

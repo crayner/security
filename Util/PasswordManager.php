@@ -2,6 +2,7 @@
 namespace Hillrange\Security\Util;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Hillrange\Security\Entity\Password;
 use Hillrange\Security\Entity\User;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -131,58 +132,6 @@ class PasswordManager
 	 *
 	 * @return bool
 	 */
-	public function isForcedPasswordValid($data)
-	{
-		if (! $data instanceof UserInterface)
-			return [
-				'security.user.invalid',
-				[],
-				'currentPassword',
-			];
-
-		if (! $this->isPasswordValid($data->getPlainPassword()))
-			return array(
-				'security.password.error.message',
-				[
-					'%numbers%' => $this->getPasswordSetting('numbers') ? 'Yes' : 'No',
-					'%mixedCase%' => $this->getPasswordSetting('mixed_case') ? 'Yes' : 'No',
-					'%specials%' => $this->getPasswordSetting('specials') ? 'Yes' : 'No',
-					'%minLength%' => $this->getPasswordSetting('min_length'),
-				],
-				'plainPassword[first]',
-			);
-
-		$oldPasswords = $data->getUserSettings();
-
-		$oldPasswords = empty($oldPasswords['old_passwords']) ? [] : $oldPasswords['old_passwords'];
-
-		foreach($oldPasswords as $oldPassword)
-			if (password_verify($data->getPlainPassword(), $oldPassword))
-				return [
-					'security.password.error.used_before',
-					[
-						'%{password}' => $data->getPlainPassword(),
-					],
-					'plainPassword[first]',
-				];
-
-		if (password_verify($data->getPlainPassword(), $data->getPassword()))
-			return [
-				'security.password.error.current',
-				[
-					'%{password}' => $data->getPlainPassword(),
-				],
-				'plainPassword[first]',
-			];
-
-		return true;
-	}
-
-	/**
-	 * @param $data
-	 *
-	 * @return bool
-	 */
 	public function confirmPassword($data)
 	{
 		return $this->encoder->isPasswordValid($data->getPassword(), $data->getCurrentPassword(), null);
@@ -191,12 +140,14 @@ class PasswordManager
 	/**
 	 * @param UserInterface $user
 	 */
-	public function saveNewPassword(UserInterface $user)
+	public function saveNewPassword(UserInterface $user, Password $password)
 	{
-		$settings = $user->getUserSettings();
-		$oldPasswords = empty($settings['old_passwords']) ? [] : $settings['old_passwords'];
+		$oldPasswords = $user->getUserSetting('old_passwords', []);
 
-		$q = array_unshift($oldPasswords, $user->getPassword());
+		if (! empty($user->getPassword()))
+			array_unshift($oldPasswords, $user->getPassword());
+
+		$q = count($oldPasswords);
 
 		while ($q > 12)
 		{
@@ -204,11 +155,9 @@ class PasswordManager
 			$q = count($oldPasswords);
 		}
 
-		$settings['old_passwords'] = $oldPasswords;
+		$user->setUserSetting('old_passwords', $oldPasswords, 'array');
 
-		$user->setUserSettings($settings);
-
-		$user->setPassword($this->encodePassword($user, $user->getPlainPassword()));
+		$user->setPassword($this->encodePassword($user, $password->getPlainPassword()));
 
 		$user->setCurrentPassword(null);
 		$user->setPlainPassword(null);
@@ -221,5 +170,39 @@ class PasswordManager
 		$this->entityManager->persist($user);
 		$this->entityManager->flush();
 
+	}
+
+	/**
+	 * Validate Password Change
+	 *
+	 * @param UserInterface $user
+	 * @param Password      $password
+	 *
+	 * @return bool|array
+	 */
+	public function validatePasswordChange(UserInterface $user, Password $password)
+	{
+		$oldPasswords = $user->getUserSetting('old_passwords');
+
+		foreach($oldPasswords as $oldPassword)
+			if (password_verify($password->getPlainPassword(), $oldPassword))
+				return [
+					'security.password.error.used_before',
+					[
+						'%{password}' => $password->getPlainPassword(),
+					],
+					'plainPassword[first]',
+				];
+
+		if (password_verify($password->getPlainPassword(), $user->getPassword()))
+			return [
+				'security.password.error.current',
+				[
+					'%{password}' => $password->getPlainPassword(),
+				],
+				'plainPassword[first]',
+			];
+
+		return true;
 	}
 }

@@ -9,11 +9,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class ForcedPassword extends Constraint
 {
-	public $message = 'security.password.error_message';
-
 	public $transDomain = 'security';
 
 	public $path = '';
+
+	public $user;
 
 	/**
 	 * @return string
@@ -21,5 +21,13 @@ class ForcedPassword extends Constraint
 	public function validatedBy()
 	{
 		return ForcedPasswordValidator::class;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getRequiredOptions()
+	{
+		return ['user'];
 	}
 }

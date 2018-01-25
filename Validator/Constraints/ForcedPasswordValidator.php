@@ -32,17 +32,15 @@ class ForcedPasswordValidator extends ConstraintValidator
 		if (empty($value))
 			return;
 
-		$y = $this->passwordManager->isForcedPasswordValid($value);
+		$y = $this->passwordManager->validatePasswordChange($constraint->user, $value);
 
-		if (is_array($y))
-		{
-			$v = $this->context->buildViolation($y[0]);
-			foreach($y[1] as $name=>$value)
-				$v->setParameter($name, $value);
-			$v->atPath($y[2]);
-			$v->setTranslationDomain($constraint->transDomain)
-				->addViolation();
-			return ;
-		}
+		if ($y === true) return ;
+
+		$v = $this->context->buildViolation($y[0]);
+		foreach($y[1] as $name=>$val)
+			$v->setParameter($name, $val);
+		$v->atPath($y[2])
+			->setTranslationDomain($constraint->transDomain)
+			->addViolation();
 	}
 }
