@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\SecurityEvents;
  * Stores the locale of the user in the session after the
  * login. This can be used by the LocaleSubscriber afterwards.
  */
-class UserLocale_Listener implements EventSubscriberInterface
+class UserLocaleListener implements EventSubscriberInterface
 {
 	/**
 	 * @var SessionInterface
