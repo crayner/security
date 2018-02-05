@@ -95,9 +95,10 @@ button:
 Forced Password Reset: Forced Password Reset
 Impersonate User: Impersonate User
 idletimeout:
-    title: 'Timed Sign Out'
-    signout: 'Sign Out Now'
-    stay: 'Stay Connected'
-    dialogue: 'No activity has been detected for %time% minutes.  You are about to be signed out of the system for security reasons.'
-    timeRemaining: 'Time Remaining'
+    warn:
+        title: 'Timed Sign Out'
+        signout: 'Sign Out Now'
+        stay: 'Stay Connected'
+        dialogue: 'No activity has been detected for %time% minutes.  You are about to be signed out of the system for security reasons.'
+        timeRemaining: 'Time Remaining'
 Login Blocked: Login Blocked by IP Restrictions.  Wait 20 minutes and try again.

@@ -3,12 +3,16 @@ namespace Hillrange\Security\Listener;
 
 use Hillrange\Security\Entity\Page;
 use Doctrine\ORM\EntityManagerInterface;
+use Hillrange\Security\Util\ParameterInjector;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PageListener implements EventSubscriberInterface
@@ -23,6 +27,17 @@ class PageListener implements EventSubscriberInterface
 	 */
 	private $roleHierarchy;
 
+
+	/**
+	 * @var ParameterInjector
+	 */
+	private $parameterInjector;
+
+	/**
+	 * @var RouterInterface
+	 */
+	private $router;
+
 	/**
 	 * @return array
 	 */
@@ -30,6 +45,7 @@ class PageListener implements EventSubscriberInterface
 	{
 		return [
 			KernelEvents::TERMINATE => ['onTerminate', 16],
+			KernelEvents::REQUEST => ['onKernelRequest', -16]
 		];
 	}
 
@@ -72,12 +88,14 @@ class PageListener implements EventSubscriberInterface
 	 * InstallListener constructor.
 	 *
 	 * @param EntityManagerInterface $entityManager
-	 * @param ContainerInterface     $container
+	 * @param ParameterInjector      $parameterInjector
 	 */
-	public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
+	public function __construct(EntityManagerInterface $entityManager, ParameterInjector $parameterInjector, RouterInterface $router)
 	{
-		$this->entityManager   = $entityManager;
-		$this->roleHierarchy   = $container->getParameter('security.role_hierarchy.roles');
+		$this->entityManager        = $entityManager;
+		$this->roleHierarchy        = $parameterInjector->getParameter('security.role_hierarchy.roles');
+		$this->parameterInjector    = $parameterInjector;
+		$this->router               = $router;
 	}
 
 	/**
@@ -102,5 +120,42 @@ class PageListener implements EventSubscriberInterface
 			foreach($this->roleHierarchy as $role=>$ccc)
 				if (false !== strpos($grant->getExpression(), $role))
 					$page->addRole($role);
+	}
+
+	/**
+	 * @param GetResponseEvent $event
+	 *
+	 * @return RedirectResponse|void
+	 */
+	public function onKernelRequest(GetResponseEvent $event)
+	{
+		$session = $event->getRequest()->getSession();
+
+		if (!$event->isMasterRequest() || in_array($event->getRequest()->get('_route'),
+				[
+					'security_keep_alive',
+				]
+			)
+		) $session->set('_security_last_page', strtotime('now'));
+
+		if ($session instanceof SessionInterface)
+		{
+			if ($session->get('_security_last_page') && $session->get('_security_main'))
+			{
+				if (strtotime('now') - $session->get('_security_last_page') > $this->parameterInjector->getParameter('idleTimeout', 15) * 60)
+				{
+					$session->clear('_security_last_page');
+					$session->clear('_security_main');
+					$session->invalidate();
+
+					$response = new RedirectResponse($this->router->generate('login'));
+
+					return $response;
+				}
+			}
+			$session->set('_security_last_page', strtotime('now'));
+		}
+
+		return;
 	}
 }

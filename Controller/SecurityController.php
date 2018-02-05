@@ -302,4 +302,16 @@ class SecurityController extends Controller
 			]
 		);
 	}
+	/**
+	 * @Route("/keep/alive/", name="security_keep_alive")
+	 * @IsGranted("IS_AUTHENTICATED_FULLY")
+	 */
+	public function keepAlive(Request $request)
+	{
+		$route = $request->get('_route');
+
+		$params = $request->get('_route_params');
+
+		return $this->redirectToRoute($route, $params);
+	}
 }

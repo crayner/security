@@ -1,27 +1,42 @@
 {% trans_default_domain 'security' %}
 
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and idleTimeout > 0 %}
-    <script src="{{ asset('bundles/hillrangesecurity/js/store/store.everything.min.js') }}"></script>
-    <script src="{{ asset('bundles/hillrangesecurity/js/jquery-idleTimeout.min.js') }}"></script>
-    <!-- idleTimeout -->
+    <script src="{{ asset('bundles/hillrangesecurity/js/jquery.blockUI.js') }}"></script>
+    <script src="{{ asset('bundles/hillrangesecurity/js/jquery.storageapi.min.js') }}"></script>
+    <script src="{{ asset('bundles/hillrangesecurity/js/jquery-idleTimeout-plus.min.js') }}"></script>
+    <!-- idleTimeoutPlus -->
     <script>
-        // idleTimeout
         $(document).ready(function () {
-            $(document).idleTimeout({
-                dialogTimeRemaining: '{{ 'idletimeout.timeRemaining'|trans }}',
-                dialogStayLoggedInButton: '{{ 'idletimeout.stay'|trans }}',
-                dialogLogOutNowButton: '{{ 'idletimeout.signout'|trans }}',
+            IdleTimeoutPlus.start({
                 idleTimeLimit: {{ idleTimeout * 60 - 30 }},
-                dialogDisplayLimit: 30,
                 activityEvents: 'click keypress scroll wheel mousewheel',
-                sessionKeepAliveTimer: false,
-                dialogTitle: '{{ 'idletimeout.title'|trans }}',
-                dialogText: '{{ 'idletimeout.dialogue'|trans({'%time%': get_parameter('idleTimeout', 15) -  1}) }}',
+                warnTitle: '{{ 'idletimeout.warn.title'|trans }}',
+                warnMessage: '{{ 'idletimeout.warn.dialogue'|trans({'%time%': idleTimeout -  1}) }}',
+                warnCountdownMessage: '{{ 'idletimeout.warn.timeRemaining'|trans }}',
+                warnTimeLimit: 30,
                 redirectUrl: '{{ path('hillrange_security_timeout') }}',
-                customCallback: function () {
+                warnStayAliveButton: '{{ 'idletimeout.warn.stay'|trans }}',
+                warnLogoutButton: '{{ 'idletimeout.warn.signout'|trans }}',
+                logoutUrl: '{{ path('logout') }}',
+                multiWindowSupport: true,
+                bootstrap: true,
+                redirectCallback: function () {
                     var close = '{{ app.request.get('closeWindow') }}';
                     if (close.length > 0)
                         window.close();
+                    return true;
+                },
+                logoutCallback: function () {
+                    var close = '{{ app.request.get('closeWindow') }}';
+                    if (close.length > 0)
+                        window.close();
+                    return true;
+                },
+                logoutAutoCallback: function () {
+                    var close = '{{ app.request.get('closeWindow') }}';
+                    if (close.length > 0)
+                        window.close();
+                    return true;
                 }
             });
         });
