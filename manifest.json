@@ -31,5 +31,8 @@
                 "ROLE_ALLOWED_TO_SWITCH"
             ]
         }
+    },
+    "copy-from-recipe": {
+        "config/": "%CONFIG_DIR%/"
     }
 }
