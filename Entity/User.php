@@ -182,8 +182,10 @@ class User extends UserExtension
 	 *
 	 * @return string
 	 */
-	public function getPassword(): ?string
+	public function getPassword(): string
 	{
+	    if (empty($this->password))
+	        return 'This is not a password';
 		return $this->password;
 	}
 
@@ -197,8 +199,10 @@ class User extends UserExtension
 	public function setPassword(string $password = null): User
 	{
 		if (empty($password))
-			$password = null;
+			$password = 'This is not a password.';
 		$this->password = $password;
+
+		$this->setCredentialsExpired(true);
 
 		return $this;
 	}
