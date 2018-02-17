@@ -607,8 +607,8 @@ class User extends UserExtension
 	 */
 	public function getUserSetting(string $name, $default = null)
 	{
-		if (isset($this->userSettings[ucfirst(strtolower($name))]))
-			return $this->userSettings[ucfirst(strtolower($name))];
+		if (isset($this->userSettings[strtolower($name)]))
+			return $this->userSettings[strtolower($name)];
 
 		return $default;
 	}
@@ -637,7 +637,7 @@ class User extends UserExtension
 		$this->userSettings = $this->getUserSettings();
 
 		$type = strtolower($type);
-		$name = ucfirst(strtolower($name));
+		$name = strtolower($name);
 
 		switch ($type)
 		{
