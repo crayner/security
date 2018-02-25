@@ -131,15 +131,15 @@ class PageListener implements EventSubscriberInterface
 	{
 		$session = $event->getRequest()->getSession();
 
-		if (!$event->isMasterRequest() || in_array($event->getRequest()->get('_route'),
-				[
-					'security_keep_alive',
-				]
-			)
-		) $session->set('_security_last_page', strtotime('now'));
-
 		if ($session instanceof SessionInterface)
 		{
+            if (!$event->isMasterRequest() || in_array($event->getRequest()->get('_route'),
+                    [
+                        'security_keep_alive',
+                    ]
+                )
+            ) $session->set('_security_last_page', strtotime('now'));
+
 			if ($session->get('_security_last_page') && $session->get('_security_main'))
 			{
 				if (strtotime('now') - $session->get('_security_last_page') > $this->parameterInjector->getParameter('idleTimeout', 15) * 60)
