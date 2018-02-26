@@ -35,11 +35,13 @@ class UserFieldsListener implements EventSubscriber
 				[
 					'fieldName' => 'lastModified',
 					'type'      => 'datetime',
+                    'columnName'    => 'last_modified',
 				]
 			);
 			$metadata->mapField(
 				[
 					'fieldName' => 'createdOn',
+					'columnName'    => 'created_on',
 					'type'      => 'datetime',
 				]
 			);
