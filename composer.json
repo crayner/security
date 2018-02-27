@@ -56,11 +56,11 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "php -r \"copy('vendor/hillrange/security/Resources/config/routes.yaml', 'config/routes/hillrange_security.yaml')\""
+            "php -r \"copy('vendor/hillrange/security/Resources/config/routes.yaml', 'config/routes/hillrange_security.yaml');\""
         ],
         "post-update-cmd": [
             "@auto-scripts",
-            "php -r \"copy('vendor/hillrange/security/Resources/config/routes.yaml', 'config/routes/hillrange_security.yaml')\""
+            "php -r \"copy('vendor/hillrange/security/Resources/config/routes.yaml', 'config/routes/hillrange_security.yaml');\""
         ]
     }
 }
