@@ -1,8 +1,6 @@
 <?php
 namespace Hillrange\Security\Util;
 
-use Composer\Script\Event;
-
 class VersionManager
 {
     const VERSION = '0.0.03';
@@ -17,7 +15,14 @@ class VersionManager
 
     public static function copyRouteConfig($event)
     {
-        echo __DIR__;
-        copy('routes.yaml','config/routes/hillrange_security.yaml');
+        $source = 'Resources/config/routes.yaml';
+        $dest = 'config/routes/hillrange_security.yaml';
+        if (! is_file($source))
+            throw new \Exception('Did not find ' . $source);
+
+        if (! is_file($dest))
+            throw new \Exception('Did not find ' . $dest);
+
+        copy($source,$dest);
     }
 }
