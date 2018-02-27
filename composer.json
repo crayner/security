@@ -56,11 +56,11 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "Hillrange\\Security\\Util\\VersionManager::copyRouteConfig",
+            "Hillrange\\Security\\Util\\VersionManager::copyRouteConfig"
         ],
         "post-update-cmd": [
             "@auto-scripts",
-            "Hillrange\\Security\\Util\\VersionManager::copyRouteConfig",
+            "Hillrange\\Security\\Util\\VersionManager::copyRouteConfig"
 
         ]
     }
