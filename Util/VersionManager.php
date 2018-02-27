@@ -18,6 +18,6 @@ class VersionManager
     public static function copyRouteConfig($event)
     {
         echo __DIR__;
-       // copy();
+        copy('routes.yaml','config/routes/hillrange_security.yaml');
     }
 }
