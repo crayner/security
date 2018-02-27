@@ -12,17 +12,4 @@ class VersionManager
     {
         return VersionManager::VERSION;
     }
-
-    public static function copyRouteConfig($event)
-    {
-        $source = 'Resources/config/routes.yaml';
-        $dest = 'config/routes/hillrange_security.yaml';
-        if (! is_file($source))
-            throw new \Exception('Did not find ' . $source);
-
-        if (! is_file($dest))
-            throw new \Exception('Did not find ' . $dest);
-
-        copy($source,$dest);
-    }
 }
