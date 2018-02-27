@@ -1,0 +1,4 @@
+hillrange_security:
+    resource: '../../vendor/hillrange/security/Controller/'
+    type: annotation
+    prefix: /hillrange/security/
