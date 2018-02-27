@@ -1,6 +1,7 @@
 <?php
 namespace Hillrange\Security\Util;
 
+use Composer\Script\Event;
 
 class VersionManager
 {
@@ -12,5 +13,11 @@ class VersionManager
     public function getVersion(): string
     {
         return VersionManager::VERSION;
+    }
+
+    public static function copyRouteConfig($event)
+    {
+        echo __DIR__;
+       // copy();
     }
 }

@@ -53,13 +53,15 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "php -r \"copy('vendor/hillrange/security/Resources/config/routes.yaml', 'config/routes/hillrange_security.yaml');\""
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "Hillrange\\Security\\Util\\VersionManager::copyRouteConfig",
         ],
         "post-update-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "Hillrange\\Security\\Util\\VersionManager::copyRouteConfig",
+
         ]
     }
 }
