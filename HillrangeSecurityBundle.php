@@ -9,7 +9,5 @@ class HillrangeSecurityBundle extends Bundle
 	public function build(ContainerBuilder $container)
 	{
 		parent::build($container);
-
-		echo __DIR__; die();
 	}
 }
