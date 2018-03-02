@@ -39,6 +39,7 @@ services:
     Hillrange\Security\Exposed\UserTrackListener:
         arguments:
             - '@security.token_storage'
+            - '@request_stack'
         tags:
             - { name: doctrine.event_listener, event: prePersist, priority: -512 }
             - { name: doctrine.event_listener, event: preUpdate, priority: -512 }

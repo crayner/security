@@ -23,13 +23,24 @@ class UserTrackListener implements EventSubscriber
 	 */
 	private $tokenStorage;
 
+    /**
+     * @var RequestStack
+     */
+	private $requestStack;
+
+    /**
+     * @var Request
+     */
+	private $request;
+
 	/**
 	 * @param TokenStorageInterface  $tokenStorage
 	 * @param Request              $request
 	 */
-	public function __construct(TokenStorageInterface $tokenStorage)
+	public function __construct(TokenStorageInterface $tokenStorage, RequestStack $requestStack)
 	{
 		$this->tokenStorage = $tokenStorage;
+        $this->requestStack =  $requestStack;
 	}
 
 	/**
@@ -71,6 +82,7 @@ class UserTrackListener implements EventSubscriber
 			return ;
 
 		$entity        = $args->getObject();
+		$this->request = $this->requestStack->getCurrentRequest();
 
 		$entity->setLastModified(new \Datetime('now'));
 		$this->getCurrentUser();
