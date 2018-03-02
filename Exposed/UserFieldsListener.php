@@ -36,6 +36,7 @@ class UserFieldsListener implements EventSubscriber
 					'fieldName' => 'lastModified',
 					'type'      => 'datetime',
                     'columnName'    => 'last_modified',
+                    'nullable' => true,
 				]
 			);
 			$metadata->mapField(
@@ -43,6 +44,7 @@ class UserFieldsListener implements EventSubscriber
 					'fieldName' => 'createdOn',
 					'columnName'    => 'created_on',
 					'type'      => 'datetime',
+                    'nullable' => true,
 				]
 			);
 			$metadata->mapManyToOne(
