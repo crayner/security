@@ -10,7 +10,7 @@ I will remove this warning when I am satisfied it is ready for release.
 Version
 -------
 
-0.0.14
+0.0.15
 
 Installation
 ============
