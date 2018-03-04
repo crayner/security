@@ -4,8 +4,13 @@ Symfony 4 Security Bundle
 Development ONLY
 ----------------
 
-This package is currently under development and is also a learning tool for myself.  Please use with EXTREME caution.   I will remove this warning when I am satisfied it is ready for release.
+This package is currently under development and is also a learning tool for myself.  Please use with EXTREME caution.   
+I will remove this warning when I am satisfied it is ready for release.
 
+Version
+-------
+
+0.0.14
 
 Installation
 ============
@@ -28,7 +33,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```console
-$ composer require hillrange/security "~0"
+$ composer require hillrange/security "~0.0"
 ```
 
 This command requires you to have Composer installed globally, as explained
