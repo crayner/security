@@ -39,6 +39,14 @@
                     return true;
                 }
             });
+
+            if (document.createStyleSheet){  // Bloody IE
+                document.createStyleSheet('{{ asset('bundles/hillrangesecurity/css/jquery-idleTimeout-plus.min.css') }}');
+            }
+            else {
+                $("head").append($("<link rel='stylesheet' href='{{ asset('bundles/hillrangesecurity/css/jquery-idleTimeout-plus.min.css') }}' type='text/css' media='screen' />"));
+            }
+
         });
     </script>
 {% endif %}

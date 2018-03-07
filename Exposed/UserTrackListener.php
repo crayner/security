@@ -99,7 +99,8 @@ class UserTrackListener implements EventSubscriber
 		} elseif (! empty($this->request->get('_security')) || ! empty($this->request->get('_is_granted')))
 			throw new \LogicException('No User Authenticated.');
 
-		if (empty($entity->getCreatedOn()) || $entity->getCreatedOn() < new \DateTime('2000-01-01'))
+		$old = new \DateTime('2000-01-01');
+		if (empty($entity->getCreatedOn()) || ! $entity->getCreatedOn() instanceof \DateTime || $entity->getCreatedOn()->getTimestamp() < $old->getTimestamp())
 			$entity->setCreatedOn(new \DateTime('now'));
 	}
 
