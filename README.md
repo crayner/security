@@ -7,10 +7,11 @@ Development ONLY
 This package is currently under development and is also a learning tool for myself.  Please use with EXTREME caution.   
 I will remove this warning when I am satisfied it is ready for release.
 
+FLEX IS NOT IMPLEMENTED FOR THIS PACKAGE.
+
 Version
 -------
-
-0.0.16
+0.0.17
 
 Installation
 ============

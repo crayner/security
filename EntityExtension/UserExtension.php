@@ -2,6 +2,7 @@
 namespace Hillrange\Security\EntityExtension;
 
 use Hillrange\Security\Entity\User;
+use Hillrange\Security\Exception\UserException;
 use Hillrange\Security\Util\UserTrackInterface;
 use Hillrange\Security\Util\UserTrackTrait;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  *
  */
-abstract class UserExtension implements AdvancedUserInterface, UserTrackInterface, \Serializable, EquatableInterface
+abstract class UserExtension implements AdvancedUserInterface, UserTrackInterface, EquatableInterface
 {
 	use UserTrackTrait;
 
@@ -48,8 +49,6 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 	/**
 	 * UserExtension constructor.
 	 *
-	 * @param array $roles
-	 * @param array $groups
 	 */
 	public function __construct()
 	{
@@ -74,60 +73,65 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 		return $this;
 	}
 
-	public function getSalt()
+    /**
+     * @return mixed
+     */
+    public function isSuperAdmin()
 	{
-		return null;
+		return $this->hasRole('ROLE_SYSTEM_ADMIN');
 	}
 
-	public function isSuperAdmin()
+    /**
+     * @param bool $boolean
+     * @return UserException
+     */
+    public function setSuperAdmin(bool $boolean): UserException
 	{
-		return $this->hasRole(static::ROLE_SYSTEM_ADMIN);
-	}
-
-	public function setSuperAdmin($boolean)
-	{
-
-		if (true === $boolean)
-			$this->addRole(static::ROLE_SYSTEM_ADMIN);
+		if ($boolean)
+			$this->addRole('ROLE_SYSTEM_ADMIN');
 		else
-			$this->removeRole(static::ROLE_SYSTEM_ADMIN);
+			$this->removeRole('ROLE_SYSTEM_ADMIN');
 
 		return $this;
 	}
 
-	public function isPasswordRequestNonExpired($ttl)
+    /**
+     * @param $ttl
+     * @return bool
+     */
+    public function isPasswordRequestNonExpired($ttl): bool
 	{
 		return $this->getPasswordRequestedAt() instanceof \DateTime && $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
 	}
 
-	public function isAccountNonExpired()
+    /**
+     * @return bool
+     */
+    public function isAccountNonExpired(): bool
 	{
-		if (true === $this->expired)
-		{
+		if ($this->isExpired())
 			return false;
-		}
 
-		if (null !== $this->expiresAt && $this->expiresAt->getTimestamp() < time())
-		{
+		if (null !== $this->getExpiresAt() && $this->getExpiresAt()->getTimestamp() < time())
 			return false;
-		}
 
 		return true;
 	}
 
-	public function isAccountNonLocked()
+    /**
+     * @return bool
+     */
+    public function isAccountNonLocked(): bool
 	{
 		return ! $this->isLocked();
 	}
 
-	public function isCredentialsNonExpired()
+    /**
+     * @return bool
+     */
+    public function isCredentialsNonExpired(): bool
 	{
 		return !$this->isCredentialsExpired();
-	}
-
-	public function isEnabled()
-	{
-		return $this->enabled;
 	}
 
 	/**
@@ -136,45 +140,6 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 	public function eraseCredentials()
 	{
 		$this->plainPassword = null;
-	}
-
-	/**
-	 * Serializes the user.
-	 *
-	 * The serialized data have to contain the fields used by the equals method and the username.
-	 *
-	 * @return string
-	 */
-	public function serialize()
-	{
-		return serialize(array(
-			$this->password,
-			$this->usernameCanonical,
-			$this->credentialsExpired,
-			$this->enabled,
-			$this->id,
-		));
-	}
-
-	/**
-	 * Unserializes the user.
-	 *
-	 * @param string $serialized
-	 */
-	public function unserialize($serialized)
-	{
-		$data = unserialize($serialized);
-		// add a few extra elements in the array to ensure that we have enough keys when unserializing
-		// older data which does not include all properties.
-		$data = array_merge($data, array_fill(0, 2, null));
-
-		list(
-			$this->password,
-			$this->usernameCanonical,
-			$this->credentialsExpired,
-			$this->enabled,
-			$this->id
-			) = $data;
 	}
 
 	/**
@@ -324,19 +289,19 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 	 */
 	public function isEqualTo(UserInterface $user)
 	{
-		if ($this->getPassword() !== $user->getPassword()) {
-			return false;
-		}
+		if ($this->getPassword() !== $user->getPassword())
+		    return false;
 
-		if ($this->getUsername() !== $user->getUsername()) {
+		if ($this->getUsername() !== $user->getUsername())
 			return false;
-		}
 
-		if ($this->getEmail() !== $user->getEmail()) {
-			return false;
-		}
+        if ($this->getEmail() !== $user->getEmail())
+            return false;
 
-		return true;
+        if ($this->getId() !== $user->getId())
+            return false;
+
+        return true;
 	}
 
 	/**
@@ -368,5 +333,21 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 		$this->currentPassword = $currentPassword;
 
 		return $this;
-}
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive():bool
+    {
+        return $this->isEnabled();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
 }
