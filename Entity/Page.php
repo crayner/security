@@ -24,11 +24,6 @@ class Page extends PageExtension
 	private $roles;
 
 	/**
-	 * @var string
-	 */
-	private $path;
-
-	/**
 	 * @var \DateTime
 	 */
 	private $cacheTime;
@@ -134,30 +129,6 @@ class Page extends PageExtension
 			return $this;
 
 		$this->roles[] = $role;
-
-		return $this;
-	}
-
-	/**
-	 * Get path
-	 *
-	 * @return string
-	 */
-	public function getPath()
-	{
-		return $this->path;
-	}
-
-	/**
-	 * Set path
-	 *
-	 * @param string $path
-	 *
-	 * @return Page
-	 */
-	public function setPath($path)
-	{
-		$this->path = $path;
 
 		return $this;
 	}

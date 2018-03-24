@@ -14,21 +14,15 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class PageRepository extends ServiceEntityRepository
 {
-	/**
-	 * @var RouterInterface
-	 */
-	private $router;
 
 	/**
 	 * PageRepository constructor.
 	 *
 	 * @param RegistryInterface $registry
 	 */
-	public function __construct(RegistryInterface $registry, RouterInterface $router)
+	public function __construct(RegistryInterface $registry)
 	{
 		parent::__construct($registry, Page::class);
-
-		$this->router = $router;
 	}
 
 	/**
@@ -51,7 +45,6 @@ class PageRepository extends ServiceEntityRepository
 		{
 			$page = new Page();
 			$page->setRoute($routeName);
-			$page->setPath($this->router->generate($routeName, $params));
 		}
 
 		return $page;

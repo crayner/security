@@ -17,9 +17,6 @@ Hillrange\Security\Entity\Page:
             type: string
             length: '100'
             unique: true
-        path:
-            type: string
-            length: '200'
         roles:
             type: array
         cacheTime:
