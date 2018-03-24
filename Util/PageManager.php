@@ -82,7 +82,6 @@ class PageManager
 		{
 			if (!is_null($this->router->getRouteCollection()->get($routeName)))
 			{
-				$this->page->setPath($this->router->getRouteCollection()->get($routeName)->getPath());
 				$this->page->setCacheTime();
 				$this->om->persist($this->page);
 				$this->om->flush();
@@ -97,9 +96,6 @@ class PageManager
 			$this->page = $this->pageRepository->find($this->page->getId());
 			foreach ($attributes as $attribute)
 				$this->page->addRole($attribute);
-
-			if (empty($this->page->getId()))
-				$this->page->setPath($this->router->getRouteCollection()->get($routeName)->getPath());
 
 			$this->page->setCacheTime();
 			$this->om->persist($this->page);
