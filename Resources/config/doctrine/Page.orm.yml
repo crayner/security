@@ -15,7 +15,7 @@ Hillrange\Security\Entity\Page:
     fields:
         route:
             type: string
-            length: '100'
+            length: 100
             unique: true
         roles:
             type: array

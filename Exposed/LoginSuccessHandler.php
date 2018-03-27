@@ -16,7 +16,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\HttpUtils;
-use Symfony\Component\Security\Http\ParameterBagUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
@@ -89,10 +88,15 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 		$this->securityRoutes      = $parameterInjector->getParameter('security.routes');
 	}
 
-	public function onAuthenticationSuccess(Request $request, TokenInterface $token)
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token)
 	{
 		$user = $this->tokenStorage->getToken()->getUser();
-dump($user);
+
 		$user = $this->entityManager->getRepository(User::class)->find($user->getId());
 
 		$ip      = $request->server->get('REMOTE_ADDR');
