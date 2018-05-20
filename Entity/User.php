@@ -105,11 +105,11 @@ class User extends UserExtension
 	 *
 	 * @param ParameterInjector $parameterInjector
 	 */
-	public function __construct(ParameterInjector $parameterInjector)
+	public function __construct()
 	{
 		parent::__construct();
-		$this->roleList =  $parameterInjector->getParameter('security.hierarchy.roles');
-		$this->groupList = $parameterInjector->getParameter('security.groups');
+		$this->roleList =  ParameterInjector::getParameter('security.hierarchy.roles');
+		$this->groupList = ParameterInjector::getParameter('security.groups');
 	}
 
 	/**
@@ -665,4 +665,14 @@ class User extends UserExtension
 		}
 		return $this;
 	}
+
+    /**
+     * @param int|null $id
+     * @return User
+     */
+    public function setId(?int $id): User
+    {
+        $this->id = $id;
+        return $this;
+    }
 }

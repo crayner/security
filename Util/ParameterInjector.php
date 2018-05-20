@@ -8,7 +8,7 @@ class ParameterInjector
 	/**
 	 * @var ContainerInterface
 	 */
-	private $container;
+	private static $container;
 
 	/**
 	 * ParameterInjector constructor.
@@ -17,7 +17,7 @@ class ParameterInjector
 	 */
 	public function __construct(ContainerInterface $container)
 	{
-		$this->container = $container;
+		self::$container = $container;
  	}
 
 	/**
@@ -28,10 +28,10 @@ class ParameterInjector
 	 *
 	 * @return  mixed
 	 */
-	public function getParameter($name, $default = null)
+	public static function getParameter($name, $default = null)
 	{
-		if ($this->hasParameter($name))
-			return $this->container->getParameter($name);
+		if (self::hasParameter($name))
+			return self::$container->getParameter($name);
 
 		if (false === strpos($name, '.'))
 			return $default;
@@ -42,7 +42,7 @@ class ParameterInjector
 
 		$name = implode('.', $pName);
 
-		$value = $this->getParameter($name, $default);
+		$value = self::getParameter($name, $default);
 
 		if (is_array($value) && isset($value[$key]))
 			return $value[$key];
@@ -58,8 +58,8 @@ class ParameterInjector
 	 *
 	 * @return  mixed
 	 */
-	public function hasParameter($name)
+	public static function hasParameter($name)
 	{
-		return $this->container->hasParameter($name);
+		return self::$container->hasParameter($name);
 	}
 }
