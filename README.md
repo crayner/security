@@ -11,7 +11,7 @@ FLEX IS NOT IMPLEMENTED FOR THIS PACKAGE.
 
 Version
 -------
-0.0.24
+0.0.25
 
 Installation
 ============

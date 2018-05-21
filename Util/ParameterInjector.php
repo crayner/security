@@ -47,7 +47,7 @@ class ParameterInjector
 		if (is_array($value) && isset($value[$key]))
 			return $value[$key];
 
-		throw new \InvalidArgumentException(sprintf('The value %s is not a valid array parameter.', $name));
+		return $default;
 	}
 
 	/**
