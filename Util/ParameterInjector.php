@@ -31,7 +31,7 @@ class ParameterInjector
 	public static function getParameter($name, $default = null)
 	{
 		if (self::hasParameter($name))
-			return self::$container->getParameter($name);
+			return self::$container->get($name);
 
 		if (false === strpos($name, '.'))
 			return $default;
@@ -60,6 +60,6 @@ class ParameterInjector
 	 */
 	public static function hasParameter($name)
 	{
-		return self::$container->hasParameter($name);
+		return self::$container->has($name);
 	}
 }
