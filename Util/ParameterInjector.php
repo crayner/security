@@ -56,10 +56,12 @@ class ParameterInjector
 	 * @param   string $name
 	 * @param   mixed  $default
 	 *
-	 * @return  mixed
+	 * @return  bool
 	 */
-	public static function hasParameter($name)
+	public static function hasParameter($name): bool
 	{
-		return self::$container->has($name);
+	    if (self::$container)
+		    return self::$container->has($name);
+	    return false;
 	}
 }
