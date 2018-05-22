@@ -30,10 +30,6 @@ class UserSubscriber implements EventSubscriberInterface
 		$data['usernameCanonical'] = trim($data['username']);
 		$data['emailCanonical']    = trim(strtolower($data['email']));
 
-		$data['enabled'] = $data['enabled'] === '1' ? true : false;
-		$data['expired'] = $data['expired'] === '1' ? true : false;
-		$data['credentials_expired'] = $data['credentials_expired'] === '1' ? true : false;
-
 		$event->setData($data);
 	}
 }
