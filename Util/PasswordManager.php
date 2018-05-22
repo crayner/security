@@ -182,7 +182,7 @@ class PasswordManager
 	 */
 	public function validatePasswordChange(UserInterface $user, Password $password)
 	{
-		$oldPasswords = $user->getUserSetting('old_passwords');
+		$oldPasswords = $user->getUserSetting('old_passwords', []);
 
 		foreach($oldPasswords as $oldPassword)
 			if (password_verify($password->getPlainPassword(), $oldPassword))
