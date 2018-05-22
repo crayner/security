@@ -51,6 +51,7 @@ class UserFieldsListener implements EventSubscriber
 				[
 					'targetEntity'  => User::class,
 					'fieldName'     => 'createdBy',
+					'cascade'       => ['persist'],
 					'joinColumns'   => [
 						'created_by'     => [
 							'name'                  => 'created_by',
@@ -63,6 +64,7 @@ class UserFieldsListener implements EventSubscriber
 				[
 					'targetEntity'  => User::class,
 					'fieldName'     => 'modifiedBy',
+                    'cascade'       => ['persist'],
 					'joinColumns'   => [
 						'modified_by'     => [
 							'name'                  => 'modified_by',

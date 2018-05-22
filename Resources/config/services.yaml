@@ -18,9 +18,6 @@ services:
         resource: '../../Exposed/'
         public: true
 
-    Hillrange\Security\Entity\User:
-        arguments:
-            - '@Hillrange\Security\Util\ParameterInjector'
     Hillrange\Security\Exposed\LoginSuccessHandler:
         arguments:
             - '@security.http_utils'          # http_utils cannot be auto-wired.

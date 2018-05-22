@@ -562,7 +562,7 @@ class User extends UserExtension
 	 *
 	 * @return array
 	 */
-	public function getDirectroles()
+	public function getDirectroles(): array
 	{
 		if (! is_array($this->directroles) && empty($this->directroles))
 			$this->setDirectroles([]);
@@ -577,12 +577,45 @@ class User extends UserExtension
 	 *
 	 * @return User
 	 */
-	public function setDirectroles($directroles)
+	public function setDirectroles(?array $directroles): User
 	{
-		$this->directroles = $directroles;
+		$this->directroles = $directroles ?: [];
 
 		return $this;
 	}
+
+    /**
+     * addDirectRole
+     *
+     * @param null|string $role
+     * @return User
+     */
+    public function addDirectRole(?string $role): User
+    {
+        if (empty($role) || in_array($role, $this->getDirectroles()))
+            return $this;
+
+        $this->directroles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * removeDirectRole
+     *
+     * @param null|string $role
+     * @return User
+     */
+    public function removeDirectRole(?string $role): User
+    {
+        if (empty($role) || ! in_array($role, $this->getDirectroles()))
+            return $this;
+
+        $key = array_search($role, $this->directroles);
+        unset($this->directroles[$key]);
+
+        return $this;
+    }
 
 	/**
 	 * @param string|null $name

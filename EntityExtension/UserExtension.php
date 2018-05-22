@@ -61,12 +61,23 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 		$this->setUserSettings([]);
 	}
 
-	public function getPlainPassword()
+    /**
+     * getPlainPassword
+     *
+     * @return null|string
+     */
+    public function getPlainPassword():?string
 	{
 		return $this->plainPassword;
 	}
 
-	public function setPlainPassword($password)
+    /**
+     * setPlainPassword
+     *
+     * @param null|string $password
+     * @return UserExtension
+     */
+    public function setPlainPassword(?string $password): UserExtension
 	{
 		$this->plainPassword = $password;
 
@@ -74,9 +85,9 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 	}
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
 	{
 		return $this->hasRole('ROLE_SYSTEM_ADMIN');
 	}
@@ -85,12 +96,12 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
      * @param bool $boolean
      * @return UserException
      */
-    public function setSuperAdmin(bool $boolean): UserException
+    public function setSuperAdmin(bool $boolean): UserExtension
 	{
 		if ($boolean)
-			$this->addRole('ROLE_SYSTEM_ADMIN');
+			$this->addDirectRole('ROLE_SYSTEM_ADMIN');
 		else
-			$this->removeRole('ROLE_SYSTEM_ADMIN');
+			$this->removeDirectRole('ROLE_SYSTEM_ADMIN');
 
 		return $this;
 	}
@@ -326,9 +337,9 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
 	/**
 	 * @param string $currentPassword
 	 *
-	 * @return UserModel
+	 * @return UserExtension
 	 */
-	public function setCurrentPassword(string $currentPassword = null): User
+	public function setCurrentPassword(string $currentPassword = null): UserExtension
 	{
 		$this->currentPassword = $currentPassword;
 
@@ -338,16 +349,23 @@ abstract class UserExtension implements AdvancedUserInterface, UserTrackInterfac
     /**
      * @return bool
      */
-    public function isActive():bool
+    public function isActive(): bool
     {
         return $this->isEnabled();
     }
 
     /**
-     * @return null|string
+     * @return null
      */
     public function getSalt(): ?string
     {
         return null;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        if (in_array($role, $this->getRoles()))
+            return true;
+        return false;
     }
 }
