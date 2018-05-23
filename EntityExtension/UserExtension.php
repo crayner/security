@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  *
  */
-abstract class UserExtension implements UserTrackInterface, EquatableInterface
+abstract class UserExtension implements UserInterface, UserTrackInterface, EquatableInterface
 {
 	use UserTrackTrait;
 
