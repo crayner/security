@@ -5,14 +5,13 @@ use Hillrange\Security\Entity\User;
 use Hillrange\Security\Exception\UserException;
 use Hillrange\Security\Util\UserTrackInterface;
 use Hillrange\Security\Util\UserTrackTrait;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  *
  */
-abstract class UserExtension implements AdvancedUserInterface, UserTrackInterface, EquatableInterface
+abstract class UserExtension implements UserTrackInterface, EquatableInterface
 {
 	use UserTrackTrait;
 
