@@ -239,7 +239,12 @@ class PasswordManager implements ContainerAwareInterface
      */
     public function getPassword(): array
     {
-        $this->password = [];
+        $this->password = [
+            'min_length' => 8,
+            'specials' => false,
+            'numbers' => true,
+            'mixed_case' => true,
+        ];
         if ($this->getContainer()->hasParameter('security.password.settings'))
             $this->password = $this->getContainer()->getParameter('security.password.settings');
 
