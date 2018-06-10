@@ -4,12 +4,13 @@ namespace Hillrange\Security\Util;
 use Doctrine\ORM\EntityManagerInterface;
 use Hillrange\Security\Entity\Password;
 use Hillrange\Security\Entity\User;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class PasswordManager
+class PasswordManager implements ContainerAwareInterface
 {
 	/**
 	 * @var array
@@ -31,6 +32,11 @@ class PasswordManager
 	 */
 	private $entityManager;
 
+    /**
+     * @var
+     */
+	private $container;
+
 	/**
 	 * PasswordManager constructor.
 	 *
@@ -39,9 +45,10 @@ class PasswordManager
 	 */
 	public function __construct(ContainerInterface $container, EncoderFactoryInterface $encoderFactory, EntityManagerInterface $entityManager)
 	{
-		$this->password = $container->getParameter('security.password.settings');
 		$this->encoder =  $encoderFactory->getEncoder(User::class);
 		$this->entityManager = $entityManager;
+        $this->setContainer($container);
+        $this->getPassword();
 	}
 
 	/**
@@ -75,6 +82,7 @@ class PasswordManager
 	 */
 	public function getPasswordSetting($name = null)
 	{
+	    $this->getPassword();
 		switch ($name)
 		{
 			case 'specials':
@@ -205,4 +213,36 @@ class PasswordManager
 
 		return true;
 	}
+
+    /**
+     * @param ContainerInterface $container
+     * @return PasswordManager
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * getPassword
+     *
+     * @return array
+     */
+    public function getPassword(): array
+    {
+        $this->password = [];
+        if ($this->getContainer()->hasParameter('security.password.settings'))
+            $this->password = $this->getContainer()->getParameter('security.password.settings');
+
+        return $this->password;
+    }
 }
