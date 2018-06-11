@@ -1,6 +1,7 @@
 <?php
 namespace Hillrange\Security\Util;
 
+use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Hillrange\Security\Entity\Failure;
 use Hillrange\Security\Repository\FailureRepository;
@@ -31,8 +32,12 @@ class FailureManager
 	 */
 	public function __construct(EntityManagerInterface $om)
 	{
-		$this->failureRepository = $om->getRepository(Failure::class);
-		$this->om             = $om;
+	    try {
+            $this->failureRepository = $om->getRepository(Failure::class);
+        } catch (ConnectionException $e)
+        {
+        }
+        $this->om             = $om;
 	}
 
 	/**

@@ -62,10 +62,13 @@ class PageListener implements EventSubscriberInterface
 		$route = $event->getRequest()->get('_route');
 		$params = $event->getRequest()->get('_route_params') ?: [];
 
-		if (strpos($route, '_') === 0)
-			return ;
+        if (strpos($route, '_') === 0)
+            return ;
 
-		$page  = $this->entityManager->getRepository(Page::class)->loadOneByRoute($route, $params);
+        if (strpos($route, 'installer') === 0)
+            return ;
+
+        $page  = $this->entityManager->getRepository(Page::class)->loadOneByRoute($route, $params);
 		if ($page)
 		{
 			$page->incAccessCount();
@@ -129,7 +132,9 @@ class PageListener implements EventSubscriberInterface
 	 */
 	public function onKernelRequest(GetResponseEvent $event)
 	{
-		$session = $event->getRequest()->getSession();
+	    $session = null;
+	    if ($event->getRequest()->hasSession())
+		    $session = $event->getRequest()->getSession();
 
 		if ($session instanceof SessionInterface)
 		{

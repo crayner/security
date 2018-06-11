@@ -1,6 +1,7 @@
 <?php
 namespace Hillrange\Security\Util;
 
+use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Hillrange\Security\Entity\Page;
 use Hillrange\Security\Repository\PageRepository;
@@ -50,7 +51,10 @@ class PageManager
 	public function __construct(EntityManagerInterface $om, RouterInterface $router)
 	{
 		$this->session        = new Session();
-		$this->pageRepository = $om->getRepository(Page::class);
+        try {
+            $this->pageRepository = $om->getRepository(Page::class);
+        } catch (ConnectionException $e) {
+        }
 		$this->om             = $om;
 		$this->router         = $router;
 	}
@@ -109,9 +113,9 @@ class PageManager
 	}
 
 	/**
-	 * @return PageRepository
+	 * @return PageRepository|null
 	 */
-	public function getPageRepository(): PageRepository
+	public function getPageRepository(): ?PageRepository
 	{
 		return $this->pageRepository;
 	}
