@@ -244,9 +244,9 @@ abstract class UserExtension implements UserInterface, UserTrackInterface, Equat
 	 *
 	 * @return $this
 	 */
-	public function setGroupList(array $groupList)
+	public function setGroupList(?array $groupList)
 	{
-		$this->groupList = $groupList;
+		$this->groupList = $groupList ?: [];
 
 		return $this;
 	}
