@@ -35,15 +35,15 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 	 * @return RedirectResponse
 	 */
 	public function onLogoutSuccess(Request $request)
-	{
-		$session = $request->getSession();
-		$flash = $session->getFlashBag()->all();
-
-		$session->clear();
-		$session->invalidate();
-
-		$session->getFlashBag()->setAll($flash);
-
+    {
+        if ($request->hasSession())
+        {
+            $session = $request->getSession();
+            $flash = $session->getFlashBag()->all();
+            $session->invalidate();
+            if (! empty($flash))
+                $session->getFlashBag()->setAll($flash);
+        }
 		$request->setLocale($this->parameterInjector->getParameter('locale'));
 
 		return new RedirectResponse($this->router->generate($this->parameterInjector->getParameter('security.routes.security_home')));
