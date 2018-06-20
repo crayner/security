@@ -19,7 +19,7 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 	/**
 	 * @var array
 	 */
-	private $roles;
+	private static $roles;
 
 	/**
 	 * @var array
@@ -35,11 +35,21 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 	public function __construct(UserRepository $userRepository, ParameterInjector $parameterInjector)
 	{
 		$this->userRepository = $userRepository;
-		$this->roles =  $parameterInjector->getParameter('security.hierarchy.roles');
+		self::$roles =  $parameterInjector->getParameter('security.hierarchy.roles');
 		$this->groups = $parameterInjector->getParameter('security.groups');
 	}
 
-	/**
+    /**
+     * getAllRoles
+     *
+     * @return array
+     */
+    public static function getAllRoles(): array
+    {
+        return self::$roles;
+    }
+
+    /**
 	 * @param $username
 	 *
 	 * @return null|\Symfony\Component\Security\Core\User\UserInterface
@@ -53,7 +63,7 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 				sprintf('Username "%s" does not exist.', $username)
 			);
 
-		$user->setRoleList($this->roles);
+		$user->setRoleList(self::$roles);
 		$user->setGroupList($this->groups);
 
 		return $user;
@@ -107,7 +117,7 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 		if (is_null($user))
 			return null;
 
-		$user->setRoleList($this->roles);
+		$user->setRoleList(self::$roles);
 		$user->setGroupList($this->groups);
 
 		return $user;
@@ -118,7 +128,7 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 	 */
 	public function getRoles(): array
 	{
-		return $this->roles;
+		return self::$roles;
 	}
 
 	/**
@@ -129,9 +139,14 @@ class UserProvider implements UserProviderInterface, UserLoaderInterface
 		return $this->groups;
 	}
 
-	public function newUser(): UserInterface
+    /**
+     * newUser
+     *
+     * @return UserInterface
+     */
+    public function newUser(): UserInterface
 	{
-		$user = new User($this->roles, $this->groups);
+		$user = new User(self::$roles, $this->groups);
 
 		return $user;
 
