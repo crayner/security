@@ -250,7 +250,7 @@ class SecurityController extends Controller
 		$token->setToken(null);
 		$session->set('_timeout', true);
 
-		$lapse = $this->getParameter('idleTimeout', 15);
+		$lapse = $this->getParameter('idle_timeout', 15);
 
 		$session->getFlashBag()->add(
 			'info',

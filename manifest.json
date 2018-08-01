@@ -4,7 +4,7 @@
     },
     "container": {
         "encoder.cost": "15",
-        "idleTimeout": "0   #set to zero to ignore",
+        "idle_timeout": "0   #set to zero to ignore",
         "security.password.reset.token.ttl": "86400",
         "security.password.settings": {
             "min_length": "8",

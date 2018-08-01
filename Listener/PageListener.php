@@ -144,7 +144,7 @@ class PageListener implements EventSubscriberInterface
 
 			if ($session->get('_security_last_page') && $session->get('_security_main'))
 			{
-				if (strtotime('now') - $session->get('_security_last_page') > $this->parameterInjector->getParameter('idleTimeout', 15) * 60)
+				if (strtotime('now') - $session->get('_security_last_page') > $this->parameterInjector->getParameter('idle_timeout', 15) * 60)
 				{
 					$session->clear('_security_last_page');
 					$session->clear('_security_main');
