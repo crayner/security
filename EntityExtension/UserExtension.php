@@ -157,7 +157,7 @@ abstract class UserExtension implements UserInterface, UserTrackInterface, Equat
 	 */
 	public function getChangePassword()
 	{
-		return $this->getCredentialsExpired();
+		return $this->isCredentialsExpired();
 	}
 
 	/**
