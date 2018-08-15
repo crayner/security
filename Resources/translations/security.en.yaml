@@ -27,6 +27,8 @@ security:
             not_found: 'The token given is not valid.'
         timeout: 'You have been logged out due to inactivity. You have not used the site for %hours% hours : %minutes% minutes.'
     password:
+        policy_header: Password Policy
+        policy: "The password requirements are: Minimum Length: %minLength% characters, Numbers %numbers%, Mixed Case %mixedCase%, Special Characters %specials%."
         reset:
             email:
                 subject: 'Password Reset Request'
@@ -102,3 +104,6 @@ idletimeout:
         dialogue: 'No activity has been detected for %time% minutes.  You are about to be signed out of the system for security reasons.'
         timeRemaining: 'Time Remaining'
 Login Blocked: Login Blocked by IP Restrictions.  Wait 20 minutes and try again.
+password.user:
+    missing: The user was not found or is no longer authenticated.
+    wrong: The existing password was not valid.

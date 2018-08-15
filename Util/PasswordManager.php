@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class PasswordManager implements ContainerAwareInterface
 {
@@ -80,21 +81,38 @@ class PasswordManager implements ContainerAwareInterface
 	 *
 	 * @return array|string|bool
 	 */
-	public function getPasswordSetting($name = null)
-	{
-	    $this->getPassword();
-		switch ($name)
-		{
-			case 'specials':
-			case 'numbers':
-			case 'mixed_case':
-			case 'min_length':
-				return $this->password[$name];
-				break;
-			default:
-				return $this->password;
-		}
-	}
+    public function getPasswordSetting($name = null)
+    {
+        $this->getPassword();
+        switch ($name)
+        {
+            case 'specials':
+            case 'numbers':
+            case 'mixed_case':
+            case 'min_length':
+                return $this->password[$name];
+                break;
+            default:
+                return $this->password;
+        }
+    }
+
+    /**
+     * getPasswordSettingStrings
+     *
+     * @param null $name
+     * @return array
+     */
+    public function getPasswordSettingStrings($name = null): array
+    {
+        $data = [];
+
+        $data['%specials%'] = $this->getPasswordSetting('specials') ? 'Yes' : 'No' ;
+        $data['%mixedCase%'] = $this->getPasswordSetting('mixed_case') ? 'Yes' : 'No' ;
+        $data['%numbers%'] = $this->getPasswordSetting('numbers') ? 'Yes' : 'No';
+        $data['%minLength%'] = $this->getPasswordSetting('min_length');
+        return $data;
+    }
 
 	/**
 	 * @return string
@@ -135,14 +153,17 @@ class PasswordManager implements ContainerAwareInterface
 		return $this->encoder->encodePassword($password, null);
 	}
 
-	/**
-	 * @param $data
-	 *
-	 * @return bool
-	 */
-	public function confirmPassword($data)
+    /**
+     * confirmPassword
+     *
+     * Checks against the BCrypt Encoder
+     * @param $user
+     * @param $plainPassword
+     * @return bool
+     */
+	public function confirmPassword($user, $plainPassword)
 	{
-		return $this->encoder->isPasswordValid($data->getPassword(), $data->getCurrentPassword(), null);
+		return $this->encoder->isPasswordValid($user->getPassword(), $plainPassword, null);
 	}
 
 	/**
@@ -180,33 +201,32 @@ class PasswordManager implements ContainerAwareInterface
 
 	}
 
-	/**
-	 * Validate Password Change
-	 *
-	 * @param UserInterface $user
-	 * @param Password      $password
-	 *
-	 * @return bool|array
-	 */
-	public function validatePasswordChange(UserInterface $user, Password $password)
+    /**
+     * validatePasswordChange
+     *
+     * @param UserInterface $user
+     * @param string $password
+     * @return array|bool
+     */
+	public function validatePasswordChange(UserInterface $user, string $password)
 	{
 		$oldPasswords = $user->getUserSetting('old_passwords', []);
 
 		foreach($oldPasswords as $oldPassword)
-			if (password_verify($password->getPlainPassword(), $oldPassword))
+			if (password_verify($password, $oldPassword))
 				return [
 					'security.password.error.used_before',
 					[
-						'%{password}' => $password->getPlainPassword(),
+						'%{password}' => $password,
 					],
 					'plainPassword[first]',
 				];
 
-		if (password_verify($password->getPlainPassword(), $user->getPassword()))
+		if (password_verify($password, $user->getPassword()))
 			return [
 				'security.password.error.current',
 				[
-					'%{password}' => $password->getPlainPassword(),
+					'%{password}' => $password,
 				],
 				'plainPassword[first]',
 			];

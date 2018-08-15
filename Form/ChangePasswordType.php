@@ -2,7 +2,7 @@
 namespace Hillrange\Security\Form;
 
 use Hillrange\Security\Entity\User;
-use Hillrange\Security\Validator\ForcedPassword;
+use Hillrange\Security\Validator\CheckPassword;
 use Hillrange\Security\Validator\Password;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ChangePasswordType extends AbstractType
 {
@@ -25,7 +26,10 @@ class ChangePasswordType extends AbstractType
 			->add('currentPassword', PasswordType::class,
 				[
 					'label'    => 'security.login.current_password.label',
-					'required' => false,
+                    'constraints' => [
+                        new CheckPassword(),
+                        new NotBlank(),
+                    ],
 				]
 			)
 			->add('plainPassword', RepeatedType::class, [
@@ -34,6 +38,7 @@ class ChangePasswordType extends AbstractType
 						'label'       => 'security.login.password.label',
 						'constraints' => [
 							new Password(),
+                            new NotBlank(),
 						],
 					],
 					'second_options'  => [
@@ -61,9 +66,6 @@ class ChangePasswordType extends AbstractType
 			'translation_domain' => 'security',
 			'invalid_match_message' => 'security.password.match.error',
 			'error_bubbling'    => true,
-			'constraints'  => [
-				new ForcedPassword(),
-			],
 		));
 	}
 

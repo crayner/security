@@ -5,7 +5,8 @@ use Hillrange\Security\Validator\Constraints\PasswordValidator;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Password
+ * Class Password
+ * @package Hillrange\Security\Validator
  */
 class Password extends Constraint
 {
@@ -15,6 +16,11 @@ class Password extends Constraint
 
 	public $path = '';
 
+    /**
+     * validatedBy
+     *
+     * @return string
+     */
 	public function validatedBy()
 	{
 		return PasswordValidator::class;

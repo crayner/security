@@ -16,7 +16,7 @@ use Hillrange\Security\Util\PasswordManager;
 use Hillrange\Security\Util\TokenGenerator;
 use Hillrange\Security\Util\UserManager;
 use Hillrange\Security\Util\UserProvider;
-use Hillrange\Security\Validator\ForcedPassword;
+use Hillrange\Security\Validator\CheckPassword;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -157,7 +157,7 @@ class SecurityController extends Controller
 
 		$password = new Password();
 
-		$form = $this->createForm(NewPasswordType::class, $password, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security'), 'constraints' => [new ForcedPassword(['user' => $user])]]);
+		$form = $this->createForm(NewPasswordType::class, $password, ['invalid_match_message' => $translator->trans('security.password.match.error', [], 'security'), 'constraints' => [new CheckPassword(['user' => $user])]]);
 
 		$form->handleRequest($request);
 
