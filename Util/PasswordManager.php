@@ -2,14 +2,12 @@
 namespace Hillrange\Security\Util;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Hillrange\Security\Entity\Password;
 use Hillrange\Security\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class PasswordManager implements ContainerAwareInterface
 {
@@ -142,13 +140,13 @@ class PasswordManager implements ContainerAwareInterface
 		return $this->generatedPassword;
 	}
 
-	/**
-	 * @param UserInterface $user
-	 * @param string        $password
-	 *
-	 * @return string
-	 */
-	public function encodePassword(UserInterface $user, string $password)
+    /**
+     * encodePassword
+     *
+     * @param string $password
+     * @return string
+     */
+	public function encodePassword(string $password)
 	{
 		return $this->encoder->encodePassword($password, null);
 	}
@@ -166,10 +164,13 @@ class PasswordManager implements ContainerAwareInterface
 		return $this->encoder->isPasswordValid($user->getPassword(), $plainPassword, null);
 	}
 
-	/**
-	 * @param UserInterface $user
-	 */
-	public function saveNewPassword(UserInterface $user, Password $password)
+    /**
+     * saveNewPassword
+     *
+     * @param UserInterface $user
+     * @param string $password
+     */
+	public function saveNewPassword(UserInterface $user, string $password)
 	{
 		$oldPasswords = $user->getUserSetting('old_passwords', []);
 
@@ -186,7 +187,7 @@ class PasswordManager implements ContainerAwareInterface
 
 		$user->setUserSetting('old_passwords', $oldPasswords, 'array');
 
-		$user->setPassword($this->encodePassword($user, $password->getPlainPassword()));
+		$user->setPassword($this->encodePassword($password));
 
 		$user->setCurrentPassword(null);
 		$user->setPlainPassword(null);

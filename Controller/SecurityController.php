@@ -77,8 +77,6 @@ class SecurityController extends Controller
 
 		$user = $entityManager->getRepository(User::class)->loadUserByUsername($lastUsername);
 
-		dump($lastUsername);
-		dump($user);
 		if (!$user)
 			$error = new UserException('security.user.not_found', ['%{username}' => $lastUsername]);
 		else

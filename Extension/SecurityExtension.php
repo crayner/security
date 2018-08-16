@@ -12,6 +12,9 @@ class SecurityExtension extends AbstractExtension
 	 */
 	private $routes;
 
+    /**
+     * @var FailureManager
+     */
 	private $failureManager;
 
 	/**
@@ -25,30 +28,35 @@ class SecurityExtension extends AbstractExtension
 		$this->failureManager = $failureManager;
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+    /**
+     * getFunctions
+     *
+     * @return array|\Twig_Function[]
+     */
 	public function getFunctions()
 	{
 		return [
-			new \Twig_SimpleFunction('get_SecurityRoute', [$this, 'getSecurityRoute']),
-			new \Twig_SimpleFunction('is_IPBlocked', [$this->failureManager, 'isIPBlocked']),
+			new \Twig_SimpleFunction('getSecurityRoute', [$this, 'getSecurityRoute']),
+			new \Twig_SimpleFunction('isIPBlocked', [$this->failureManager, 'isIPBlocked']),
 		];
 	}
 
-	/**
-	 * @param string $route
-	 *
-	 * @return string
-	 */
+    /**
+     * getSecurityRoute
+     *
+     * @param string $route
+     * @return string
+     */
 	public function getSecurityRoute(string $route)
 	{
 		return trim($this->routes[$route]);
 	}
 
-	/**
-	 * @return string
-	 */
+    /**
+     * getName
+     *
+     * @return string
+     */
 	public function getName()
 	{
 		return 'hillrange_security_extension';

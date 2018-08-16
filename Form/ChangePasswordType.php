@@ -35,7 +35,8 @@ class ChangePasswordType extends AbstractType
 			->add('plainPassword', RepeatedType::class, [
 					'type'            => PasswordType::class,
 					'first_options'   => [
-						'label'       => 'security.login.password.label',
+                        'label'       => 'security.login.password_new.label',
+                        'help'       => 'security.login.password_new.help',
 						'constraints' => [
 							new Password(),
                             new NotBlank(),

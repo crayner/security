@@ -4,12 +4,16 @@ security:
             label: User Name or Email Address
         password:
             label: Password
+        password_new:
+            label: New Password
+            help: The password needs to match the password policy set by System Administrator
         password_confirmation:
-            label: Confirm Password
+            label: Confirm New Password
         remember_me:
             label: Keep me logged in
         login:
             label: Login
+            description: ''
         current_password:
             label: Current Password
         reset_password:
@@ -59,6 +63,7 @@ security:
             success: Your new password has been stored. Now login.
         existing:
             invalid: Your existing password is invalid.
+        forced.success: Your new password has be saved.
 user:
     username:
         label: User name
