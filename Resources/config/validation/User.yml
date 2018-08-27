@@ -1,6 +1,6 @@
 Hillrange\Security\Entity\User:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
+        - HillrangeSecurity\Validator\UniqueOrBlank:
             fields: [username]
             errorPath: username
             message: user.error.username.unique
