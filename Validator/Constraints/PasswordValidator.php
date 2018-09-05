@@ -2,6 +2,7 @@
 namespace Hillrange\Security\Validator\Constraints;
 
 use Hillrange\Security\Util\PasswordManager;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraint;
@@ -53,7 +54,7 @@ class PasswordValidator extends ConstraintValidator
 
         $token = $this->storage->getToken();
 
-        if (is_null($token))
+        if (is_null($token) || $token instanceof AnonymousToken)
             return ;
 
         $user = $token->getUser();
