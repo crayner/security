@@ -708,4 +708,18 @@ class User extends UserExtension
         $this->id = $id;
         return $this;
     }
+
+    /**
+     * checkCanonical
+     *
+     * @return User
+     */
+    public function checkCanonical(): User
+    {
+        if (empty($this->getEmailCanonical()))
+            $this->setEmailCanonical($this->getEmail());
+        if (empty($this->getUsernameCanonical()))
+            $this->setUsernameCanonical($this->getUsername());
+        return $this;
+    }
 }

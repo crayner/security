@@ -40,9 +40,12 @@ Hillrange\Security\Entity\User:
             column: email_canonical
         enabled:
             type: boolean
+            options:
+                default: '1'
         locale:
             type: string
             length: 10
+            nullable: true
         password:
             type: string
             length: 64 
@@ -52,6 +55,8 @@ Hillrange\Security\Entity\User:
             nullable: true
         expired:
             type: boolean
+            options:
+                default: '0'
         expiresAt:
             column: expires_at
             type: datetime
@@ -67,6 +72,8 @@ Hillrange\Security\Entity\User:
         credentialsExpired:
             type: boolean 
             column: credentials_expired
+            options:
+                default: '0'
         credentialsExpireAt:
             column: credentials_expire_at
             type: datetime
@@ -81,3 +88,9 @@ Hillrange\Security\Entity\User:
         userSettings:
             type: array
             column: user_settings
+            nullable: true
+    lifecycleCallbacks:
+        prePersist:
+            - checkCanonical
+        preUpdate:
+            - checkCanonical
