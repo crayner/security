@@ -21,7 +21,6 @@
         "symfony/flex": "^1.0",
         "symfony/form": "^3.4|^4.0",
         "symfony/framework-bundle": "^3.4|^4.0",
-        "symfony/lts": "^4@dev",
         "symfony/orm-pack": "^1.0",
         "symfony/translation": "^3.4|^4.0",
         "symfony/validator": "^3.4|^4.0",
