@@ -35,11 +35,40 @@ class PageListener implements EventSubscriberInterface
 	 */
 	private $router;
 
+    /**
+     * @var bool
+     */
+    private static $keepPageCount = true;
+
+    /**
+     * isKeepPageCount
+     *
+     * @return bool
+     */
+    public function isKeepPageCount(): bool
+    {
+        return self::$keepPageCount;
+    }
+
+    /**
+     * setKeepPageCount
+     *
+     * @param bool $keepPageCount
+     * @return PageListener
+     */
+    public function setKeepPageCount(bool $keepPageCount): PageListener
+    {
+        self::$keepPageCount = $keepPageCount;
+        return $this;
+    }
+
 	/**
 	 * @return array
 	 */
-	public static function getSubscribedEvents()
+	public static function getSubscribedEvents(): array
 	{
+	    if (! self::$keepPageCount)
+	        return [];
 		return [
 			KernelEvents::TERMINATE => ['onTerminate', 16],
 			KernelEvents::REQUEST => ['onKernelRequest', -16]
@@ -53,6 +82,8 @@ class PageListener implements EventSubscriberInterface
 	 */
 	public function onTerminate($event)
 	{
+        if (! $this->isKeepPageCount())
+            return ;
 		if (! $event instanceof PostResponseEvent && ! $event instanceof GetResponseEvent)
 			return ;
 
@@ -129,6 +160,8 @@ class PageListener implements EventSubscriberInterface
 	 */
 	public function onKernelRequest(GetResponseEvent $event)
 	{
+	    if (! $this->isKeepPageCount())
+	        return ;
 	    $session = null;
 	    if ($event->getRequest()->hasSession())
 		    $session = $event->getRequest()->getSession();

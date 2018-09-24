@@ -1,25 +1,23 @@
 <?php
 namespace Hillrange\Security\Util;
 
-use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Hillrange\Security\Entity\Page;
 use Hillrange\Security\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class PageManager
+ * @package Hillrange\Security\Util
+ */
 class PageManager
 {
-	/**
-	 * @var Session
-	 */
-	private $session;
-
-	/**
-	 * @var PageRepository
-	 */
-	private $pageRepository;
+    /**
+     * @var RequestStack 
+     */
+	private $stack;
 
 	/**
 	 * @var EntityManagerInterface
@@ -41,20 +39,15 @@ class PageManager
 	 */
 	private $router;
 
-	/**
-	 * PageManager constructor.
-	 *
-	 * @param Session       $session
-	 * @param ObjectManager $om
-	 * @param RequestStack  $request
-	 */
-	public function __construct(EntityManagerInterface $om, RouterInterface $router)
+    /**
+     * PageManager constructor.
+     * @param EntityManagerInterface $om
+     * @param RouterInterface $router
+     * @param RequestStack $stack
+     */
+	public function __construct(EntityManagerInterface $om, RouterInterface $router, RequestStack $stack)
 	{
-		$this->session        = new Session();
-        try {
-            $this->pageRepository = $om->getRepository(Page::class);
-        } catch (ConnectionException $e) {
-        }
+		$this->stack          = $stack;
 		$this->om             = $om;
 		$this->router         = $router;
 	}
@@ -67,17 +60,21 @@ class PageManager
 	 *
 	 * @return Page
 	 */
-	public function findOneByRoute(string $routeName, $attributes = []): Page
+	public function findOneByRoute(string $routeName, $attributes = []): ?Page
 	{
-		$this->pageSecurity = $this->session->get('pageSecurity');
+	    if (! $this->isKeepPageCount())
+	        return null;
+
+		$this->pageSecurity = $this->getSession()->get('pageSecurity');
 
 		if (!is_array($this->pageSecurity))
 			$this->pageSecurity = [];
 
-		$this->page = empty($this->pageSecurity[$routeName]) ? $this->pageRepository->loadOneByRoute($routeName) : $this->pageSecurity[$routeName];
+		$this->page = empty($this->pageSecurity[$routeName]) ? $this->getPageRepository()->loadOneByRoute($routeName) : $this->pageSecurity[$routeName];
+		
+		$this->page = $this->page instanceof Page ? $this->page : new Page();
 
-		if (!is_array($attributes))
-			$attributes = [$attributes];
+		if (!is_array($attributes))			$attributes = [$attributes];
 
 		foreach ($attributes as $attribute)
 			$this->page->addRole($attribute);
@@ -87,8 +84,8 @@ class PageManager
 			if (!is_null($this->router->getRouteCollection()->get($routeName)))
 			{
 				$this->page->setCacheTime();
-				$this->om->persist($this->page);
-				$this->om->flush();
+				$this->getOm()->persist($this->page);
+				$this->getOm()->flush();
 				$this->pageSecurity[$routeName] = $this->page;
 			}
 			else
@@ -97,17 +94,16 @@ class PageManager
 
 		if ($this->page->getCacheTime() < new \DateTime('-15 Minutes'))
 		{
-			$this->page = $this->pageRepository->find($this->page->getId());
 			foreach ($attributes as $attribute)
 				$this->page->addRole($attribute);
 
 			$this->page->setCacheTime();
-			$this->om->persist($this->page);
-			$this->om->flush();
+			$this->getOm()->persist($this->page);
+			$this->getOm()->flush();
 			$this->pageSecurity[$routeName] = $this->page;
 		}
 
-		$this->session->set('pageSecurity', $this->pageSecurity);
+		$this->getSession()->set('pageSecurity', $this->pageSecurity);
 
 		return $this->page;
 	}
@@ -117,6 +113,51 @@ class PageManager
 	 */
 	public function getPageRepository(): ?PageRepository
 	{
-		return $this->pageRepository;
+	    if (! $this->isKeepPageCount())
+	        return null;
+		return $this->getOm()->getRepository(Page::class);
 	}
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getOm(): EntityManagerInterface
+    {
+        return $this->om;
+    }
+
+    /**
+     * @var bool
+     */
+    private $keepPageCount = true;
+
+    /**
+     * @return bool
+     */
+    public function isKeepPageCount(): bool
+    {
+        return $this->keepPageCount;
+    }
+
+    /**
+     * @param bool $keepPageCount
+     * @return PageManager
+     */
+    public function setKeepPageCount(bool $keepPageCount): PageManager
+    {
+        $this->keepPageCount = $keepPageCount;
+        return $this;
+    }
+
+    /**
+     * getSession
+     *
+     * @return null|SessionInterface
+     */
+    private function getSession(): ?SessionInterface
+    {
+        if($this->stack->getCurrentRequest()->hasSession())
+            return $this->stack->getCurrentRequest()->getSession();
+        return null;
+    }
 }

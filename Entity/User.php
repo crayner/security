@@ -200,9 +200,9 @@ class User extends UserExtension
 	{
 		if (empty($password))
 			$password = 'This is not a password.';
-		$this->password = $password;
 
-		$this->setCredentialsExpired(true);
+		$this->setCredentialsExpired(false);
+        $this->password = $password;
 
 		return $this;
 	}
