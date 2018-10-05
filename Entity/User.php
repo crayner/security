@@ -716,9 +716,9 @@ class User extends UserExtension
      */
     public function checkCanonical(): User
     {
-        if (empty($this->getEmailCanonical()))
+        if (empty($this->getEmailCanonical()) || $this->getEmailCanonical() !== $this->getEmail())
             $this->setEmailCanonical($this->getEmail());
-        if (empty($this->getUsernameCanonical()))
+        if (empty($this->getUsernameCanonical()) || $this->getUsernameCanonical() !== $this->getUsername())
             $this->setUsernameCanonical($this->getUsername());
         return $this;
     }
