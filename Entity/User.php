@@ -628,7 +628,7 @@ class User extends UserExtension
 		if (is_null($name))
 			return $this->userSettings ?: [];
 		else
-			return $this->getUserSetting($name, $default);
+			return $this->getUserSetting(strtolower($name), $default);
 
 	}
 
@@ -640,6 +640,7 @@ class User extends UserExtension
 	 */
 	public function getUserSetting(string $name, $default = null)
 	{
+	    $this->getUserSettings();
 		if (isset($this->userSettings[strtolower($name)]))
 			return $this->userSettings[strtolower($name)];
 
@@ -698,6 +699,26 @@ class User extends UserExtension
 		}
 		return $this;
 	}
+
+    /**
+     * removeUserSetting
+     *
+     * @param $name
+     * @return User
+     */
+	public function removeUserSetting($name): User
+    {
+        $this->userSettings = $this->getUserSettings();
+
+        $name = strtolower($name);
+
+        if (isset($this->userSettings[$name]))
+        {
+            unset($this->userSettings[$name]);
+        }
+
+        return $this;
+    }
 
     /**
      * @param int|null $id
