@@ -69,8 +69,8 @@ class Failure
 	public function setAddress($address = null): Failure
 	{
 		if (! empty($address))
-			if (empty(preg_match('#^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$#', $address)))
-				throw new \InvalidArgumentException('The IP address is not valid. %s', $address);
+			if (empty(preg_match('#^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$||^(((?=(?>.*?(::))(?!.+3)))3?|([dA-F]{1,4}(3|:(?!$)|$)|2))(?4){5}((?4){2}|(25[0-5]|(2[0-4]|1d|[1-9])?d)(.(?7)){3})z#', $address)))
+				throw new \InvalidArgumentException(sprintf('The IP address is not valid. %s', $address));
 
 		$this->address = $address;
 
